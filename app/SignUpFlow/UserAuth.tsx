@@ -21,17 +21,6 @@ export default function UserAuth() {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
 
-  async function signInWithEmail() {
-    setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    })
-
-    if (error) Alert.alert(error.message)
-    setLoading(false)
-  }
-
   async function signUpWithEmail() {
     setLoading(true)
     const {

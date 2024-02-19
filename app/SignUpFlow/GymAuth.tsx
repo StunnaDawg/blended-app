@@ -24,7 +24,7 @@ export default function GymAuth() {
   async function signUpWithEmail() {
     setLoading(true)
     const {
-      data: { session },
+      data: { user, session },
       error,
     } = await supabase.auth.signUp({
       email: email,
@@ -33,6 +33,26 @@ export default function GymAuth() {
 
     if (error) Alert.alert(error.message)
     if (!session) Alert.alert("Please check your inbox for email verification!")
+
+    const gymData = {
+      title: "Your Gym Title",
+      website: "www.yourgymwebsite.com",
+      fitness_style: "Fitness Style",
+      province: "Your Province",
+      city: "Your City",
+      // Add more fields as needed
+    }
+
+    // Insert gym profile data into gym_profiles table
+    if (user) {
+      const { error: gymError } = await supabase
+        .from("gym_profiles")
+        .insert([{ id: user.id, ...gymData }])
+      if (gymError) {
+        Alert.alert(gymError.message)
+      }
+    }
+
     setLoading(false)
   }
 
