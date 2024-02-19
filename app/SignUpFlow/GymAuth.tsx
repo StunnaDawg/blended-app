@@ -1,7 +1,8 @@
 import React, { useState } from "react"
-import { Alert, StyleSheet, View, AppState } from "react-native"
+import { Alert, StyleSheet, View, AppState, Text } from "react-native"
 import { supabase } from "../../lib/supabase"
 import { Button, Input } from "react-native-elements"
+import { router } from "expo-router"
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -20,17 +21,6 @@ export default function GymAuth() {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
 
-  async function signInWithEmail() {
-    setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    })
-
-    if (error) Alert.alert(error.message)
-    setLoading(false)
-  }
-
   async function signUpWithEmail() {
     setLoading(true)
     const {
@@ -48,6 +38,8 @@ export default function GymAuth() {
 
   return (
     <View style={styles.container}>
+      <Button title="Go Back" onPress={() => router.back()} />
+      <Text>Gym Sign Up</Text>
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Input
           label="Email"
@@ -67,13 +59,6 @@ export default function GymAuth() {
           secureTextEntry={true}
           placeholder="Password"
           autoCapitalize={"none"}
-        />
-      </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
-          title="Sign in"
-          disabled={loading}
-          onPress={() => signInWithEmail()}
         />
       </View>
       <View style={styles.verticallySpaced}>

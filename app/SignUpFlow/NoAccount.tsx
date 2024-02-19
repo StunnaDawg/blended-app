@@ -22,8 +22,16 @@ const NoAccount = () => {
             <Text>User Sign Up</Text>
           </Pressable>
         </Link>
-        <Button title="Gym" />
-        <Button title="Already have an Account?" />
+        <Link href="SignUpFlow/GymAuth" asChild>
+          <Pressable>
+            <Text>Gym Sign Up</Text>
+          </Pressable>
+        </Link>
+        <Link href="components/Login" asChild>
+          <Pressable>
+            <Text>Already have an Account?</Text>
+          </Pressable>
+        </Link>
       </View>
     </View>
   )
