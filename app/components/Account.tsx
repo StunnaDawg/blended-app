@@ -4,12 +4,25 @@ import { StyleSheet, View, Alert } from "react-native"
 import { Button, Input } from "react-native-elements"
 import { Session } from "@supabase/supabase-js"
 import Avatar from "./Avatar"
+import { router } from "expo-router"
 
-export default function Account({ session }: { session: Session }) {
+export default function Account() {
+  const [session, setSession] = useState<Session | null>()
   const [loading, setLoading] = useState(true)
   const [username, setUsername] = useState("")
   const [website, setWebsite] = useState("")
   const [avatarUrl, setAvatarUrl] = useState("")
+  const [userType, setUserType] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
 
   useEffect(() => {
     if (session) getProfile()
@@ -22,7 +35,7 @@ export default function Account({ session }: { session: Session }) {
 
       const { data, error, status } = await supabase
         .from("profiles")
-        .select(`username, website, avatar_url`)
+        .select(`username, is_gym, website, avatar_url`)
         .eq("id", session?.user.id)
         .single()
       if (error && status !== 406) {
@@ -31,8 +44,13 @@ export default function Account({ session }: { session: Session }) {
 
       if (data) {
         setUsername(data.username)
+        setUserType(data.is_gym)
         setWebsite(data.website)
         setAvatarUrl(data.avatar_url)
+      }
+
+      if (data?.is_gym === null) {
+        router.navigate("/components/GymChoice")
       }
     } catch (error) {
       if (error instanceof Error) {

@@ -1,8 +1,10 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Alert, StyleSheet, View, AppState, Text } from "react-native"
 import { supabase } from "../../lib/supabase"
 import { Button, Input } from "react-native-elements"
 import { router } from "expo-router"
+import setUserType from "../functions/setUserType"
+import { Session } from "@supabase/supabase-js"
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -20,6 +22,17 @@ export default function UserAuth() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
+  const [session, setSession] = useState<Session | null>(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
 
   async function signUpWithEmail() {
     setLoading(true)
@@ -33,6 +46,7 @@ export default function UserAuth() {
 
     if (error) Alert.alert(error.message)
     if (!session) Alert.alert("Please check your inbox for email verification!")
+
     setLoading(false)
   }
 
@@ -65,7 +79,9 @@ export default function UserAuth() {
         <Button
           title="Sign up"
           disabled={loading}
-          onPress={() => signUpWithEmail()}
+          onPress={async () => {
+            await signUpWithEmail()
+          }}
         />
       </View>
     </View>
