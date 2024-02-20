@@ -22,17 +22,7 @@ export default function UserAuth() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
-  const [session, setSession] = useState<Session | null>(null)
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-    })
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-    })
-  }, [])
+  const [isGym, setIsGym] = useState(false)
 
   async function signUpWithEmail() {
     setLoading(true)
@@ -42,6 +32,11 @@ export default function UserAuth() {
     } = await supabase.auth.signUp({
       email: email,
       password: password,
+      options: {
+        data: {
+          is_gym: isGym,
+        },
+      },
     })
 
     if (error) Alert.alert(error.message)
@@ -74,6 +69,9 @@ export default function UserAuth() {
           placeholder="Password"
           autoCapitalize={"none"}
         />
+      </View>
+      <View>
+        <Text>Gym or User?</Text>
       </View>
       <View style={styles.verticallySpaced}>
         <Button

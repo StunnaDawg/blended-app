@@ -5,7 +5,7 @@ import NoAccount from "./SignUpFlow/NoAccount"
 import Account from "./components/Account"
 import { Alert, View } from "react-native"
 import { Session } from "@supabase/supabase-js"
-import GymChoice from "./components/GymChoice"
+import UserAuth from "./SignUpFlow/UserAuth"
 
 export default function AppStart() {
   const [session, setSession] = useState<Session | null>(null)
@@ -48,5 +48,13 @@ export default function AppStart() {
     }
   }
 
-  return <View>{session && session.user ? <GymChoice /> : <NoAccount />}</View>
+  return (
+    <View>
+      {session && session.user ? (
+        <Account key={session.user.id} session={session} />
+      ) : (
+        <UserAuth />
+      )}
+    </View>
+  )
 }
