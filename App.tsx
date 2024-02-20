@@ -1,11 +1,14 @@
 import "react-native-url-polyfill/auto"
-import AppStart from "./app/index"
-import { View } from "react-native"
+import { NavStack } from "./app/NavStack"
+import { NavigationContainer } from "@react-navigation/native"
+import { UserAuthContextProvider } from "./app/context/auth"
 
 export default function App() {
   return (
-    <View>
-      <AppStart />
-    </View>
+    <UserAuthContextProvider>
+      <NavigationContainer>
+        <NavStack />
+      </NavigationContainer>
+    </UserAuthContextProvider>
   )
 }

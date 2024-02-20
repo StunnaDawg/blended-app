@@ -1,53 +1,59 @@
 import React, { useEffect, useState } from "react"
 import { Alert, StyleSheet, View, AppState, Text } from "react-native"
-import { supabase } from "../../lib/supabase"
 import { Button, Input } from "react-native-elements"
-import { router } from "expo-router"
-import setUserType from "../functions/setUserType"
-import { Session } from "@supabase/supabase-js"
-
-// Tells Supabase Auth to continuously refresh the session automatically if
-// the app is in the foreground. When this is added, you will continue to receive
-// `onAuthStateChange` events with the `TOKEN_REFRESHED` or `SIGNED_OUT` event
-// if the user's session is terminated. This should only be registered once.
-AppState.addEventListener("change", (state) => {
-  if (state === "active") {
-    supabase.auth.startAutoRefresh()
-  } else {
-    supabase.auth.stopAutoRefresh()
-  }
-})
+import { FIREBASE_AUTH, db } from "../../firebase"
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import { doc, setDoc } from "firebase/firestore"
 
 export default function UserAuth() {
+  const [loading, setLoading] = useState<boolean>(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [isGym, setIsGym] = useState(false)
+  const auth = FIREBASE_AUTH
+  const [isGym, setIsGym] = useState<boolean>(false)
 
-  async function signUpWithEmail() {
-    setLoading(true)
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        data: {
-          is_gym: isGym,
-        },
-      },
-    })
+  const handleSignUp = async () => {
+    try {
+      setLoading(true)
+      if (isGym) {
+        await createUserWithEmailAndPassword(auth, email, password)
 
-    if (error) Alert.alert(error.message)
-    if (!session) Alert.alert("Please check your inbox for email verification!")
+        const gymId = FIREBASE_AUTH?.currentUser?.uid
+        if (gymId) {
+          const gymsCollectionRef = doc(db, "gyms", gymId)
+          const newGymData = {
+            email: email,
+            gymId: FIREBASE_AUTH?.currentUser?.uid,
+          }
+          await setDoc(gymsCollectionRef, newGymData)
+        } else {
+          console.log("no gym id to set")
+        }
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password)
 
-    setLoading(false)
+        const userId = FIREBASE_AUTH?.currentUser?.uid
+
+        if (userId) {
+          const usersCollectionRef = doc(db, "user", userId)
+          const newUserData = {
+            email: email,
+            userId: FIREBASE_AUTH?.currentUser?.uid,
+          }
+          await setDoc(usersCollectionRef, newUserData)
+        } else {
+          console.log("no User id to set")
+        }
+      }
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
     <View style={styles.container}>
-      <Button title="Go Back" onPress={() => router.back()} />
+      <Button title="Go Back" />
       <Text>User Sign Up</Text>
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Input
@@ -72,13 +78,27 @@ export default function UserAuth() {
       </View>
       <View>
         <Text>Gym or User?</Text>
+        <Button
+          title="gym"
+          onPress={() => {
+            setIsGym(true)
+            console.log(isGym)
+          }}
+        />
+        <Button
+          title="user"
+          onPress={() => {
+            setIsGym(false)
+            console.log(isGym)
+          }}
+        />
       </View>
       <View style={styles.verticallySpaced}>
         <Button
           title="Sign up"
           disabled={loading}
           onPress={async () => {
-            await signUpWithEmail()
+            await handleSignUp()
           }}
         />
       </View>

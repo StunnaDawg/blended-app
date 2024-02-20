@@ -1,28 +1,30 @@
 import { View, Text, Alert, StyleSheet } from "react-native"
 import React, { useState } from "react"
 import { Button, Input } from "react-native-elements"
-import { router } from "expo-router"
-import { supabase } from "../../lib/supabase"
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { FIREBASE_AUTH } from "../../firebase"
+import { useNavigation } from "@react-navigation/native"
+import { NavigationType, RootStackParamList } from "../@types/navigation"
 
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
+  const navigation = useNavigation<NavigationType>()
+  const auth = FIREBASE_AUTH
 
-  async function signInWithEmail() {
-    setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    })
-
-    if (error) Alert.alert(error.message)
-    setLoading(false)
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
     <View style={styles.container}>
-      <Button title="Go Back" onPress={() => router.back()} />
+      <Button title="Go Back" />
+      <Text>USer Log in</Text>
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Input
           label="Email"
@@ -48,9 +50,15 @@ const Login = () => {
         <Button
           title="Sign in"
           disabled={loading}
-          onPress={() => signInWithEmail()}
+          onPress={() => handleLogin()}
         />
       </View>
+
+      <Button
+        title="Sign up"
+        disabled={loading}
+        onPress={() => navigation.navigate("SignUp")}
+      />
     </View>
   )
 }
