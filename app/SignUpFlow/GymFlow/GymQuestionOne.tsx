@@ -2,12 +2,15 @@ import { View, Text, TextInput, Button } from "react-native"
 import React, { useState } from "react"
 import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../@types/navigation"
+import GymQuestionOneButton from "./components/GymQuestionOneButton"
+import { FIREBASE_AUTH } from "../../../firebase"
 
 const GymQuestionOne = () => {
   const [gymTitle, setGymTitle] = useState<string>("")
   const [gymStyle, setGymStyle] = useState<string>("")
-  const [location, setLocation] = useState<string>("")
+  const [province, setProvince] = useState<string>("")
   const [city, setCity] = useState<string>("")
+  const currentId = FIREBASE_AUTH.currentUser?.uid
   const navigation = useNavigation<NavigationType>()
 
   return (
@@ -30,10 +33,10 @@ const GymQuestionOne = () => {
       </View>
 
       <View>
-        <Text>Location</Text>
+        <Text>Province</Text>
         <TextInput
-          value={location}
-          onChangeText={setLocation}
+          value={province}
+          onChangeText={setProvince}
           placeholder="Location"
         />
       </View>
@@ -43,9 +46,12 @@ const GymQuestionOne = () => {
         <TextInput value={city} onChangeText={setCity} placeholder="City" />
       </View>
 
-      <Button
-        title="Next"
-        onPress={() => navigation.navigate("GymInitalAddPhoto")}
+      <GymQuestionOneButton
+        id={currentId}
+        gymStyle={gymStyle}
+        gymTitle={gymTitle}
+        province={province}
+        city={city}
       />
     </View>
   )

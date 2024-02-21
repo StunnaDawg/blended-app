@@ -33,6 +33,7 @@ const uploadImage = async (
         console.log("file avalible at", downloadUrl)
 
         imageState((prev) => [...prev, downloadUrl])
+        console.log(imageState)
       })
     }
   )
