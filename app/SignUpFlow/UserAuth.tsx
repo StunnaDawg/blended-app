@@ -4,6 +4,8 @@ import { Button, Input } from "react-native-elements"
 import { FIREBASE_AUTH, db } from "../../firebase"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { doc, setDoc } from "firebase/firestore"
+import { useNavigation } from "@react-navigation/native"
+import { NavigationType } from "../@types/navigation"
 
 export default function UserAuth() {
   const [loading, setLoading] = useState<boolean>(false)
@@ -11,6 +13,7 @@ export default function UserAuth() {
   const [password, setPassword] = useState("")
   const auth = FIREBASE_AUTH
   const [isGym, setIsGym] = useState<boolean>(false)
+  const navigation = useNavigation<NavigationType>()
 
   const handleSignUp = async () => {
     try {
@@ -26,6 +29,7 @@ export default function UserAuth() {
             gymId: FIREBASE_AUTH?.currentUser?.uid,
           }
           await setDoc(gymsCollectionRef, newGymData)
+          navigation.navigate("GymQuestionOne")
         } else {
           console.log("no gym id to set")
         }
@@ -41,6 +45,7 @@ export default function UserAuth() {
             userId: FIREBASE_AUTH?.currentUser?.uid,
           }
           await setDoc(usersCollectionRef, newUserData)
+          navigation.navigate("UserQuestionOne")
         } else {
           console.log("no User id to set")
         }
