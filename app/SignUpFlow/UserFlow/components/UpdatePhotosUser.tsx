@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { NavigationType } from "../../../@types/navigation"
 import { useNavigation } from "@react-navigation/native"
 import { Button } from "react-native"
-import { doc, updateDoc } from "firebase/firestore"
+import { arrayUnion, doc, updateDoc } from "firebase/firestore"
 import { db } from "../../../../firebase"
 import uploadImage from "../../../functions/uploadImage"
 
@@ -14,13 +14,13 @@ type UpdatePhotosUserProps = {
 const UpdatePhotosUser = ({ id, imageArray }: UpdatePhotosUserProps) => {
   const [downloadedImageArray, setDownloadedImageArray] = useState<string[]>([])
   const navigation = useNavigation<NavigationType>()
-  const submitUserPhotos = async () => {
+  const submitUserPhotos = async (image: string) => {
     try {
       if (id) {
         const userRef = doc(db, "user", id)
 
         await updateDoc(userRef, {
-          userPhotos: downloadedImageArray,
+          userPhotos: arrayUnion(image),
         })
       } else {
         console.log("User does not exist")
@@ -32,7 +32,13 @@ const UpdatePhotosUser = ({ id, imageArray }: UpdatePhotosUserProps) => {
 
   const uploadImagesArray = async () => {
     imageArray.forEach((element) => {
-      uploadImage(element, "image", id + "element", setDownloadedImageArray)
+      uploadImage(
+        element,
+        "image",
+        id + "element",
+        setDownloadedImageArray,
+        submitUserPhotos
+      )
     })
   }
   return (
@@ -40,7 +46,6 @@ const UpdatePhotosUser = ({ id, imageArray }: UpdatePhotosUserProps) => {
       title="Next"
       onPress={async () => {
         await uploadImagesArray()
-        await submitUserPhotos()
         navigation.navigate("UserDashboard")
       }}
     />

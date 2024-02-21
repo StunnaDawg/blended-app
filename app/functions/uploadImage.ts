@@ -6,7 +6,8 @@ const uploadImage = async (
   uri: string,
   fileType: string,
   imageName: string,
-  imageState: Dispatch<SetStateAction<string[]>>
+  imageStateArray: Dispatch<SetStateAction<string[]>>,
+  handleImageUpload: (imageDownload: string) => void
 ) => {
   const response = await fetch(uri)
   const blob = await response.blob()
@@ -31,9 +32,7 @@ const uploadImage = async (
     () => {
       getDownloadURL(uploadTask.snapshot.ref).then(async (downloadUrl) => {
         console.log("file avalible at", downloadUrl)
-
-        imageState((prev) => [...prev, downloadUrl])
-        console.log(imageState)
+        handleImageUpload(downloadUrl)
       })
     }
   )

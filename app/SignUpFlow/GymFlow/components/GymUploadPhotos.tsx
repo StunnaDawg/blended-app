@@ -1,9 +1,9 @@
 import { View, Text, Button } from "react-native"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../../@types/navigation"
-import { doc, updateDoc } from "firebase/firestore"
-import { db } from "../../../../firebase"
+import { arrayUnion, doc, updateDoc } from "firebase/firestore"
+import { FIREBASE_APP, db } from "../../../../firebase"
 import uploadImage from "../../../functions/uploadImage"
 
 type GymPhotoProps = {
@@ -14,13 +14,14 @@ type GymPhotoProps = {
 const GymUploadPhotos = ({ id, imageArray }: GymPhotoProps) => {
   const [downloadedImageArray, setDownloadedImageArray] = useState<string[]>([])
   const navigation = useNavigation<NavigationType>()
-  const submitGymPhotos = async () => {
+
+  const submitGymPhotos = async (downloadImage: string) => {
     try {
       if (id) {
         const GymRef = doc(db, "gyms", id)
 
         await updateDoc(GymRef, {
-          gymPhotos: downloadedImageArray,
+          gymPhotos: arrayUnion(downloadImage),
         })
       } else {
         console.log("User does not exist")
@@ -32,7 +33,13 @@ const GymUploadPhotos = ({ id, imageArray }: GymPhotoProps) => {
 
   const uploadImagesArray = async () => {
     imageArray.forEach((element) => {
-      uploadImage(element, "image", id + "element", setDownloadedImageArray)
+      uploadImage(
+        element,
+        "image",
+        id + "element",
+        setDownloadedImageArray,
+        submitGymPhotos
+      )
     })
   }
   return (
@@ -40,7 +47,6 @@ const GymUploadPhotos = ({ id, imageArray }: GymPhotoProps) => {
       title="Next"
       onPress={async () => {
         await uploadImagesArray()
-        await submitGymPhotos()
         navigation.navigate("GymDashboard")
       }}
     />
