@@ -16,5 +16,5 @@ export type UserProfile = {
   exerciseChoices: string[]
   intentions: string
   homeGym?: GymProfile
-  photosUri?: string[]
+  userPhotos?: string[]
 }

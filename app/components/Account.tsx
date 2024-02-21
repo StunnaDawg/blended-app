@@ -47,14 +47,7 @@ export default function Account() {
   return (
     <View style={styles.container}>
       <View>
-        <Avatar
-          size={200}
-          url={avatarUrl}
-          onUpload={(url: string) => {
-            setAvatarUrl(url)
-            // updateProfile({ username, website, avatar_url: url })
-          }}
-        />
+        <Avatar id="dd" size={200} />
       </View>
       <View></View>
       <View style={[styles.verticallySpaced, styles.mt20]}>

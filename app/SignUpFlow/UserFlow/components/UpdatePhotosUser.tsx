@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { NavigationType } from "../../../@types/navigation"
+import { NavigationType, TabNavigationType } from "../../../@types/navigation"
 import { useNavigation } from "@react-navigation/native"
 import { Button } from "react-native"
 import { arrayUnion, doc, updateDoc } from "firebase/firestore"
@@ -13,7 +13,7 @@ type UpdatePhotosUserProps = {
 
 const UpdatePhotosUser = ({ id, imageArray }: UpdatePhotosUserProps) => {
   const [downloadedImageArray, setDownloadedImageArray] = useState<string[]>([])
-  const navigation = useNavigation<NavigationType>()
+  const navigation = useNavigation<TabNavigationType>()
   const submitUserPhotos = async (image: string) => {
     try {
       if (id) {
@@ -46,7 +46,7 @@ const UpdatePhotosUser = ({ id, imageArray }: UpdatePhotosUserProps) => {
       title="Next"
       onPress={async () => {
         await uploadImagesArray()
-        navigation.navigate("UserDashboard")
+        navigation.navigate("Dashboard")
       }}
     />
   )

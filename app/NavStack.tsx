@@ -10,7 +10,7 @@ import { doc, getDoc } from "@firebase/firestore"
 import UserAuth from "./SignUpFlow/UserAuth"
 import Login from "./components/Login"
 import GymProfile from "./GymDashboard/GymProfile"
-import UserProfile from "./Dashboard/UserProfile"
+import UserProfile from "./Dashboard/UserProfile/UserProfile"
 import NavBar from "./components/NavBar"
 import Account from "./components/Account"
 import QuestionOne from "./SignUpFlow/UserFlow/QuestionOne"
@@ -44,7 +44,7 @@ const UserFooter = () => {
       }}
     >
       <Tab.Screen name="Dashboard" component={Dashboard} />
-      <Tab.Screen name="Profile" component={Account} />
+      <Tab.Screen name="Profile" component={UserProfile} />
     </Tab.Navigator>
   )
 }
