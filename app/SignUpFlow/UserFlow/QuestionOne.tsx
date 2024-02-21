@@ -3,6 +3,8 @@ import React, { useState } from "react"
 import { NavigationType } from "../../@types/navigation"
 import { useNavigation } from "@react-navigation/native"
 import { Button } from "react-native-elements"
+import UpdateQuestionOne from "./components/UpdateQuestionOne"
+import { FIREBASE_AUTH } from "../../../firebase"
 
 const QuestionOne = () => {
   const [firstName, setFirstName] = useState<string>("")
@@ -10,6 +12,7 @@ const QuestionOne = () => {
   const [gender, setGender] = useState<string>("")
   const [intentions, setIntentions] = useState<string>("")
   const navigation = useNavigation<NavigationType>()
+  const currentId = FIREBASE_AUTH.currentUser?.uid
 
   return (
     <View>
@@ -48,9 +51,12 @@ const QuestionOne = () => {
         />
       </View>
 
-      <Button
-        title="Next"
-        onPress={() => navigation.navigate("UserQuestionTwo")}
+      <UpdateQuestionOne
+        id={currentId}
+        firstName={firstName}
+        lastName={lastName}
+        gender={gender}
+        intentions={intentions}
       />
     </View>
   )

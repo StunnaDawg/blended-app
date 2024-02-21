@@ -1,12 +1,12 @@
 import { View, Text, TextInput, Button } from "react-native"
 import React, { useState } from "react"
-import { useNavigation } from "@react-navigation/native"
-import { NavigationType } from "../../@types/navigation"
+import UpdateQuestionTwo from "./components/UpdateQuestionTwo"
+import { FIREBASE_AUTH } from "../../../firebase"
 
 const QuestionTwo = () => {
   const [addActivity, setAddActivity] = useState<string>()
   const [activityArray, setActivityArray] = useState<string[]>([])
-  const navigation = useNavigation<NavigationType>()
+  const currentId = FIREBASE_AUTH.currentUser?.uid
 
   const addToActivityArray = (newValue: string) => {
     setActivityArray((prev) => [...prev, newValue])
@@ -28,10 +28,7 @@ const QuestionTwo = () => {
           }}
         />
       </View>
-      <Button
-        title="Next"
-        onPress={() => navigation.navigate("UserInitalAddPhoto")}
-      />
+      <UpdateQuestionTwo id={currentId} activityArray={activityArray} />
     </View>
   )
 }
