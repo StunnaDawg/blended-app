@@ -13,6 +13,12 @@ import GymProfile from "./GymDashboard/GymProfile"
 import UserProfile from "./Dashboard/UserProfile"
 import NavBar from "./components/NavBar"
 import Account from "./components/Account"
+import QuestionOne from "./SignUpFlow/UserFlow/QuestionOne"
+import QuestionTwo from "./SignUpFlow/UserFlow/QuestionTwo"
+import IntialAddPhotos from "./SignUpFlow/UserFlow/IntialAddPhotos"
+import GymQuestionTwo from "./SignUpFlow/GymFlow/GymQuestionTwo"
+import GymInitialAddPhotos from "./SignUpFlow/GymFlow/InitialAddPhotos"
+import GymQuestionOne from "./SignUpFlow/GymFlow/GymQuestionOne"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -24,7 +30,7 @@ const GymFooter = () => {
         headerShown: false,
       }}
     >
-      <Tab.Screen name="Dashboard" component={Dashboard} />
+      <Tab.Screen name="Dashboard" component={GymDashboard} />
       <Tab.Screen name="Profile" component={GymProfile} />
     </Tab.Navigator>
   )
@@ -80,6 +86,14 @@ const NavStack = () => {
     }
   }, [isSignedIn])
 
+  //   UserQuestionOne: undefined
+  //   UserQuestionTwo: undefined
+  //   UserQuestionThree: undefined
+  //   UserInitalAddPhoto: undefined
+  //   GymQuestionOne: undefined
+  //   GymQuestionTwo: undefined
+  //   GymQuestionThree: undefined
+  //   GymInitalAddPhoto: undefined
   return (
     <Stack.Navigator
       screenOptions={{
@@ -90,11 +104,24 @@ const NavStack = () => {
         isUser ? (
           <>
             <Stack.Screen name="Footer" component={UserFooter} />
+            <Stack.Screen name="UserDashboard" component={Dashboard} />
+            <Stack.Screen name="UserQuestionOne" component={QuestionOne} />
+            <Stack.Screen name="UserQuestionTwo" component={QuestionTwo} />
+            <Stack.Screen
+              name="UserInitalAddPhoto"
+              component={IntialAddPhotos}
+            />
           </>
         ) : (
           <>
             <Stack.Screen name="GymFooter" component={GymFooter} />
             <Stack.Screen name="GymDashboard" component={GymDashboard} />
+            <Stack.Screen name="GymQuestionOne" component={GymQuestionOne} />
+            <Stack.Screen name="GymQuestionTwo" component={GymQuestionTwo} />
+            <Stack.Screen
+              name="GymInitalAddPhoto"
+              component={GymInitialAddPhotos}
+            />
           </>
         )
       ) : (
