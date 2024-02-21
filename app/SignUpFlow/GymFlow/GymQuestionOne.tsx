@@ -45,7 +45,7 @@ const GymQuestionOne = () => {
 
       <Button
         title="Next"
-        onPress={() => navigation.navigate("GymQuestionTwo")}
+        onPress={() => navigation.navigate("GymInitalAddPhoto")}
       />
     </View>
   )

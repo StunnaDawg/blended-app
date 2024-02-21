@@ -30,7 +30,7 @@ const QuestionTwo = () => {
       </View>
       <Button
         title="Next"
-        onPress={() => navigation.navigate("GymInitalAddPhoto")}
+        onPress={() => navigation.navigate("UserInitalAddPhoto")}
       />
     </View>
   )

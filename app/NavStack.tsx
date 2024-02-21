@@ -104,6 +104,7 @@ const NavStack = () => {
         isUser ? (
           <>
             <Stack.Screen name="Footer" component={UserFooter} />
+            <Stack.Screen name="UserDashboard" component={Dashboard} />
             <Stack.Screen name="UserQuestionOne" component={QuestionOne} />
             <Stack.Screen name="UserQuestionTwo" component={QuestionTwo} />
             <Stack.Screen

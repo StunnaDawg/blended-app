@@ -1,10 +1,57 @@
-import { View, Text } from "react-native"
-import React from "react"
+import { View, Text, TextInput } from "react-native"
+import React, { useState } from "react"
+import { NavigationType } from "../../@types/navigation"
+import { useNavigation } from "@react-navigation/native"
+import { Button } from "react-native-elements"
 
 const QuestionOne = () => {
+  const [firstName, setFirstName] = useState<string>("")
+  const [lastName, setLastName] = useState<string>("")
+  const [gender, setGender] = useState<string>("")
+  const [intentions, setIntentions] = useState<string>("")
+  const navigation = useNavigation<NavigationType>()
+
   return (
     <View>
-      <Text>QuestionOne</Text>
+      <View>
+        <Text>First name</Text>
+        <TextInput
+          value={firstName}
+          onChangeText={setFirstName}
+          placeholder="first name"
+        />
+      </View>
+      <View>
+        <Text>Last Name</Text>
+        <TextInput
+          value={lastName}
+          onChangeText={setLastName}
+          placeholder="last name"
+        />
+      </View>
+
+      <View>
+        <Text>Gender</Text>
+        <TextInput
+          value={gender}
+          onChangeText={setGender}
+          placeholder="Gender"
+        />
+      </View>
+
+      <View>
+        <Text>Intentions</Text>
+        <TextInput
+          value={intentions}
+          onChangeText={setIntentions}
+          placeholder="Intentions"
+        />
+      </View>
+
+      <Button
+        title="Next"
+        onPress={() => navigation.navigate("UserQuestionTwo")}
+      />
     </View>
   )
 }
