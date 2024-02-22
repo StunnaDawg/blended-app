@@ -6,7 +6,6 @@ const uploadImage = async (
   uri: string,
   fileType: string,
   imageName: string,
-  imageStateArray: Dispatch<SetStateAction<string[]>>,
   handleImageUpload: (imageDownload: string) => void
 ) => {
   const response = await fetch(uri)

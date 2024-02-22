@@ -1,45 +1,22 @@
 import { doc, getDoc } from "firebase/firestore"
 import { useState, useEffect } from "react"
-import { StyleSheet, View, Image } from "react-native"
+import { StyleSheet, View, Image, Button, Pressable, Text } from "react-native"
 import { db } from "../../firebase"
 import getProfilePic from "../functions/getProfilePic"
 import { UserProfile } from "../@types/firestore"
+import UploadSingleImage from "./UploadSingleImage"
+import DeleteSingleImage from "./DeleteSingleImage"
 
 type ImageGridProps = {
   id?: string
   size: number
 }
 
-export default function ImageGrid({ id, size = 100 }: ImageGridProps) {
-  const [avatarUrl, setAvatarUrl] = useState<string[] | undefined>([
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-  ])
+export default function ImageGrid({ id, size = 150 }: ImageGridProps) {
+  const [avatarUrl, setAvatarUrl] = useState<string[]>([])
   const avatarSize = { height: size, width: size }
   const placeholdersCount = Math.max(6 - (avatarUrl?.length || 0), 0)
   const placeholderArray = new Array(placeholdersCount).fill("")
-  const styles = StyleSheet.create({
-    avatar: {
-      borderRadius: 10,
-      overflow: "hidden",
-      maxWidth: "100%",
-    },
-    image: {
-      objectFit: "cover",
-      paddingTop: 0,
-    },
-    noImage: {
-      backgroundColor: "#333",
-      borderWidth: 1,
-      borderStyle: "solid",
-      borderColor: "rgb(200, 200, 200)",
-      borderRadius: 10,
-    },
-  })
 
   useEffect(() => {
     if (id) getProfilePic(id, setAvatarUrl, "user")
@@ -52,22 +29,34 @@ export default function ImageGrid({ id, size = 100 }: ImageGridProps) {
         .slice(0, 6)
         .map((url, index) =>
           url !== "" ? (
-            <View
-              key={index}
-              style={[avatarSize, styles.avatar, styles.noImage]}
-            >
-              <Image
+            <>
+              <View
+                className="m-1 relative overflow-hidden max-w-full rounded-lg bg-gray-800 border-1 border-solid border-gray-200 border-r-10"
                 key={index}
-                source={{ uri: url }}
-                accessibilityLabel="Avatar"
-                style={[avatarSize, styles.avatar, styles.image]}
-              />
-            </View>
+                style={[avatarSize]}
+              >
+                <Image
+                  className="overflow-hidden max-w-full rounded-lg object-cover pt-0"
+                  key={index}
+                  source={{ uri: url }}
+                  accessibilityLabel="Avatar"
+                  style={[avatarSize]}
+                />
+                <DeleteSingleImage
+                  fileLocation={url}
+                  setNewUrl={setAvatarUrl}
+                  index={index}
+                />
+              </View>
+            </>
           ) : (
             <View
+              className="m-1 relative overflow-hidden max-w-full rounded-lg bg-gray-600 border-1 border-solid border-gray-200 border-r-10"
               key={index}
-              style={[avatarSize, styles.avatar, styles.noImage]}
-            />
+              style={[avatarSize]}
+            >
+              <UploadSingleImage fileLocation={url} index={index} />
+            </View>
           )
         )}
     </View>

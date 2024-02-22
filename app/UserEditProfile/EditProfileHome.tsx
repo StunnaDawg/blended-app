@@ -7,7 +7,7 @@ const EditProfileHome = () => {
   return (
     <ScrollView>
       <View>
-        <ImageGrid id={FIREBASE_AUTH.currentUser?.uid} size={150} />
+        <ImageGrid id={FIREBASE_AUTH.currentUser?.uid} size={125} />
       </View>
     </ScrollView>
   )

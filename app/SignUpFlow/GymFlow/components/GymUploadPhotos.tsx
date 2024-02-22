@@ -33,13 +33,7 @@ const GymUploadPhotos = ({ id, imageArray }: GymPhotoProps) => {
 
   const uploadImagesArray = async () => {
     imageArray.forEach((element) => {
-      uploadImage(
-        element,
-        "image",
-        id + "element",
-        setDownloadedImageArray,
-        submitGymPhotos
-      )
+      uploadImage(element, "image", id + "element", submitGymPhotos)
     })
   }
   return (

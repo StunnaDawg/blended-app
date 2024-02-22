@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from "react"
 
 const getProfilePic = async (
   id: string,
-  setProfilePic: Dispatch<SetStateAction<string[] | undefined>>,
+  setProfilePic: Dispatch<SetStateAction<string[]>>,
   docType: string
 ) => {
   try {
