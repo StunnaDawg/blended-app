@@ -19,6 +19,7 @@ import GymQuestionTwo from "./SignUpFlow/GymFlow/GymQuestionTwo"
 import GymInitialAddPhotos from "./SignUpFlow/GymFlow/InitialAddPhotos"
 import GymQuestionOne from "./SignUpFlow/GymFlow/GymQuestionOne"
 import EditProfileHome from "./UserEditProfile/EditProfileHome"
+import ChooseActivity from "./components/ChooseActivity"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -105,6 +106,10 @@ const NavStack = () => {
           <>
             <Stack.Screen name="Footer" component={UserFooter} />
             <Stack.Screen name="UserDashboard" component={Dashboard} />
+            <Stack.Screen
+              name="ChooseUserActivity"
+              component={ChooseActivity}
+            />
             <Stack.Screen name="UserEditProfile" component={EditProfileHome} />
             <Stack.Screen name="UserQuestionOne" component={QuestionOne} />
             <Stack.Screen name="UserQuestionTwo" component={QuestionTwo} />

@@ -13,6 +13,7 @@ export type RootStackParamList = {
   UserQuestionTwo: undefined
   UserQuestionThree: undefined
   UserInitalAddPhoto: undefined
+  ChooseUserActivity: undefined
   GymQuestionOne: undefined
   GymQuestionTwo: undefined
   GymQuestionThree: undefined

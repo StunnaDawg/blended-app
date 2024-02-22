@@ -18,3 +18,7 @@ export type UserProfile = {
   homeGym?: GymProfile
   userPhotos?: string[]
 }
+
+export type Activities = {
+  name: string
+}
