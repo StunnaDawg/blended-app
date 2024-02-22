@@ -22,6 +22,7 @@ const UploadImage = ({ setUris, uris }: UploadImageType) => {
       aspect: [9, 16],
       quality: 1,
       allowsMultipleSelection: true,
+      selectionLimit: 6,
     })
 
     if (!result.canceled) {

@@ -5,11 +5,12 @@ import { Dispatch, SetStateAction } from "react"
 
 const getProfilePic = async (
   id: string,
-  setProfilePic: Dispatch<SetStateAction<string[] | undefined>>
+  setProfilePic: Dispatch<SetStateAction<string[] | undefined>>,
+  docType: string
 ) => {
   try {
     if (id) {
-      const userRef = doc(db, "user", id)
+      const userRef = doc(db, docType, id)
 
       const docSnap = await getDoc(userRef)
 

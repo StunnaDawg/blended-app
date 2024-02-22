@@ -8,6 +8,7 @@ export type RootStackParamList = {
   GymDashboard: undefined
   UserDashboard: undefined
   GymFooter: undefined
+  UserEditProfile: undefined
   UserQuestionOne: undefined
   UserQuestionTwo: undefined
   UserQuestionThree: undefined
@@ -16,6 +17,7 @@ export type RootStackParamList = {
   GymQuestionTwo: undefined
   GymQuestionThree: undefined
   GymInitalAddPhoto: undefined
+  GymEditProfile: undefined
 }
 
 export type NavigationType = NativeStackNavigationProp<RootStackParamList>

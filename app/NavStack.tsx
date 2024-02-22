@@ -12,13 +12,13 @@ import Login from "./components/Login"
 import GymProfile from "./GymDashboard/GymProfile"
 import UserProfile from "./Dashboard/UserProfile/UserProfile"
 import NavBar from "./components/NavBar"
-import Account from "./components/Account"
 import QuestionOne from "./SignUpFlow/UserFlow/QuestionOne"
 import QuestionTwo from "./SignUpFlow/UserFlow/QuestionTwo"
 import IntialAddPhotos from "./SignUpFlow/UserFlow/IntialAddPhotos"
 import GymQuestionTwo from "./SignUpFlow/GymFlow/GymQuestionTwo"
 import GymInitialAddPhotos from "./SignUpFlow/GymFlow/InitialAddPhotos"
 import GymQuestionOne from "./SignUpFlow/GymFlow/GymQuestionOne"
+import EditProfileHome from "./UserEditProfile/EditProfileHome"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -105,6 +105,7 @@ const NavStack = () => {
           <>
             <Stack.Screen name="Footer" component={UserFooter} />
             <Stack.Screen name="UserDashboard" component={Dashboard} />
+            <Stack.Screen name="UserEditProfile" component={EditProfileHome} />
             <Stack.Screen name="UserQuestionOne" component={QuestionOne} />
             <Stack.Screen name="UserQuestionTwo" component={QuestionTwo} />
             <Stack.Screen
