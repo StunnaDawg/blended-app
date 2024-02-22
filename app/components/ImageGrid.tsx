@@ -10,7 +10,7 @@ type ImageGridProps = {
   size: number
 }
 
-export default function ImageGrid({ id, size = 150 }: ImageGridProps) {
+export default function ImageGrid({ id, size = 100 }: ImageGridProps) {
   const [avatarUrl, setAvatarUrl] = useState<string[] | undefined>([
     "",
     "",
@@ -20,7 +20,8 @@ export default function ImageGrid({ id, size = 150 }: ImageGridProps) {
     "",
   ])
   const avatarSize = { height: size, width: size }
-
+  const placeholdersCount = Math.max(6 - (avatarUrl?.length || 0), 0)
+  const placeholderArray = new Array(placeholdersCount).fill("")
   const styles = StyleSheet.create({
     avatar: {
       borderRadius: 10,
@@ -44,34 +45,31 @@ export default function ImageGrid({ id, size = 150 }: ImageGridProps) {
     if (id) getProfilePic(id, setAvatarUrl, "user")
   }, [])
 
-  useEffect(() => {
-    if (avatarUrl) {
-      while (avatarUrl.length < 6) {
-        avatarUrl.push("")
-        console.log(avatarUrl)
-      }
-    }
-  }, [avatarUrl])
-
   return (
-    <View className="">
-      {avatarUrl?.slice(0, 6).map((url, index) =>
-        url !== "" ? (
-          <View key={index} style={[avatarSize, styles.avatar, styles.noImage]}>
-            <Image
+    <View className="flex flex-row justify-center flex-wrap">
+      {avatarUrl
+        ?.concat(placeholderArray)
+        .slice(0, 6)
+        .map((url, index) =>
+          url !== "" ? (
+            <View
               key={index}
-              source={{ uri: url }}
-              accessibilityLabel="Avatar"
-              style={[avatarSize, styles.avatar, styles.image]}
+              style={[avatarSize, styles.avatar, styles.noImage]}
+            >
+              <Image
+                key={index}
+                source={{ uri: url }}
+                accessibilityLabel="Avatar"
+                style={[avatarSize, styles.avatar, styles.image]}
+              />
+            </View>
+          ) : (
+            <View
+              key={index}
+              style={[avatarSize, styles.avatar, styles.noImage]}
             />
-          </View>
-        ) : (
-          <View
-            key={index}
-            style={[avatarSize, styles.avatar, styles.noImage]}
-          />
-        )
-      )}
+          )
+        )}
     </View>
   )
 }
