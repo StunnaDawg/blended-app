@@ -54,7 +54,7 @@ export default function ImageGrid({ id, size = 150 }: ImageGridProps) {
   }, [avatarUrl])
 
   return (
-    <View>
+    <View className="">
       {avatarUrl?.slice(0, 6).map((url, index) =>
         url !== "" ? (
           <View key={index} style={[avatarSize, styles.avatar, styles.noImage]}>
