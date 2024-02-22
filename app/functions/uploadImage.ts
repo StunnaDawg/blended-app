@@ -8,7 +8,9 @@ const uploadImage = async (
   imageName: string,
   handleImageUpload: (imageDownload: string) => void
 ) => {
+  console.log("prop", uri)
   const response = await fetch(uri)
+  console.log(response)
   const blob = await response.blob()
   const min = 1 // Minimum value (inclusive)
   const max = 100 // Maximum value (exclusive)
@@ -17,7 +19,10 @@ const uploadImage = async (
 
   const fileName = imageName + randomInt.toString()
   const storageRef = ref(storage, fileName)
+  console.log("storageRef", storageRef)
   const uploadTask = uploadBytesResumable(storageRef, blob)
+
+  console.log(response)
 
   uploadTask.on(
     "state_changed",

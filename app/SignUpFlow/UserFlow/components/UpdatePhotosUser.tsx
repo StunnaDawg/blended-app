@@ -33,6 +33,7 @@ const UpdatePhotosUser = ({ id, imageArray }: UpdatePhotosUserProps) => {
   const uploadImagesArray = async () => {
     imageArray.forEach((element) => {
       uploadImage(element, "image", id + "element", submitUserPhotos)
+      console.log(element)
     })
   }
   return (

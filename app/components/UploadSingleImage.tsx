@@ -1,5 +1,5 @@
 import { View, Text, Pressable } from "react-native"
-import React, { useEffect, useState } from "react"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import * as ImagePicker from "expo-image-picker"
 import deleteImage from "../functions/deleteImage"
 import uploadImage from "../functions/uploadImage"
@@ -7,12 +7,13 @@ import { FIREBASE_AUTH, db } from "../../firebase"
 import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore"
 
 type UploadSingleImageProps = {
-  fileLocation: string
+  setNewUrl: Dispatch<SetStateAction<string[]>>
   index: number
 }
 
-const UploadSingleImage = ({ fileLocation, index }: UploadSingleImageProps) => {
-  const [downloadImage, setDownloadImage] = useState<string>("")
+const UploadSingleImage = ({ setNewUrl, index }: UploadSingleImageProps) => {
+  const [downloadImage, setDownloadImage] = useState<string>()
+  const [newDownloadImage, setNewDownloadImage] = useState<string>()
   const currentUser = FIREBASE_AUTH.currentUser?.uid
 
   const pickImage = async () => {
@@ -36,10 +37,13 @@ const UploadSingleImage = ({ fileLocation, index }: UploadSingleImageProps) => {
         const userRef = doc(db, "user", currentUser)
 
         await updateDoc(userRef, {
-          gymPhotos: arrayRemove(fileLocation),
+          userPhotos: arrayUnion(downloadImage),
         })
-        await updateDoc(userRef, {
-          gymPhotos: arrayUnion(downloadImage),
+
+        setNewUrl((prevArray) => {
+          const newArray = [...prevArray] // Create a shallow copy of the previous array
+          newArray[index] = downloadImage // Update the element at the specified index with the new value
+          return newArray // Return the updated array
         })
       } else {
         console.log("User does not exist")
@@ -49,18 +53,28 @@ const UploadSingleImage = ({ fileLocation, index }: UploadSingleImageProps) => {
     }
   }
 
-  useEffect(() => {
-    console.log(downloadImage)
-    if (downloadImage) {
-      uploadImage(downloadImage, "image", downloadImage, submitNewUserPhotos)
+  const setNewDownloadImageFunction = async (imageUrl: string) => {
+    if (imageUrl !== undefined) {
+      setNewDownloadImage(imageUrl)
     }
-  }, [downloadImage])
+  }
 
+  useEffect(() => {
+    console.log(newDownloadImage)
+    if (newDownloadImage)
+      uploadImage(
+        newDownloadImage,
+        "image",
+        "downloadImage" + downloadImage,
+        submitNewUserPhotos
+      )
+  }, [newDownloadImage])
   return (
     <Pressable
       className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded hover:bg-blue-800 m-2"
       onPress={async () => {
         await pickImage()
+        if (downloadImage) await setNewDownloadImageFunction(downloadImage)
       }}
     >
       <Text>+</Text>

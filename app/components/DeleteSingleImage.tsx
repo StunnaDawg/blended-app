@@ -24,9 +24,9 @@ const DeleteSingleImage = ({
     try {
       if (currentUser) {
         const userRef = doc(db, "user", currentUser)
-
+        console.log(fileLocation)
         await updateDoc(userRef, {
-          gymPhotos: arrayRemove(fileLocation),
+          userPhotos: arrayRemove(fileLocation),
         })
 
         setNewUrl((prevArray) => {

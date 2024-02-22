@@ -55,7 +55,7 @@ export default function ImageGrid({ id, size = 150 }: ImageGridProps) {
               key={index}
               style={[avatarSize]}
             >
-              <UploadSingleImage fileLocation={url} index={index} />
+              <UploadSingleImage setNewUrl={setAvatarUrl} index={index} />
             </View>
           )
         )}
