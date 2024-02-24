@@ -11,6 +11,7 @@ type SinglePicProps = {
   picNumber: number
   avatarRadius: number
   noAvatarRadius: number
+  collection: string
 }
 
 export default function SinglePic({
@@ -19,8 +20,9 @@ export default function SinglePic({
   picNumber,
   avatarRadius,
   noAvatarRadius,
+  collection,
 }: SinglePicProps) {
-  const [avatarUrl, setAvatarUrl] = useState<string[] | undefined>([])
+  const [avatarUrl, setAvatarUrl] = useState<string[]>([])
   const avatarSize = { height: size, width: size }
 
   const styles = StyleSheet.create({
@@ -43,7 +45,7 @@ export default function SinglePic({
   })
 
   useEffect(() => {
-    if (id) getProfilePic(id, setAvatarUrl, "user")
+    if (id) getProfilePic(id, setAvatarUrl, collection)
   }, [])
 
   return (

@@ -1,11 +1,19 @@
 import { doc, getDoc } from "firebase/firestore"
 import { useState, useEffect } from "react"
-import { StyleSheet, View, Image, Button, Pressable, Text } from "react-native"
+import {
+  StyleSheet,
+  View,
+  Image,
+  Button,
+  Pressable,
+  Text,
+  Alert,
+} from "react-native"
 import { db } from "../../firebase"
 import getProfilePic from "../functions/getProfilePic"
-import { UserProfile } from "../@types/firestore"
 import UploadSingleImage from "./UploadSingleImage"
 import DeleteSingleImage from "./DeleteSingleImage"
+import uploadImage from "../functions/uploadImage"
 
 type ImageGridProps = {
   id?: string
@@ -14,6 +22,7 @@ type ImageGridProps = {
 
 export default function ImageGrid({ id, size = 150 }: ImageGridProps) {
   const [avatarUrl, setAvatarUrl] = useState<string[]>([])
+  const [newPic, setNewPic] = useState<string>()
   const avatarSize = { height: size, width: size }
   const placeholdersCount = Math.max(6 - (avatarUrl?.length || 0), 0)
   const placeholderArray = new Array(placeholdersCount).fill("")

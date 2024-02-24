@@ -1,7 +1,7 @@
 import { View, Text, Button } from "react-native"
 import React, { useEffect, useState } from "react"
 import { useNavigation } from "@react-navigation/native"
-import { NavigationType } from "../../../@types/navigation"
+import { NavigationType, TabNavigationType } from "../../../@types/navigation"
 import { arrayUnion, doc, updateDoc } from "firebase/firestore"
 import { FIREBASE_APP, db } from "../../../../firebase"
 import uploadImage from "../../../functions/uploadImage"
@@ -13,7 +13,7 @@ type GymPhotoProps = {
 
 const GymUploadPhotos = ({ id, imageArray }: GymPhotoProps) => {
   const [downloadedImageArray, setDownloadedImageArray] = useState<string[]>([])
-  const navigation = useNavigation<NavigationType>()
+  const navigation = useNavigation<TabNavigationType>()
 
   const submitGymPhotos = async (downloadImage: string) => {
     try {
@@ -41,7 +41,7 @@ const GymUploadPhotos = ({ id, imageArray }: GymPhotoProps) => {
       title="Next"
       onPress={async () => {
         await uploadImagesArray()
-        navigation.navigate("GymDashboard")
+        navigation.navigate("Dashboard")
       }}
     />
   )

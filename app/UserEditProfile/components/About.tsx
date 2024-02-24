@@ -33,7 +33,7 @@ const About = () => {
 
   useEffect(() => {
     getAboutMe()
-  })
+  }, [])
   useEffect(() => {
     updateAboutMe()
   }, [aboutMe])

@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native"
+import { View, Text, Pressable, Alert } from "react-native"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import * as ImagePicker from "expo-image-picker"
 import deleteImage from "../functions/deleteImage"
@@ -12,9 +12,19 @@ type UploadSingleImageProps = {
 }
 
 const UploadSingleImage = ({ setNewUrl, index }: UploadSingleImageProps) => {
-  const [downloadImage, setDownloadImage] = useState<string>()
+  const [downloadImage, setDownloadImage] = useState<string>("")
   const [newDownloadImage, setNewDownloadImage] = useState<string>()
   const currentUser = FIREBASE_AUTH.currentUser?.uid
+
+  const createTwoButtonAlert = () =>
+    Alert.alert("Alert Title", "My Alert Msg", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "Replace", onPress: () => uploadImageNOW() },
+    ])
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -56,25 +66,26 @@ const UploadSingleImage = ({ setNewUrl, index }: UploadSingleImageProps) => {
   const setNewDownloadImageFunction = async (imageUrl: string) => {
     if (imageUrl !== undefined) {
       setNewDownloadImage(imageUrl)
+      console.log(imageUrl)
     }
   }
 
-  useEffect(() => {
-    console.log(newDownloadImage)
+  const uploadImageNOW = async () => {
+    await setNewDownloadImageFunction(downloadImage)
     if (newDownloadImage)
       uploadImage(
         newDownloadImage,
-        "image",
+        currentUser + "image",
         "downloadImage" + downloadImage,
         submitNewUserPhotos
       )
-  }, [newDownloadImage])
+  }
   return (
     <Pressable
       className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded hover:bg-blue-800 m-2"
       onPress={async () => {
         await pickImage()
-        if (downloadImage) await setNewDownloadImageFunction(downloadImage)
+        createTwoButtonAlert()
       }}
     >
       <Text>+</Text>

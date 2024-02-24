@@ -20,6 +20,7 @@ import GymInitialAddPhotos from "./SignUpFlow/GymFlow/InitialAddPhotos"
 import GymQuestionOne from "./SignUpFlow/GymFlow/GymQuestionOne"
 import EditProfileHome from "./UserEditProfile/EditProfileHome"
 import ChooseActivity from "./components/ChooseActivity"
+import EditGymProfileHome from "./GymEditProfile/EditProfileHome"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -121,7 +122,10 @@ const NavStack = () => {
         ) : (
           <>
             <Stack.Screen name="GymFooter" component={GymFooter} />
-            <Stack.Screen name="GymDashboard" component={GymDashboard} />
+            <Stack.Screen
+              name="GymEditProfile"
+              component={EditGymProfileHome}
+            />
             <Stack.Screen name="GymQuestionOne" component={GymQuestionOne} />
             <Stack.Screen name="GymQuestionTwo" component={GymQuestionTwo} />
             <Stack.Screen
