@@ -10,10 +10,11 @@ import Career from "./components/Career"
 import Education from "./components/Education"
 import PRsection from "./components/PRsection"
 import RelationshipGoals from "./components/RelationshipGoals"
+import School from "./components/School"
 
 const EditProfileHome = () => {
   return (
-    <ScrollView>
+    <ScrollView className="mb-20">
       <View>
         <ImageGrid id={FIREBASE_AUTH.currentUser?.uid} size={125} />
       </View>
@@ -22,32 +23,36 @@ const EditProfileHome = () => {
         <About />
       </View>
 
-      <View>
+      <View className="mt-4">
         <Activities />
       </View>
 
-      <View>
+      <View className="mt-4">
         <PRsection />
       </View>
 
-      <View>
+      <View className="mt-4">
         <RelationshipGoals />
       </View>
 
-      <View>
+      <View className="mt-4">
         <Food />
       </View>
 
-      <View>
+      <View className="mt-4">
         <Zodiac />
       </View>
 
-      <View>
+      <View className="mt-4">
+        <Education />
+      </View>
+
+      <View className="mt-4">
         <Career />
       </View>
 
-      <View>
-        <Education />
+      <View className="my-4">
+        <School />
       </View>
 
       {/* <View>

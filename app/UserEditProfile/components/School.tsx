@@ -3,51 +3,50 @@ import React, { useEffect, useState } from "react"
 import { FIREBASE_AUTH, db } from "../../../firebase"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 
-const Career = () => {
-  const [addJobTitle, setAddJobTitle] = useState<string>()
+const School = () => {
+  const [addSchool, setAddSchool] = useState<string>()
   const currentUser = FIREBASE_AUTH.currentUser?.uid
 
-  const updateJobTitle = async () => {
+  const updateSchool = async () => {
     if (currentUser) {
       const userRef = doc(db, "user", currentUser)
       await updateDoc(userRef, {
-        jobTitle: addJobTitle,
+        school: addSchool,
       })
     }
   }
 
-  const getJobTitle = async () => {
+  const getSchool = async () => {
     if (currentUser) {
       const userRef = doc(db, "user", currentUser)
       const data = await getDoc(userRef)
       if (data.exists()) {
-        const jobData = { ...data.data() }
+        const schoolData = { ...data.data() }
 
-        if (jobData.jobTitle) {
-          setAddJobTitle(jobData.jobTitle)
+        if (schoolData.school) {
+          setAddSchool(schoolData.school)
         }
       }
     }
   }
 
   useEffect(() => {
-    getJobTitle()
+    getSchool()
   }, [])
   useEffect(() => {
-    updateJobTitle()
-  }, [addJobTitle])
-
+    updateSchool()
+  }, [addSchool])
   return (
     <>
       <View className="mx-2">
-        <Text className="font-bold text-xl">Job Title</Text>
+        <Text className="font-bold text-xl">School</Text>
       </View>
       <View className="flex flex-row justify-between bg-slate-200 h-10 items-center px-2">
         <View className="flex flex-row">
           <TextInput
-            placeholder="Add Job Title"
-            onChangeText={(text) => setAddJobTitle(text)}
-            value={addJobTitle}
+            placeholder="Add School"
+            onChangeText={(text) => setAddSchool(text)}
+            value={addSchool}
           />
         </View>
       </View>
@@ -55,4 +54,4 @@ const Career = () => {
   )
 }
 
-export default Career
+export default School

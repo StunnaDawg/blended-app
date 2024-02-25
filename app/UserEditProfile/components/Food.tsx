@@ -26,15 +26,18 @@ const Food = () => {
   }, [])
   return (
     <>
+      <View className="mx-2">
+        <Text className="font-bold text-xl">Dietary Preferances</Text>
+      </View>
       <View>
         <Pressable
           onPress={() => {
             handlePresentModalPress()
           }}
         >
-          <View className="flex flex-row justify-between bg-slate-200 h-10 items-center">
+          <View className="flex flex-row justify-between bg-slate-200 h-10 items-center px-2">
             <View className="flex flex-row">
-              <Text>Add Food</Text>
+              <Text>Add Dietary Preferences</Text>
             </View>
 
             <Feather name="arrow-right" size={32} color="black" />

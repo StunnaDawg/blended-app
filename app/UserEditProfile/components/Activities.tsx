@@ -30,8 +30,10 @@ const Activities = () => {
   })
   return (
     <View>
-      <Text className="font-bold text-xl">Activities</Text>
-      <View className="flex flex-row justify-between bg-slate-200 h-10 items-center">
+      <View className="mx-2">
+        <Text className="font-bold text-xl">Activities</Text>
+      </View>
+      <View className="flex flex-row justify-between bg-slate-200 h-10 items-center px-2">
         <View className="flex flex-row">
           {activities?.map((activity, index) => (
             <>
