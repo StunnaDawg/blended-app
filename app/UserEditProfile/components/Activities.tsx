@@ -35,9 +35,9 @@ const Activities = () => {
         <View className="flex flex-row">
           {activities?.map((activity, index) => (
             <>
-              <Text className="text-lg" key={index}>
-                {activity},
-              </Text>
+              <View key={index}>
+                <Text className="text-lg">{activity},</Text>
+              </View>
             </>
           ))}
         </View>

@@ -10,7 +10,9 @@ export default function App() {
     <UserAuthContextProvider>
       <NavigationContainer>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <NavStack />
+          <BottomSheetModalProvider>
+            <NavStack />
+          </BottomSheetModalProvider>
         </GestureHandlerRootView>
       </NavigationContainer>
     </UserAuthContextProvider>

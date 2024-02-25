@@ -1,19 +1,11 @@
-import {
-  View,
-  Text,
-  Pressable,
-  Modal,
-  Dimensions,
-  StyleSheet,
-} from "react-native"
-import { Feather } from "@expo/vector-icons"
-import React, { useCallback, useMemo, useRef, useState } from "react"
+import { View, Text, StyleSheet, Button } from "react-native"
+import React, { useCallback, useMemo, useRef } from "react"
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet"
 
-const Food = () => {
+const BottomModal = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
 
   const snapPoints = useMemo(() => ["25%", "50%"], [])
@@ -24,22 +16,15 @@ const Food = () => {
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index)
   }, [])
-  return (
-    <>
-      <View>
-        <Pressable
-          onPress={() => {
-            handlePresentModalPress()
-          }}
-        >
-          <View className="flex flex-row justify-between bg-slate-200 h-10 items-center">
-            <View className="flex flex-row">
-              <Text>Add Food</Text>
-            </View>
 
-            <Feather name="arrow-right" size={32} color="black" />
-          </View>
-        </Pressable>
+  return (
+    <BottomSheetModalProvider>
+      <View style={styles.container}>
+        <Button
+          onPress={handlePresentModalPress}
+          title="Present Modal"
+          color="black"
+        />
         <BottomSheetModal
           ref={bottomSheetModalRef}
           index={1}
@@ -51,7 +36,7 @@ const Food = () => {
           </View>
         </BottomSheetModal>
       </View>
-    </>
+    </BottomSheetModalProvider>
   )
 }
 
@@ -68,4 +53,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Food
+export default BottomModal
