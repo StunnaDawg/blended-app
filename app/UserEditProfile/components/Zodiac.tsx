@@ -1,10 +1,12 @@
 import { View, Text, Pressable } from "react-native"
 import React, { useCallback, useMemo, useRef, useState } from "react"
 import { Feather } from "@expo/vector-icons"
-import { BottomSheetModal } from "@gorhom/bottom-sheet"
+import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
+import singleValueEdit from "../../functions/singleValueEdit"
 
 const Zodiac = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
+  const { dismiss } = useBottomSheetModal()
 
   const snapPoints = useMemo(() => ["25%", "40%"], [])
 
@@ -14,6 +16,21 @@ const Zodiac = () => {
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index)
   }, [])
+
+  const zodiacSigns = [
+    { name: "Aries", dates: "March 21 - April 19" },
+    { name: "Taurus", dates: "April 20 - May 20" },
+    { name: "Gemini", dates: "May 21 - June 20" },
+    { name: "Cancer", dates: "June 21 - July 22" },
+    { name: "Leo", dates: "July 23 - August 22" },
+    { name: "Virgo", dates: "August 23 - September 22" },
+    { name: "Libra", dates: "September 23 - October 22" },
+    { name: "Scorpio", dates: "October 23 - November 21" },
+    { name: "Sagittarius", dates: "November 22 - December 21" },
+    { name: "Capricorn", dates: "December 22 - January 19" },
+    { name: "Aquarius", dates: "January 20 - February 18" },
+    { name: "Pisces", dates: "February 19 - March 20" },
+  ]
   return (
     <>
       <View className="mx-2">
@@ -39,8 +56,22 @@ const Zodiac = () => {
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
         >
-          <View>
-            <Text>Awesome 🎉</Text>
+          <View className="flex flex-row justify-center my-2 pt-2 border-t">
+            <Text className="text-xl font-bold">What is your Zodiac Sign?</Text>
+          </View>
+          <View className="flex flex-row flex-wrap">
+            {zodiacSigns.map((sign) => (
+              <Pressable
+                key={sign.name}
+                className="border-2 rounded-full bg-slate-300 p-2 m-1"
+                onPress={async () => {
+                  await singleValueEdit("user", "zodiac", sign.name)
+                  dismiss()
+                }}
+              >
+                <Text className="text-center">{sign.name}</Text>
+              </Pressable>
+            ))}
           </View>
         </BottomSheetModal>
       </View>

@@ -11,10 +11,13 @@ import React, { useCallback, useMemo, useRef, useState } from "react"
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
+  useBottomSheetModal,
 } from "@gorhom/bottom-sheet"
+import singleValueEdit from "../../functions/singleValueEdit"
 
 const Food = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
+  const { dismiss } = useBottomSheetModal()
 
   const snapPoints = useMemo(() => ["25%", "50%"], [])
 
@@ -24,6 +27,17 @@ const Food = () => {
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index)
   }, [])
+
+  const dietaryPreferences = [
+    "Vegetarian",
+    "Vegan",
+    "Pescatarian",
+    "Halal",
+    "Keto",
+    "Paleo",
+    "Omnivore",
+    "Other",
+  ]
   return (
     <>
       <View className="mx-2">
@@ -49,8 +63,24 @@ const Food = () => {
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
         >
-          <View style={styles.contentContainer}>
-            <Text>Awesome 🎉</Text>
+          <View className="flex flex-row justify-center my-2 pt-2 border-t">
+            <Text className="text-xl font-bold">
+              What is your Dietary Preferences?
+            </Text>
+          </View>
+          <View className="flex flex-row flex-wrap">
+            {dietaryPreferences.map((diet) => (
+              <Pressable
+                key={diet}
+                className="border-2 rounded-full bg-slate-300 p-2 m-1"
+                onPress={async () => {
+                  await singleValueEdit("user", "diet", diet)
+                  dismiss()
+                }}
+              >
+                <Text className="text-center">{diet}</Text>
+              </Pressable>
+            ))}
           </View>
         </BottomSheetModal>
       </View>
