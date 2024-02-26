@@ -1,4 +1,4 @@
-import { View, Text, Button } from "react-native"
+import { View, Text, Button, Pressable } from "react-native"
 import React, { useEffect, useState } from "react"
 import { FIREBASE_AUTH, db } from "../../firebase"
 import { doc, getDoc } from "firebase/firestore"
@@ -8,7 +8,7 @@ import SinglePic from "../components/Avatar"
 
 const GymProfile = () => {
   const [gymTitle, setGymTitle] = useState<string>("")
-  const [gymStyle, setGymStyle] = useState<string>("")
+  const [gymStyle, setGymStyle] = useState<string[]>([])
 
   const navigation = useNavigation<NavigationType>()
   const currentId = FIREBASE_AUTH.currentUser?.uid
@@ -22,6 +22,7 @@ const GymProfile = () => {
         const gymData = { ...docSnap.data() }
 
         setGymTitle(gymData.gym_title)
+
         setGymStyle(gymData.gym_style)
       }
     }
@@ -38,11 +39,22 @@ const GymProfile = () => {
         picNumber={0}
         avatarRadius={646}
         noAvatarRadius={646}
-        collection="user"
+        collection="gyms"
+        photoType="gymPhotos"
       />
-      <Text>
-        {gymTitle}, {gymStyle}
-      </Text>
+      <View className="flex flex-row justify-center">
+        <Text className="text-xl font-bold">{gymTitle}</Text>
+      </View>
+      <View className="flex flex-row">
+        {Array.isArray(gymStyle) &&
+          gymStyle?.map((style, index) => (
+            <View key={style}>
+              <Pressable className="border-2 rounded-full p-2 m-1 bg-slate-300">
+                <Text className="text-center">{gymStyle[index]}</Text>
+              </Pressable>
+            </View>
+          ))}
+      </View>
       <Button
         title="edit profile"
         onPress={() => navigation.navigate("GymEditProfile")}

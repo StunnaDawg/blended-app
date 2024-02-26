@@ -6,18 +6,18 @@ import { Dispatch, SetStateAction } from "react"
 const getProfilePic = async (
   id: string,
   setProfilePic: Dispatch<SetStateAction<string[]>>,
-  docType: string
+  docType: string,
+  photoType: string
 ) => {
   try {
     if (id) {
       const userRef = doc(db, docType, id)
-
       const docSnap = await getDoc(userRef)
 
       if (docSnap.exists()) {
         const userData = { ...docSnap.data() }
 
-        setProfilePic(userData.userPhotos)
+        setProfilePic(userData[photoType])
       }
     }
   } catch (err) {

@@ -40,6 +40,7 @@ const UserProfile = () => {
         avatarRadius={646}
         noAvatarRadius={646}
         collection="user"
+        photoType="userPhotos"
       />
       <Text>
         {name}, {age}

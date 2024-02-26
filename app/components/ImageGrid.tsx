@@ -19,12 +19,14 @@ type ImageGridProps = {
   id?: string
   size: number
   collectionRef: string
+  photoType: string
 }
 
 export default function ImageGrid({
   id,
   size = 150,
   collectionRef,
+  photoType,
 }: ImageGridProps) {
   const [avatarUrl, setAvatarUrl] = useState<string[]>([])
   const [newPic, setNewPic] = useState<string>()
@@ -33,7 +35,7 @@ export default function ImageGrid({
   const placeholderArray = new Array(placeholdersCount).fill("")
 
   useEffect(() => {
-    if (id) getProfilePic(id, setAvatarUrl, collectionRef)
+    if (id) getProfilePic(id, setAvatarUrl, collectionRef, photoType)
   }, [])
 
   return (

@@ -12,6 +12,7 @@ const EditGymProfileHome = () => {
         id={FIREBASE_AUTH.currentUser?.uid}
         size={125}
         collectionRef="gyms"
+        photoType="gymPhotos"
       />
 
       <View>
