@@ -58,8 +58,6 @@ const GymQuestionOne = () => {
         id={currentId}
         gymStyle={gymStyle}
         gymTitle={gymTitle}
-        province={province}
-        city={city}
       />
     </View>
   )
