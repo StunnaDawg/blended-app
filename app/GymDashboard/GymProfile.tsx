@@ -1,10 +1,10 @@
 import { View, Text, Button } from "react-native"
 import React, { useEffect, useState } from "react"
 import { FIREBASE_AUTH, db } from "../../firebase"
-import SinglePic from "../components/Avatar"
 import { doc, getDoc } from "firebase/firestore"
 import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../@types/navigation"
+import SinglePic from "../components/Avatar"
 
 const GymProfile = () => {
   const [gymTitle, setGymTitle] = useState<string>("")
@@ -38,7 +38,7 @@ const GymProfile = () => {
         picNumber={0}
         avatarRadius={646}
         noAvatarRadius={646}
-        collection="gyms"
+        collection="user"
       />
       <Text>
         {gymTitle}, {gymStyle}

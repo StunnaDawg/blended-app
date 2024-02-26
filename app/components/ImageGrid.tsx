@@ -18,9 +18,14 @@ import uploadImage from "../functions/uploadImage"
 type ImageGridProps = {
   id?: string
   size: number
+  collectionRef: string
 }
 
-export default function ImageGrid({ id, size = 150 }: ImageGridProps) {
+export default function ImageGrid({
+  id,
+  size = 150,
+  collectionRef,
+}: ImageGridProps) {
   const [avatarUrl, setAvatarUrl] = useState<string[]>([])
   const [newPic, setNewPic] = useState<string>()
   const avatarSize = { height: size, width: size }
@@ -28,7 +33,7 @@ export default function ImageGrid({ id, size = 150 }: ImageGridProps) {
   const placeholderArray = new Array(placeholdersCount).fill("")
 
   useEffect(() => {
-    if (id) getProfilePic(id, setAvatarUrl, "user")
+    if (id) getProfilePic(id, setAvatarUrl, collectionRef)
   }, [])
 
   return (

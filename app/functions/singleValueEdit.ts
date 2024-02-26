@@ -4,7 +4,7 @@ import { FIREBASE_AUTH, db } from "../../firebase"
 const singleValueEdit = async (
   collectionRef: string,
   valueToUpdate: string,
-  updateValue: string
+  updateValue: string | string[]
 ) => {
   const currentUserId = FIREBASE_AUTH.currentUser?.uid
   try {

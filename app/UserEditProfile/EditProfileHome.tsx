@@ -16,7 +16,11 @@ const EditProfileHome = () => {
   return (
     <ScrollView className="mb-20">
       <View>
-        <ImageGrid id={FIREBASE_AUTH.currentUser?.uid} size={125} />
+        <ImageGrid
+          id={FIREBASE_AUTH.currentUser?.uid}
+          size={125}
+          collectionRef="user"
+        />
       </View>
 
       <View>
