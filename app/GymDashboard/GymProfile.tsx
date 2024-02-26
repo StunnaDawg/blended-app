@@ -9,6 +9,7 @@ import SinglePic from "../components/Avatar"
 const GymProfile = () => {
   const [gymTitle, setGymTitle] = useState<string>("")
   const [gymStyle, setGymStyle] = useState<string[]>([])
+  const [gymLocation, setGymLocation] = useState<string[]>([])
 
   const navigation = useNavigation<NavigationType>()
   const currentId = FIREBASE_AUTH.currentUser?.uid
@@ -24,6 +25,8 @@ const GymProfile = () => {
         setGymTitle(gymData.gym_title)
 
         setGymStyle(gymData.gym_style)
+
+        setGymLocation([gymData.city, gymData.province])
       }
     }
   }
@@ -44,6 +47,11 @@ const GymProfile = () => {
       />
       <View className="flex flex-row justify-center">
         <Text className="text-xl font-bold">{gymTitle}</Text>
+      </View>
+      <View className="flex flex-row justify-center">
+        <Text className="text-xl font-bold">
+          {gymLocation[0]}, {gymLocation[1]}
+        </Text>
       </View>
       <View className="flex flex-row">
         {Array.isArray(gymStyle) &&

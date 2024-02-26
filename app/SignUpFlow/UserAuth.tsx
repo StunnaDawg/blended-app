@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react"
-import { Alert, StyleSheet, View, AppState, Text } from "react-native"
+import {
+  Alert,
+  StyleSheet,
+  View,
+  AppState,
+  Text,
+  Pressable,
+} from "react-native"
 import { Button, Input } from "react-native-elements"
 import { FIREBASE_AUTH, db } from "../../firebase"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { doc, setDoc } from "firebase/firestore"
 import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../@types/navigation"
+import BouncyCheckbox from "react-native-bouncy-checkbox"
 
 export default function UserAuth() {
   const [loading, setLoading] = useState<boolean>(false)
@@ -57,55 +65,61 @@ export default function UserAuth() {
   }
 
   return (
-    <View style={styles.container}>
-      <Button title="Go Back" />
-      <Text>User Sign Up</Text>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Input
-          label="Email"
-          leftIcon={{ type: "font-awesome", name: "envelope" }}
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-          placeholder="email@address.com"
-          autoCapitalize={"none"}
-        />
+    <View className="mt-40 p-12 w-96">
+      <View className="flex flex-row justify-center">
+        <Text className="text-2xl font-bold text-center">Sign Up</Text>
       </View>
-      <View style={styles.verticallySpaced}>
-        <Input
-          label="Password"
-          leftIcon={{ type: "font-awesome", name: "lock" }}
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-          secureTextEntry={true}
-          placeholder="Password"
-          autoCapitalize={"none"}
-        />
-      </View>
-      <View>
-        <Text>Gym or User?</Text>
-        <Button
-          title="gym"
-          onPress={() => {
-            setIsGym(true)
-            console.log(isGym)
-          }}
-        />
-        <Button
-          title="user"
-          onPress={() => {
-            setIsGym(false)
-            console.log(isGym)
-          }}
-        />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <Button
-          title="Sign up"
-          disabled={loading}
-          onPress={async () => {
-            await handleSignUp()
-          }}
-        />
+      <View className=" flex flex-col content-center items-center">
+        <View style={[styles.verticallySpaced, styles.mt20]}>
+          <Input
+            label="Email"
+            leftIcon={{ type: "font-awesome", name: "envelope" }}
+            onChangeText={(text) => setEmail(text)}
+            value={email}
+            placeholder="email@address.com"
+            autoCapitalize={"none"}
+          />
+        </View>
+        <View style={styles.verticallySpaced}>
+          <Input
+            label="Password"
+            leftIcon={{ type: "font-awesome", name: "lock" }}
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+            secureTextEntry={true}
+            placeholder="Password"
+            autoCapitalize={"none"}
+          />
+        </View>
+        <View>
+          <View className="flex flex-row justify-center items-center mb-2">
+            <Text className="mx-2 font-bold">Gym Account?</Text>
+            <BouncyCheckbox
+              isChecked={isGym}
+              onPress={() => {
+                setIsGym(!isGym)
+              }}
+            />
+          </View>
+        </View>
+        <View style={styles.verticallySpaced}>
+          <Button
+            title="Sign up"
+            disabled={loading}
+            onPress={async () => {
+              await handleSignUp()
+            }}
+          />
+        </View>
+
+        <View className="flex flex-row justify-center">
+          <Pressable
+            disabled={loading}
+            onPress={() => navigation.navigate("Login")}
+          >
+            <Text className="underline mt-2">Already have an Account?</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   )
@@ -115,6 +129,10 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 40,
     padding: 12,
+  },
+  centeredContainer: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   verticallySpaced: {
     paddingTop: 4,

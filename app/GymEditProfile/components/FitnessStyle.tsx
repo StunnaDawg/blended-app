@@ -12,7 +12,7 @@ const FitnessStyle = () => {
   const [setStyles, setSetStyles] = useState<string[]>([])
   const { dismiss } = useBottomSheetModal()
 
-  const snapPoints = useMemo(() => ["25%", "40%"], [])
+  const snapPoints = useMemo(() => ["25%", "85%"], [])
 
   const addToFitnessArray = (newItem: string) => {
     setFitnessStyles([newItem, ...fitnessStyles])
