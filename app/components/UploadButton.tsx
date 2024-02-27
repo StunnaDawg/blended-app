@@ -1,5 +1,6 @@
-import { View, Text } from "react-native"
+import { View, Text, Alert } from "react-native"
 import React from "react"
+import uploadImage from "../functions/uploadImage"
 
 const UploadButton = () => {
   return (

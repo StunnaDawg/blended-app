@@ -1,4 +1,4 @@
-import { doc, getDoc } from "firebase/firestore"
+import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore"
 import { useState, useEffect } from "react"
 import {
   StyleSheet,
@@ -9,7 +9,7 @@ import {
   Text,
   Alert,
 } from "react-native"
-import { db } from "../../firebase"
+import { FIREBASE_AUTH, db } from "../../firebase"
 import getProfilePic from "../functions/getProfilePic"
 import UploadSingleImage from "./UploadSingleImage"
 import DeleteSingleImage from "./DeleteSingleImage"
@@ -29,10 +29,45 @@ export default function ImageGrid({
   photoType,
 }: ImageGridProps) {
   const [avatarUrl, setAvatarUrl] = useState<string[]>([])
-  const [newPic, setNewPic] = useState<string>()
+  const [imagePicked, setImagepicked] = useState<boolean>(false)
+  const [newDownloadImage, setNewDownloadImage] = useState<string>("")
   const avatarSize = { height: size, width: size }
   const placeholdersCount = Math.max(6 - (avatarUrl?.length || 0), 0)
   const placeholderArray = new Array(placeholdersCount).fill("")
+  const currentId = FIREBASE_AUTH.currentUser?.uid
+
+  useEffect(() => {
+    uploadImageNOW()
+  }, [imagePicked])
+
+  const submitNewUserPhotos = async (downloadImage: string) => {
+    try {
+      if (currentId) {
+        const userRef = doc(db, "user", currentId)
+
+        await updateDoc(userRef, {
+          userPhotos: arrayUnion(downloadImage),
+        })
+      } else {
+        console.log("User does not exist")
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const uploadImageNOW = async () => {
+    console.log("try")
+    if (newDownloadImage) {
+      console.log("made it through")
+      uploadImage(
+        newDownloadImage,
+        currentId + "image",
+        newDownloadImage,
+        submitNewUserPhotos
+      )
+    }
+  }
 
   useEffect(() => {
     if (id) getProfilePic(id, setAvatarUrl, collectionRef, photoType)
@@ -40,7 +75,7 @@ export default function ImageGrid({
 
   return (
     <View className="flex flex-row justify-center flex-wrap">
-      {avatarUrl
+      {/* {avatarUrl
         ?.concat(placeholderArray)
         .slice(0, 6)
         .map((url, index) =>
@@ -48,7 +83,7 @@ export default function ImageGrid({
             <>
               <View
                 className="m-1 relative overflow-hidden max-w-full rounded-lg bg-gray-800 border-1 border-solid border-gray-200 border-r-10"
-                key={index}
+                key={url}
                 style={[avatarSize]}
               >
                 <Image
@@ -71,10 +106,14 @@ export default function ImageGrid({
               key={index}
               style={[avatarSize]}
             >
-              <UploadSingleImage setNewUrl={setAvatarUrl} index={index} />
+              <UploadSingleImage
+                setImageTrigger={setImagepicked}
+                imageTrigger={imagePicked}
+                setDownloadNewImage={setNewDownloadImage}
+              />
             </View>
           )
-        )}
+        )} */}
     </View>
   )
 }
