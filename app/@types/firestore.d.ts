@@ -13,10 +13,17 @@ export type UserProfile = {
   firstName: string
   lastName: string
   gender: string
-  exerciseChoices: string[]
+  about?: string
+  activities: string[]
+  personalRecords?: string[]
   intentions: string
+  food?: string
+  zodiac?: string
+  education?: string
+  career?: string
+  school?: string
   homeGym?: GymProfile
-  userPhotos?: string[]
+  userPhotos: string[]
 }
 
 export type Activities = {
