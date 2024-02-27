@@ -1,4 +1,4 @@
-import { View, Text, Image, Button } from "react-native"
+import { View, Text, Image, Button, Pressable } from "react-native"
 import React, { useEffect, useState } from "react"
 import * as ImagePicker from "expo-image-picker"
 import getProfilePic from "../functions/getProfilePic"
@@ -74,19 +74,25 @@ const SingleImage = ({ index }: SingleImageProp) => {
   }
 
   return (
-    <View>
+    <View className="flex flex-row justify-center flex-wrap">
       {image ? (
         <View>
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-          <Button
-            title="Pick an image from camera roll"
+          <Image
+            className="m-1 relative overflow-hidden max-w-full rounded-lg bg-gray-800 border-1 border-solid border-gray-200 border-r-10"
+            source={{ uri: image }}
+            style={{ width: 150, height: 150 }}
+          />
+          <Pressable
+            className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded hover:bg-blue-800 m-2"
             onPress={async () => {
               await pickImage()
               await deleteImage(image)
               await deletePhotoFromFireStore(image)
               await uploadImage(image, "image", image + id, submitNewUserPhotos)
             }}
-          />
+          >
+            <Text>+</Text>
+          </Pressable>
         </View>
       ) : (
         <View
@@ -94,14 +100,16 @@ const SingleImage = ({ index }: SingleImageProp) => {
           key={index}
           style={[avatarSize]}
         >
-          <Button
-            title="Pick an image from camera roll"
+          <Pressable
             onPress={async () => {
               await pickImage()
 
               //   await uploadImage(image, "image", image + id, submitNewUserPhotos)
             }}
-          />
+            className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded hover:bg-blue-800 m-2"
+          >
+            <Text>+</Text>
+          </Pressable>
         </View>
       )}
     </View>

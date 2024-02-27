@@ -1,7 +1,20 @@
-import { View, Text, Pressable } from "react-native"
+import { View, Text, Pressable, TextInput } from "react-native"
 import React, { useCallback, useMemo, useRef, useState } from "react"
 import { Feather } from "@expo/vector-icons"
 import { BottomSheetModal } from "@gorhom/bottom-sheet"
+
+type PRInputProps = {
+  title: string
+}
+
+const PRInput = ({ title }: PRInputProps) => {
+  return (
+    <View className="mx-2 items-center">
+      <Text className="font-bold text-lg">{title}</Text>
+      <TextInput className="border rounded w-20 h-10" placeholder="Add PR" />
+    </View>
+  )
+}
 
 const PRsection = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
@@ -39,8 +52,8 @@ const PRsection = () => {
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
         >
-          <View>
-            <Text>Awesome 🎉</Text>
+          <View className="flex flex-row flex-wrap items-center">
+            <PRInput title="Bench Press" />
           </View>
         </BottomSheetModal>
       </View>

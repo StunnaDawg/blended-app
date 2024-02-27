@@ -15,35 +15,15 @@ import SingleImage from "../components/SingleImage"
 import { arrayUnion, doc, updateDoc } from "firebase/firestore"
 
 const EditProfileHome = () => {
-  const [image, setImage] = useState<string>("")
-  const id = FIREBASE_AUTH.currentUser?.uid
-  const submitNewUserPhotos = async (downloadImage: string) => {
-    try {
-      if (id) {
-        const userRef = doc(db, "user", id)
-
-        await updateDoc(userRef, {
-          userPhotos: arrayUnion(downloadImage),
-        })
-
-        setImage(downloadImage)
-      } else {
-        console.log("User does not exist")
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  }
   return (
     <ScrollView className="mb-20">
-      <View>
+      <View className="flex flex-row justify-center flex-wrap">
         <SingleImage index={0} />
         <SingleImage index={1} />
         <SingleImage index={2} />
         <SingleImage index={3} />
         <SingleImage index={4} />
         <SingleImage index={5} />
-        <SingleImage index={6} />
       </View>
 
       <View>

@@ -39,7 +39,9 @@ const About = () => {
   }, [aboutMe])
   return (
     <>
-      <Text>About Me</Text>
+      <View className="mx-2">
+        <Text className="text-xl font-bold">About Me</Text>
+      </View>
       <TextInput
         value={aboutMe}
         onChangeText={setAboutMe}
