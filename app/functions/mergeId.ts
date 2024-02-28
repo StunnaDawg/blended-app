@@ -5,3 +5,5 @@ const mergeIds = (id1: string, id2: string): string => {
     return id2 + id1
   }
 }
+
+export default mergeIds

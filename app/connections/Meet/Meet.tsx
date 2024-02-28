@@ -35,7 +35,7 @@ const Meet = () => {
           const passedUserIds = passes.length > 0 ? passes : ["test"]
           const swipedUserIds = passes.length > 0 ? swipes : ["test"]
 
-          console.log([...passedUserIds, ...swipedUserIds])
+          console.log("seen users", [...passedUserIds, ...swipedUserIds])
           //   // query(
           unsub = onSnapshot(
             query(
@@ -62,7 +62,7 @@ const Meet = () => {
   return (
     <View>
       <Text>Meet</Text>
-      {profiles.length > 0 && <MeetCard id={profiles[2]} />}
+      {profiles.length > 0 && <MeetCard id={profiles[0]} />}
     </View>
   )
 }
