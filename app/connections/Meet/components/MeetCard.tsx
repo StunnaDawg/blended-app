@@ -1,5 +1,5 @@
 import { View, Text, Pressable, Image, ScrollView } from "react-native"
-import React, { useEffect, useState } from "react"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { UserProfile } from "../../../@types/firestore"
 import getUserProfile from "../../../functions/getUserProfile"
 import { DocumentSnapshot, doc, getDoc, setDoc } from "firebase/firestore"
@@ -7,16 +7,26 @@ import { FIREBASE_AUTH, db } from "../../../../firebase"
 import mergeIds from "../../../functions/mergeId"
 import SingleImage from "../../../components/SingleImage"
 import SinglePic from "../../../components/Avatar"
+
+type RemoveFirstItem = () => void
+
 type MeetCardProps = {
   id: string
+  index: number
+  nextProfile: Dispatch<SetStateAction<number>>
+  removeFunction: RemoveFirstItem
 }
 
-const MeetCard = ({ id }: MeetCardProps) => {
+const MeetCard = ({
+  id,
+  nextProfile,
+  index,
+  removeFunction,
+}: MeetCardProps) => {
   const [userData, setUserData] = useState<UserProfile>({} as UserProfile)
   const [currentUserData, setCurrentUserData] = useState<UserProfile>(
     {} as UserProfile
   )
-  const [userPhoto, setUserPhoto] = useState<string[]>(userData.userPhotos)
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   const otherUser = userData.id
   useEffect(() => {
@@ -27,12 +37,10 @@ const MeetCard = ({ id }: MeetCardProps) => {
     getUserProfile(currentUser, setCurrentUserData)
   }, [])
 
-  //   useEffect(() => {
-  //     console.log("the photos", userData.userPhotos)
-  //     console.log(userData.id)
-  //     getProfilePic(userData.id, setUserPhoto, "user", "userPhotos")
-  //     console.log("photo", userPhoto)
-  //   }, [userData])
+  useEffect(() => {
+    getUserProfile(id, setUserData)
+  }, [index])
+
   const passUser = async () => {
     try {
       if (currentUser) {
@@ -40,6 +48,7 @@ const MeetCard = ({ id }: MeetCardProps) => {
           doc(db, "user", currentUser, "passes", userData.id),
           userData
         )
+        nextProfile(index + 1)
       }
     } catch (err) {
       console.error(err)
@@ -64,7 +73,7 @@ const MeetCard = ({ id }: MeetCardProps) => {
                 },
                 usersMatched: [currentUser, userData.id],
               })
-
+              //   nextProfile(index + 1)
               console.log("User Matched first")
             } else {
               console.log("You matched first")
@@ -72,9 +81,11 @@ const MeetCard = ({ id }: MeetCardProps) => {
                 doc(db, "user", currentUser, "swipes", userData.id),
                 userData
               )
+              //   nextProfile(index + 1)
             }
           }
         )
+        nextProfile(index + 1)
       }
     } catch (err) {
       console.error(err)
@@ -209,8 +220,8 @@ const MeetCard = ({ id }: MeetCardProps) => {
             <View className="mx-2">
               <Pressable
                 className="border rounded-3xl bg-red-700 p-3"
-                onPress={() => {
-                  passUser()
+                onPress={async () => {
+                  await passUser()
                 }}
               >
                 <Text className="font-bold">Pass</Text>
@@ -219,8 +230,8 @@ const MeetCard = ({ id }: MeetCardProps) => {
             <View className="mx-2">
               <Pressable
                 className="border rounded-3xl p-3"
-                onPress={() => {
-                  swipeUser()
+                onPress={async () => {
+                  await swipeUser()
                 }}
               >
                 <Text className="font-bold">Swipe</Text>
