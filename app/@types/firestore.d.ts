@@ -20,7 +20,7 @@ export type UserProfile = {
   food: string | null
   zodiac: string | null
   education: string | null
-  career: string | null
+  jobTitle: string | null
   school: string | null
   homeGym: GymProfile | null
   userPhotos: string[]

@@ -59,12 +59,7 @@ const Meet = () => {
     fetchCards()
     return unsub
   }, [])
-  return (
-    <View>
-      <Text>Meet</Text>
-      {profiles.length > 0 && <MeetCard id={profiles[0]} />}
-    </View>
-  )
+  return <View>{profiles.length > 0 && <MeetCard id={profiles[0]} />}</View>
 }
 
 export default Meet

@@ -28,7 +28,7 @@ const getUserProfile = async (
           food: userFetchedData.food || null,
           zodiac: userFetchedData.zodiac || null,
           education: userFetchedData.education || null,
-          career: userFetchedData.career || null,
+          jobTitle: userFetchedData.jobTitle || null,
           school: userFetchedData.school || null,
           homeGym: userFetchedData.homeGym || null,
           userPhotos: userFetchedData.userPhotos,
