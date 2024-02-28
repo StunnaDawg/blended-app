@@ -15,7 +15,7 @@ const MeetCard = ({ id }: MeetCardProps) => {
 
   return (
     <View>
-      <Text>MeetCard</Text>
+      <Text>{userData.firstName}</Text>
     </View>
   )
 }

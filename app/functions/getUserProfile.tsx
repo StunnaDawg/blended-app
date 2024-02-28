@@ -33,7 +33,7 @@ const getUserProfile = async (
           homeGym: userFetchedData?.homeGym,
           userPhotos: userFetchedData.userPhotos,
         }
-
+        console.log(userProfile)
         setUserProfileData(userProfile)
       }
     }

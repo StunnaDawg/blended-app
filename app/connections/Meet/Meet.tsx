@@ -17,6 +17,10 @@ const Meet = () => {
   const [profiles, setProfiles] = useState<string[]>([])
 
   useEffect(() => {
+    console.log(profiles)
+  }, [profiles])
+
+  useEffect(() => {
     let unsub
     const fetchCards = async () => {
       try {
@@ -31,34 +35,28 @@ const Meet = () => {
           const passedUserIds = passes.length > 0 ? passes : ["test"]
           const swipedUserIds = passes.length > 0 ? swipes : ["test"]
 
-          unsub = onSnapshot(
-            query(
-              collection(db, "user"),
-              where("id", "not-in", [...passedUserIds, ...swipedUserIds])
-            ),
-            (snapshot) => {
-              setProfiles(
-                snapshot.docs
-                  .filter((doc: any) => doc.id !== currentUserId)
-                  .map((doc: any) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                  }))
-              )
-            }
-          )
+          // console.log([...passedUserIds, ...swipedUserIds])
+          //   where("id", "not-in", [...passedUserIds, ...swipedUserIds])// query(
+          unsub = onSnapshot(collection(db, "user"), (snapshot) => {
+            setProfiles(
+              snapshot.docs
+                .filter((doc) => doc.id !== currentUserId)
+                .map((doc) => doc.id)
+            )
+          })
+          console.log("unsub", unsub)
         }
       } catch (err) {
         console.error(err)
       }
     }
     fetchCards()
-    unsub
+    return unsub
   }, [])
   return (
     <View>
       <Text>Meet</Text>
-      <MeetCard id={"sdsd"} />
+      {profiles.length > 0 && <MeetCard id={profiles[2]} />}
     </View>
   )
 }
