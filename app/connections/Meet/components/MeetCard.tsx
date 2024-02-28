@@ -1,11 +1,12 @@
-import { View, Text, Pressable } from "react-native"
+import { View, Text, Pressable, Image } from "react-native"
 import React, { useEffect, useState } from "react"
 import { UserProfile } from "../../../@types/firestore"
 import getUserProfile from "../../../functions/getUserProfile"
 import { DocumentSnapshot, doc, getDoc, setDoc } from "firebase/firestore"
 import { FIREBASE_AUTH, db } from "../../../../firebase"
 import mergeIds from "../../../functions/mergeId"
-
+import SingleImage from "../../../components/SingleImage"
+import SinglePic from "../../../components/Avatar"
 type MeetCardProps = {
   id: string
 }
@@ -15,7 +16,9 @@ const MeetCard = ({ id }: MeetCardProps) => {
   const [currentUserData, setCurrentUserData] = useState<UserProfile>(
     {} as UserProfile
   )
+  const [userPhoto, setUserPhoto] = useState<string[]>(userData.userPhotos)
   const currentUser = FIREBASE_AUTH.currentUser?.uid
+  const otherUser = userData.id
   useEffect(() => {
     getUserProfile(id, setUserData)
   }, [])
@@ -24,6 +27,12 @@ const MeetCard = ({ id }: MeetCardProps) => {
     getUserProfile(currentUser, setCurrentUserData)
   }, [])
 
+  //   useEffect(() => {
+  //     console.log("the photos", userData.userPhotos)
+  //     console.log(userData.id)
+  //     getProfilePic(userData.id, setUserPhoto, "user", "userPhotos")
+  //     console.log("photo", userPhoto)
+  //   }, [userData])
   const passUser = async () => {
     try {
       if (currentUser) {
@@ -74,6 +83,16 @@ const MeetCard = ({ id }: MeetCardProps) => {
 
   return (
     <View>
+      <SinglePic
+        size={200}
+        id={otherUser}
+        picNumber={0}
+        avatarRadius={646}
+        noAvatarRadius={646}
+        collection="user"
+        photoType="userPhotos"
+      />
+
       <Text>{userData.firstName}</Text>
       <Pressable
         onPress={() => {

@@ -47,12 +47,22 @@ export default function SinglePic({
   })
 
   useEffect(() => {
-    if (id) getProfilePic(id, setAvatarUrl, collection, photoType)
-  }, [])
+    const fetchAvatar = async () => {
+      if (id) {
+        await getProfilePic(id, setAvatarUrl, collection, photoType)
+      }
+    }
+
+    fetchAvatar()
+  }, [id, collection, photoType])
+
+  useEffect(() => {
+    console.log("fetched photo", avatarUrl)
+  }, [avatarUrl])
 
   return (
     <View>
-      {avatarUrl ? (
+      {avatarUrl && avatarUrl ? (
         <Image
           source={{ uri: avatarUrl[picNumber] }}
           accessibilityLabel="Avatar"
