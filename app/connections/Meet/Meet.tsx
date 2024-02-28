@@ -35,15 +35,21 @@ const Meet = () => {
           const passedUserIds = passes.length > 0 ? passes : ["test"]
           const swipedUserIds = passes.length > 0 ? swipes : ["test"]
 
-          // console.log([...passedUserIds, ...swipedUserIds])
-          //   where("id", "not-in", [...passedUserIds, ...swipedUserIds])// query(
-          unsub = onSnapshot(collection(db, "user"), (snapshot) => {
-            setProfiles(
-              snapshot.docs
-                .filter((doc) => doc.id !== currentUserId)
-                .map((doc) => doc.id)
-            )
-          })
+          console.log([...passedUserIds, ...swipedUserIds])
+          //   // query(
+          unsub = onSnapshot(
+            query(
+              collection(db, "user"),
+              where("__name__", "not-in", [...passedUserIds, ...swipedUserIds])
+            ),
+            (snapshot) => {
+              setProfiles(
+                snapshot.docs
+                  .filter((doc) => doc.id !== currentUserId)
+                  .map((doc) => doc.id)
+              )
+            }
+          )
           console.log("unsub", unsub)
         }
       } catch (err) {
