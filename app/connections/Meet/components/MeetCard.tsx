@@ -7,6 +7,8 @@ import { FIREBASE_AUTH, db } from "../../../../firebase"
 import mergeIds from "../../../functions/mergeId"
 import SingleImage from "../../../components/SingleImage"
 import SinglePic from "../../../components/Avatar"
+import { useNavigation } from "@react-navigation/native"
+import { NavigationType } from "../../../@types/navigation"
 
 type RemoveFirstItem = () => void
 
@@ -29,6 +31,7 @@ const MeetCard = ({
   )
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   const otherUser = userData.id
+  const navigation = useNavigation<NavigationType>()
   useEffect(() => {
     getUserProfile(id, setUserData)
   }, [])
@@ -73,7 +76,7 @@ const MeetCard = ({
                 },
                 usersMatched: [currentUser, userData.id],
               })
-              //   nextProfile(index + 1)
+              navigation.navigate("MatchModal")
               console.log("User Matched first")
             } else {
               console.log("You matched first")
@@ -81,7 +84,6 @@ const MeetCard = ({
                 doc(db, "user", currentUser, "swipes", userData.id),
                 userData
               )
-              //   nextProfile(index + 1)
             }
           }
         )

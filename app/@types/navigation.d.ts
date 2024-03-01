@@ -22,6 +22,8 @@ export type RootStackParamList = {
   GymQuestionThree: undefined
   GymInitalAddPhoto: undefined
   GymEditProfile: undefined
+  MatchModal: undefined
+  LoadModal: undefined
 }
 
 export type NavigationType = NativeStackNavigationProp<RootStackParamList>
@@ -30,6 +32,7 @@ export type TabParamList = {
   Dashboard: undefined
   Profile: undefined
   Connections: undefined
+  Messages: undefined
 }
 
 export type TabNavigationType = TabNavigationProp<TabParamList>

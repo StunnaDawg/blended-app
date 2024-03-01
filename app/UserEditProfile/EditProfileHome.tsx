@@ -18,12 +18,12 @@ const EditProfileHome = () => {
   return (
     <ScrollView className="mb-20">
       <View className="flex flex-row justify-center flex-wrap">
-        <SingleImage index={0} />
-        <SingleImage index={1} />
-        <SingleImage index={2} />
-        <SingleImage index={3} />
-        <SingleImage index={4} />
-        <SingleImage index={5} />
+        <SingleImage key={0} index={0} />
+        <SingleImage key={1} index={1} />
+        <SingleImage key={2} index={2} />
+        <SingleImage key={3} index={3} />
+        <SingleImage key={4} index={4} />
+        <SingleImage key={5} index={5} />
       </View>
 
       <View>

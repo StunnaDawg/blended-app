@@ -23,6 +23,9 @@ import ChooseActivity from "./components/ChooseActivity"
 import EditGymProfileHome from "./GymEditProfile/EditProfileHome"
 import Connections from "./Dashboard/Connections/Connections"
 import Meet from "./connections/Meet/Meet"
+import MatchModal from "./components/MatchModal"
+import LoadModal from "./components/LoadModal"
+import MessageTab from "./messages/MessageTab"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -50,6 +53,7 @@ const UserFooter = () => {
       <Tab.Screen name="Dashboard" component={Dashboard} />
       <Tab.Screen name="Profile" component={UserProfile} />
       <Tab.Screen name="Connections" component={Connections} />
+      <Tab.Screen name="Messages" component={MessageTab} />
     </Tab.Navigator>
   )
 }
@@ -108,23 +112,32 @@ const NavStack = () => {
       {isSignedIn ? (
         isUser ? (
           <>
-            <Stack.Screen name="Footer" component={UserFooter} />
-            <Stack.Screen name="UserDashboard" component={Dashboard} />
-            <Stack.Screen
-              name="ChooseUserActivity"
-              component={ChooseActivity}
-            />
             <Stack.Group>
+              <Stack.Screen name="Footer" component={UserFooter} />
+              <Stack.Screen name="UserDashboard" component={Dashboard} />
+              <Stack.Screen
+                name="ChooseUserActivity"
+                component={ChooseActivity}
+              />
+
               <Stack.Screen name="Meet" component={Meet} />
+
+              <Stack.Screen
+                name="UserEditProfile"
+                component={EditProfileHome}
+              />
+              <Stack.Screen name="UserQuestionOne" component={QuestionOne} />
+              <Stack.Screen name="UserQuestionTwo" component={QuestionTwo} />
+              <Stack.Screen
+                name="UserInitalAddPhoto"
+                component={IntialAddPhotos}
+              />
             </Stack.Group>
 
-            <Stack.Screen name="UserEditProfile" component={EditProfileHome} />
-            <Stack.Screen name="UserQuestionOne" component={QuestionOne} />
-            <Stack.Screen name="UserQuestionTwo" component={QuestionTwo} />
-            <Stack.Screen
-              name="UserInitalAddPhoto"
-              component={IntialAddPhotos}
-            />
+            <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
+              <Stack.Screen name="MatchModal" component={MatchModal} />
+              <Stack.Screen name="LoadModal" component={LoadModal} />
+            </Stack.Group>
           </>
         ) : (
           <>
