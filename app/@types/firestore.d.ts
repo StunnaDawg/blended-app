@@ -29,3 +29,12 @@ export type UserProfile = {
 export type Activities = {
   name: string
 }
+
+export type Match = {
+  id: string
+  users: {
+    user1: UserProfile
+    user2: UserProfile
+  }
+  usersMatched: string[]
+}
