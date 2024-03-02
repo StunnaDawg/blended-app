@@ -26,6 +26,8 @@ import Meet from "./connections/Meet/Meet"
 import MatchModal from "./components/MatchModal"
 import LoadModal from "./components/LoadModal"
 import MessageTab from "./messages/MessageTab"
+import ViewUserProfile from "./components/ViewUserProfile"
+import MessageScreen from "./messages/component/messageScreen"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -132,6 +134,7 @@ const NavStack = () => {
                 name="UserInitalAddPhoto"
                 component={IntialAddPhotos}
               />
+              <Stack.Screen name="MessagingScreen" component={MessageScreen} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: "transparentModal" }}>

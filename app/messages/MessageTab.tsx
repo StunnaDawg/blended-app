@@ -1,10 +1,12 @@
 import { View, Text, Pressable, Image } from "react-native"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Match, UserProfile } from "../@types/firestore"
 import { ScrollView } from "react-native-gesture-handler"
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore"
 import { FIREBASE_AUTH, db } from "../../firebase"
 import SinglePic from "../components/Avatar"
+import { BottomSheetModal } from "@gorhom/bottom-sheet"
+import ViewUserProfile from "../components/ViewUserProfile"
 
 const MessageTab = () => {
   const [userMatches, setUserMatches] = useState<Match[]>([])
@@ -49,21 +51,7 @@ const MessageTab = () => {
           <Text className="font-bold">New Connections</Text>
         </View>
         <View className=" flex flex-row border-b p-1">
-          <Pressable className="rounded mx-1 border-black border w-24 h-32 overflow-hidden">
-            <SinglePic
-              size={125}
-              id={userMatches[0]?.users.user2.id}
-              picNumber={0}
-              avatarRadius={10}
-              noAvatarRadius={10}
-              collection="user"
-              photoType="userPhotos"
-            />
-            {/* <Image
-              source={{ uri: userImage }}
-              onError={(error) => console.error("Image loading error:", error)}
-            /> */}
-          </Pressable>
+          <ViewUserProfile id={userMatches[0]?.users.user2.id} />
         </View>
 
         <View className="m-2">

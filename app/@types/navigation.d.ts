@@ -24,6 +24,7 @@ export type RootStackParamList = {
   GymEditProfile: undefined
   MatchModal: undefined
   LoadModal: undefined
+  MessagingScreen: undefined
 }
 
 export type NavigationType = NativeStackNavigationProp<RootStackParamList>
