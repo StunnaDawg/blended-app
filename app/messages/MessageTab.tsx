@@ -8,12 +8,7 @@ import SinglePic from "../components/Avatar"
 
 const MessageTab = () => {
   const [userMatches, setUserMatches] = useState<Match[]>([])
-  const [userImage, setUserImage] = useState<string>("")
   const currentUser = FIREBASE_AUTH.currentUser?.uid
-
-  const fetchImage = async () => {
-    setUserImage(userMatches[0]?.users.user2.userPhotos[0])
-  }
 
   useEffect(() => {
     if (currentUser) {
@@ -23,30 +18,24 @@ const MessageTab = () => {
           where("usersMatched", "array-contains", currentUser)
         ),
         (snapshot) => {
-          setUserMatches(
-            snapshot.docs.map(
-              (doc) =>
-                ({
-                  id: doc.id,
-                  ...doc.data(),
-                  users: {
-                    // Spread out the data of the user with key user1's ID
-                    user1: {
-                      ...doc.data().users[Object.keys(doc.data().users)[0]],
-                    },
-                    // Spread out the data of user2
-                    user2: {
-                      ...doc.data().users[Object.keys(doc.data().users)[1]],
-                    },
-                  },
-                } as Match)
-            )
-          )
+          const matchesData: Match[] = []
+          snapshot.forEach((doc) => {
+            const matchData = {
+              id: doc.id,
+              ...doc.data(),
+              users: {
+                user1: { ...doc.data().users.user1 },
+                user2: { ...doc.data().users.user2 },
+              },
+            } as Match
+            matchesData.push(matchData)
+          })
+          setUserMatches(matchesData)
         }
       )
       return unsubscribe
     }
-  }, [])
+  }, [currentUser])
 
   return (
     <>
@@ -62,7 +51,7 @@ const MessageTab = () => {
         <View className=" flex flex-row border-b p-1">
           <Pressable className="rounded mx-1 border-black border w-24 h-32 overflow-hidden">
             <SinglePic
-              size={150}
+              size={125}
               id={userMatches[0]?.users.user2.id}
               picNumber={0}
               avatarRadius={10}
@@ -79,38 +68,31 @@ const MessageTab = () => {
 
         <View className="m-2">
           <Text>Messages</Text>
+
           <View className="flex flex-row items-center m-2">
-            <Pressable className="rounded-3xl mx-2 border-black border w-12 h-12">
-              <Image />
-            </Pressable>
-            <View className="border-b w-80 pb-2">
-              <Pressable>
-                <Text className="font-bold text-xl">Malena</Text>
-                <Text className="px-2">Hello hello hello hello</Text>
-              </Pressable>
-            </View>
-          </View>
-          <View className="flex flex-row items-center m-2">
-            <Pressable className="rounded-3xl mx-2 border-black border w-12 h-12">
-              <SinglePic
-                size={150}
-                id={userMatches[0]?.users.user2.id}
-                picNumber={0}
-                avatarRadius={10}
-                noAvatarRadius={10}
-                collection="user"
-                photoType="userPhotos"
-              />
-            </Pressable>
-            <View className="border-b w-80 pb-2">
-              <Pressable>
-                <Text className="font-bold text-xl">
-                  {userMatches.length > 0 &&
-                    userMatches[0]?.users.user2.firstName}
-                </Text>
-                <Text className="px-2">Hello hello hello hello</Text>
-              </Pressable>
-            </View>
+            {userMatches.map((match, index) => (
+              <View key={index} className="flex flex-row items-center">
+                <Pressable className="rounded-3xl mx-2 border-black border w-12 h-12">
+                  <SinglePic
+                    size={45}
+                    id={match.users.user2.id}
+                    picNumber={0}
+                    avatarRadius={150}
+                    noAvatarRadius={10}
+                    collection="user"
+                    photoType="userPhotos"
+                  />
+                </Pressable>
+                <View className="border-b w-80 pb-2">
+                  <Pressable>
+                    <Text className="font-bold text-xl">
+                      {userMatches.length > 0 && match.users.user2.firstName}
+                    </Text>
+                    <Text className="px-2">Hello hello hello hell</Text>
+                  </Pressable>
+                </View>
+              </View>
+            ))}
           </View>
         </View>
       </ScrollView>
