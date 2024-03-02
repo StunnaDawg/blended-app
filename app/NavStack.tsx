@@ -26,8 +26,7 @@ import Meet from "./connections/Meet/Meet"
 import MatchModal from "./components/MatchModal"
 import LoadModal from "./components/LoadModal"
 import MessageTab from "./messages/MessageTab"
-import ViewUserProfile from "./components/ViewUserProfile"
-import MessageScreen from "./messages/component/messageScreen"
+import MessageScreen from "./messages/component/MessageScreen"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()

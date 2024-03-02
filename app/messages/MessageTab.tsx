@@ -7,10 +7,13 @@ import { FIREBASE_AUTH, db } from "../../firebase"
 import SinglePic from "../components/Avatar"
 import { BottomSheetModal } from "@gorhom/bottom-sheet"
 import ViewUserProfile from "../components/ViewUserProfile"
+import { useNavigation } from "@react-navigation/native"
+import { NavigationType } from "../@types/navigation"
 
 const MessageTab = () => {
   const [userMatches, setUserMatches] = useState<Match[]>([])
   const currentUser = FIREBASE_AUTH.currentUser?.uid
+  const navigation = useNavigation<NavigationType>()
 
   useEffect(() => {
     if (currentUser) {
@@ -60,7 +63,14 @@ const MessageTab = () => {
           <View className="flex flex-row items-center m-2">
             {userMatches.map((match, index) => (
               <View key={index} className="flex flex-row items-center">
-                <Pressable className="rounded-3xl mx-2 border-black border w-12 h-12">
+                <Pressable
+                  className="rounded-3xl mx-2 border-black border w-12 h-12"
+                  onPress={() =>
+                    navigation.navigate("MessagingScreen", {
+                      id: match.users.user2.id,
+                    })
+                  }
+                >
                   <SinglePic
                     size={45}
                     id={match.users.user2.id}
@@ -72,7 +82,13 @@ const MessageTab = () => {
                   />
                 </Pressable>
                 <View className="border-b w-80 pb-2">
-                  <Pressable>
+                  <Pressable
+                    onPress={() =>
+                      navigation.navigate("MessagingScreen", {
+                        id: match.users.user2.id,
+                      })
+                    }
+                  >
                     <Text className="font-bold text-xl">
                       {userMatches.length > 0 && match.users.user2.firstName}
                     </Text>
