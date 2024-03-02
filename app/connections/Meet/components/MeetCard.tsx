@@ -71,8 +71,8 @@ const MeetCard = ({
               )
               setDoc(doc(db, "matches", mergeIds(currentUser, userData.id)), {
                 users: {
-                  [currentUser]: currentUserData,
-                  [userData.id]: userData,
+                  user1: currentUserData,
+                  user2: userData,
                 },
                 usersMatched: [currentUser, userData.id],
               })

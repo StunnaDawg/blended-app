@@ -4,10 +4,16 @@ import { Match, UserProfile } from "../@types/firestore"
 import { ScrollView } from "react-native-gesture-handler"
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore"
 import { FIREBASE_AUTH, db } from "../../firebase"
+import SinglePic from "../components/Avatar"
 
 const MessageTab = () => {
   const [userMatches, setUserMatches] = useState<Match[]>([])
+  const [userImage, setUserImage] = useState<string>("")
   const currentUser = FIREBASE_AUTH.currentUser?.uid
+
+  const fetchImage = async () => {
+    setUserImage(userMatches[0]?.users.user2.userPhotos[0])
+  }
 
   useEffect(() => {
     if (currentUser) {
@@ -40,11 +46,7 @@ const MessageTab = () => {
       )
       return unsubscribe
     }
-  }, [currentUser])
-
-  useEffect(() => {
-    console.log(userMatches, userMatches[0]?.users)
-  }, [userMatches])
+  }, [])
 
   return (
     <>
@@ -58,8 +60,20 @@ const MessageTab = () => {
           <Text className="font-bold">New Connections</Text>
         </View>
         <View className=" flex flex-row border-b p-1">
-          <Pressable className="rounded mx-1 border-black border w-24 h-32">
-            <Image />
+          <Pressable className="rounded mx-1 border-black border w-24 h-32 overflow-hidden">
+            <SinglePic
+              size={150}
+              id={userMatches[0]?.users.user2.id}
+              picNumber={0}
+              avatarRadius={10}
+              noAvatarRadius={10}
+              collection="user"
+              photoType="userPhotos"
+            />
+            {/* <Image
+              source={{ uri: userImage }}
+              onError={(error) => console.error("Image loading error:", error)}
+            /> */}
           </Pressable>
         </View>
 
@@ -78,7 +92,15 @@ const MessageTab = () => {
           </View>
           <View className="flex flex-row items-center m-2">
             <Pressable className="rounded-3xl mx-2 border-black border w-12 h-12">
-              <Image />
+              <SinglePic
+                size={150}
+                id={userMatches[0]?.users.user2.id}
+                picNumber={0}
+                avatarRadius={10}
+                noAvatarRadius={10}
+                collection="user"
+                photoType="userPhotos"
+              />
             </Pressable>
             <View className="border-b w-80 pb-2">
               <Pressable>
