@@ -40,6 +40,7 @@ export type Match = {
 }
 
 export type Messages = {
+  id: string
   message: string
   userId: string
   photoUrl: string

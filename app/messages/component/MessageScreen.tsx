@@ -40,6 +40,7 @@ const MessageScreen = () => {
     {} as UserProfile
   )
   const [messageToSend, setMessageToSend] = useState<string>()
+  const [loading, setLoading] = useState<boolean>(false)
   const [messages, setMessages] = useState<Messages[]>([])
   const navigation = useNavigation()
   const route = useRoute<RouteProp<RootStackParamList, "MessagingScreen">>()
@@ -72,7 +73,6 @@ const MessageScreen = () => {
         ),
         (snapshot) => {
           const messagesData: Messages[] = snapshot.docs.map((doc) => ({
-            id: doc.id,
             ...(doc.data() as Messages),
           }))
           setMessages(messagesData)
@@ -84,6 +84,7 @@ const MessageScreen = () => {
 
   const sendMessage = async () => {
     try {
+      setLoading(true)
       await addDoc(collection(db, "matches", matchIdDocState, "messages"), {
         timestamp: serverTimestamp(),
         userId: currentId,
@@ -91,8 +92,9 @@ const MessageScreen = () => {
         photoUrl: currentUserProfile.userPhotos[0],
         message: messageToSend,
       })
+
       setMessageToSend("")
-      console.log("Message Sent")
+      setLoading(false)
     } catch (err) {
       console.error(err)
     }
@@ -113,18 +115,20 @@ const MessageScreen = () => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <FlatList
+            className="m-2"
             data={messages}
-            keyExtractor={(item) => item.userId}
-            renderItem={({ item: message, index }) =>
+            inverted={true}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item: message }) =>
               message.userId === currentId ? (
                 <UserMessage
-                  key={index}
+                  key={message.id}
                   id={currentUserProfile.id}
                   message={message.message}
                 />
               ) : (
                 <MatchesMessage
-                  key={index}
+                  key={message.id}
                   id={matchIdState}
                   message={message.message}
                 />
@@ -136,10 +140,12 @@ const MessageScreen = () => {
 
       <View className="flex flex-row mx-1 mb-14 items-center">
         <TextInput
-          placeholder="Say hi!"
+          placeholder={loading ? "sending..." : "Send a Message"}
           className=" flex-1 border rounded-xl h-8 w-64 p-2 "
           value={messageToSend}
-          onChangeText={(message) => setMessageToSend(message)}
+          onChangeText={(message) => {
+            setMessageToSend(message)
+          }}
         />
         <Pressable
           className="mx-2"

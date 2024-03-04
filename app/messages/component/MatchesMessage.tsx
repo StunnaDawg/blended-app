@@ -10,9 +10,9 @@ type MatchesMessageProps = {
 const MatchesMessage = ({ id, message }: MatchesMessageProps) => {
   return (
     <View>
-      <View className="flex flex-row justify-start flex-wrap mt-2 items-center mx-1">
+      <View className="flex flex-row justify-start flex-wrap mt-2 items-center m-1 my-2">
         <SinglePic
-          size={50}
+          size={30}
           id={id}
           picNumber={0}
           avatarRadius={150}
@@ -20,11 +20,8 @@ const MatchesMessage = ({ id, message }: MatchesMessageProps) => {
           collection="user"
           photoType="userPhotos"
         />
-        <View className="rounded-2xl border mx-1 bg-blue-200 w-40 p-2">
-          <Text className="text-xs">
-            {message}
-            HiddddddddddddddddddHidddddddddddddddddd
-          </Text>
+        <View className="rounded-2xl border mx-1 bg-slate-200 p-2">
+          <Text className="text-xs">{message}</Text>
         </View>
       </View>
     </View>

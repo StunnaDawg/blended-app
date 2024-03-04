@@ -8,17 +8,12 @@ type UserMessage = {
 
 const UserMessage = ({ id, message }: UserMessage) => {
   return (
-    <View className="flex flex-row justify-end mt-2 mx-1">
+    <View className="flex flex-row justify-end mt-2 mx-1 my-2">
       <View>
-        <View className="rounded-2xl border bg-blue-200 w-40 p-2">
-          <Text className="text-xs">
-            {message}
-            HiddddddddddddddddddHidddddddddddddddddd
-          </Text>
+        <View className="rounded-2xl border bg-blue-200 p-2">
+          <Text className="text-xs">{message}</Text>
         </View>
-        <View className="flex flex-row justify-end">
-          <Text className="text-xs">Sent</Text>
-        </View>
+        <View className="flex flex-row justify-end"></View>
       </View>
     </View>
   )
