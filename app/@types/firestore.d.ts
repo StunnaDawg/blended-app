@@ -17,7 +17,7 @@ export type UserProfile = {
   activities: string[]
   personalRecords?: string[]
   intentions: string
-  food: string | null
+  diet: string | null
   zodiac: string | null
   education: string | null
   jobTitle: string | null

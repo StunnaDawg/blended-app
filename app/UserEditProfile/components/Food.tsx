@@ -15,7 +15,11 @@ import {
 } from "@gorhom/bottom-sheet"
 import singleValueEdit from "../../functions/singleValueEdit"
 
-const Food = () => {
+type FoodProps = {
+  preferance: string | null | undefined
+}
+
+const Food = ({ preferance }: FoodProps) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
   const { dismiss } = useBottomSheetModal()
 
@@ -51,7 +55,7 @@ const Food = () => {
         >
           <View className="flex flex-row justify-between bg-slate-200 h-10 items-center px-2">
             <View className="flex flex-row">
-              <Text>Add Dietary Preferences</Text>
+              <Text>{preferance ? preferance : "Add Dietary Preferences"}</Text>
             </View>
 
             <Feather name="arrow-right" size={32} color="black" />

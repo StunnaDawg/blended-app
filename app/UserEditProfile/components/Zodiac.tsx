@@ -4,7 +4,11 @@ import { Feather } from "@expo/vector-icons"
 import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
 import singleValueEdit from "../../functions/singleValueEdit"
 
-const Zodiac = () => {
+type ZodiacProp = {
+  zodiac: string | undefined | null
+}
+
+const Zodiac = ({ zodiac }: ZodiacProp) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
   const { dismiss } = useBottomSheetModal()
 
@@ -44,7 +48,7 @@ const Zodiac = () => {
         >
           <View className="flex flex-row justify-between bg-slate-200 h-10 items-center px-2">
             <View className="flex flex-row">
-              <Text>Add Zodiac Sign</Text>
+              <Text>{zodiac ? zodiac : "Add Zodiac Sign"}</Text>
             </View>
 
             <Feather name="arrow-right" size={32} color="black" />

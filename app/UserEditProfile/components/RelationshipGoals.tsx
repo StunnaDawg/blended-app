@@ -4,7 +4,11 @@ import { Feather } from "@expo/vector-icons"
 import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
 import singleValueEdit from "../../functions/singleValueEdit"
 
-const RelationshipGoals = () => {
+type RelationshipGoalsProps = {
+  lookingFor: string | null | undefined
+}
+
+const RelationshipGoals = ({ lookingFor }: RelationshipGoalsProps) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
   const { dismiss } = useBottomSheetModal()
 
@@ -29,7 +33,7 @@ const RelationshipGoals = () => {
         >
           <View className="flex flex-row justify-between bg-slate-200 h-10 items-center px-2">
             <View className="flex flex-row">
-              <Text>Looking for...</Text>
+              <Text>{lookingFor ? lookingFor : "Looking for..."}</Text>
             </View>
 
             <Feather name="arrow-right" size={32} color="black" />

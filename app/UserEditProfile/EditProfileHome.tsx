@@ -1,5 +1,5 @@
 import { View, Text, ScrollView } from "react-native"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { FIREBASE_AUTH, db } from "../../firebase"
 import ImageGrid from "../components/ImageGrid"
 import About from "./components/About"
@@ -14,8 +14,19 @@ import School from "./components/School"
 import SingleImage from "../components/SingleImage"
 import { arrayUnion, doc, updateDoc } from "firebase/firestore"
 import HomeGym from "./components/HomeGym"
+import getUserProfile from "../functions/getUserProfile"
+import { UserProfile } from "../@types/firestore"
 
 const EditProfileHome = () => {
+  const [userProfileValues, setUserProfileValues] = useState<UserProfile>(
+    {} as UserProfile
+  )
+  const currentUserId = FIREBASE_AUTH.currentUser?.uid
+
+  useEffect(() => {
+    getUserProfile(currentUserId, setUserProfileValues)
+  })
+
   return (
     <ScrollView className="mb-20">
       <View className="flex flex-row justify-center flex-wrap">
@@ -32,7 +43,7 @@ const EditProfileHome = () => {
       </View>
 
       <View className="mt-4">
-        <HomeGym />
+        <HomeGym currentGym={userProfileValues.homeGym?.gym_title} />
       </View>
 
       <View className="mt-4">
@@ -44,19 +55,19 @@ const EditProfileHome = () => {
       </View>
 
       <View className="mt-4">
-        <RelationshipGoals />
+        <RelationshipGoals lookingFor={userProfileValues.intentions} />
       </View>
 
       <View className="mt-4">
-        <Food />
+        <Food preferance={userProfileValues.diet} />
       </View>
 
       <View className="mt-4">
-        <Zodiac />
+        <Zodiac zodiac={userProfileValues.zodiac} />
       </View>
 
       <View className="mt-4">
-        <Education />
+        <Education education={userProfileValues.education} />
       </View>
 
       <View className="mt-4">

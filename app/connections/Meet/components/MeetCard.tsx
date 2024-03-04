@@ -182,9 +182,9 @@ const MeetCard = ({
                 </Text>
               </View>
               <View className="flex flex-row flex-wrap">
-                {userData.food && (
+                {userData.diet && (
                   <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
-                    <Text className="text-xs font-bold">{userData.food}</Text>
+                    <Text className="text-xs font-bold">{userData.diet}</Text>
                   </View>
                 )}
                 {userData.zodiac && (
