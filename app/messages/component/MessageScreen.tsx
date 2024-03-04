@@ -20,6 +20,7 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore"
 
 const MessageScreen = () => {
   const [matchIdState, setMatchIdState] = useState<string>("")
+  const [matchIdDocState, setMatchIdDoc] = useState<string>("")
   const [matchProfile, setMatchProfile] = useState<UserProfile>(
     {} as UserProfile
   )
@@ -30,6 +31,7 @@ const MessageScreen = () => {
   const navigation = useNavigation()
   const route = useRoute<RouteProp<RootStackParamList, "MessagingScreen">>()
   const matchId = route.params?.id
+  const matchDocId = route.params?.matchDocId
   const currentId = FIREBASE_AUTH.currentUser?.uid
 
   useEffect(() => {
@@ -41,17 +43,27 @@ const MessageScreen = () => {
   }, [matchIdState])
 
   useEffect(() => {
+    setMatchIdDoc(matchDocId)
+  }, [currentId])
+
+  useEffect(() => {
     getUserProfile(currentId, setCurrentUserProfile)
   }, [currentId])
 
-  const sendMessage = () => {
-    addDoc(collection(db, "matches", matchIdState, "messages"), {
-      timestamp: serverTimestamp(),
-      userId: currentId,
-      username: currentUserProfile.firstName,
-      photoUrl: currentUserProfile.userPhotos[0],
-      message: messageToSend,
-    })
+  const sendMessage = async () => {
+    try {
+      await addDoc(collection(db, "matches", matchIdDocState, "messages"), {
+        timestamp: serverTimestamp(),
+        userId: currentId,
+        username: currentUserProfile.firstName,
+        photoUrl: currentUserProfile.userPhotos[0],
+        message: messageToSend,
+      })
+      setMessageToSend("")
+      console.log("Message Sent")
+    } catch (err) {
+      console.error(err)
+    }
   }
   return (
     <View className="flex-1">
@@ -109,7 +121,12 @@ const MessageScreen = () => {
           value={messageToSend}
           onChangeText={(message) => setMessageToSend(message)}
         />
-        <Pressable className="mx-2">
+        <Pressable
+          className="mx-2"
+          onPress={async () => {
+            await sendMessage()
+          }}
+        >
           <Text className="font-bold">Send</Text>
         </Pressable>
       </View>

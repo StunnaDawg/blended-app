@@ -69,11 +69,13 @@ const MessageTab = () => {
               <View key={index} className="flex flex-row items-center">
                 <Pressable
                   className="rounded-3xl mx-2 border-black border w-12 h-12"
-                  onPress={() =>
+                  onPress={() => {
                     navigation.navigate("MessagingScreen", {
                       id: match.users.user2.id,
+                      matchDocId: match.id,
                     })
-                  }
+                    console.log("match idddd", match.id)
+                  }}
                 >
                   <SinglePic
                     size={45}
@@ -90,6 +92,7 @@ const MessageTab = () => {
                     onPress={() =>
                       navigation.navigate("MessagingScreen", {
                         id: match.users.user2.id,
+                        matchDocId: match.id,
                       })
                     }
                   >

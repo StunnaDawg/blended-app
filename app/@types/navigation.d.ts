@@ -26,6 +26,7 @@ export type RootStackParamList = {
   LoadModal: undefined
   MessagingScreen: {
     id: string
+    matchDocId: string
   }
 }
 
@@ -42,4 +43,5 @@ export type TabNavigationType = TabNavigationProp<TabParamList>
 
 export type RouteParamsType = {
   id?: string
+  matchDocId: string
 }
