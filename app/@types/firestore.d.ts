@@ -1,11 +1,11 @@
 export type GymProfile = {
-  id: string
-  title: string
-  fitnessStyle: string
+  gym_id: string
+  gym_title: string
+  gym_style: string
   country: string
   province: string
   city: string
-  photosUri?: string[]
+  gymPhotos?: string[]
 }
 
 export type UserProfile = {

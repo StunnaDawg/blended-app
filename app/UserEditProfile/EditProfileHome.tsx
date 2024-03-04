@@ -13,6 +13,7 @@ import RelationshipGoals from "./components/RelationshipGoals"
 import School from "./components/School"
 import SingleImage from "../components/SingleImage"
 import { arrayUnion, doc, updateDoc } from "firebase/firestore"
+import HomeGym from "./components/HomeGym"
 
 const EditProfileHome = () => {
   return (
@@ -28,6 +29,10 @@ const EditProfileHome = () => {
 
       <View>
         <About />
+      </View>
+
+      <View className="mt-4">
+        <HomeGym />
       </View>
 
       <View className="mt-4">

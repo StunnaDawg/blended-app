@@ -1,20 +1,40 @@
 import { View, Text, Pressable } from "react-native"
-import React, { useCallback, useMemo, useRef } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Feather } from "@expo/vector-icons"
 import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
+import { GymProfile } from "../../@types/firestore"
+import { FIREBASE_AUTH, db } from "../../../firebase"
+import { collection, onSnapshot, query } from "firebase/firestore"
 
 const HomeGym = () => {
+  const [homeGym, setHomeGym] = useState<GymProfile>({} as GymProfile)
+  const [gymSelection, setGymSelection] = useState<GymProfile[]>([])
+  const currentUserId = FIREBASE_AUTH.currentUser?.uid
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
   const { dismiss } = useBottomSheetModal()
 
-  const snapPoints = useMemo(() => ["25%", "50%"], [])
+  const snapPoints = useMemo(() => ["25%", "85%"], [])
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present()
   }, [])
+
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index)
   }, [])
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(collection(db, "gyms")),
+      (snapshot) => {
+        const gymsData: GymProfile[] = snapshot.docs.map((doc) => ({
+          ...(doc.data() as GymProfile),
+        }))
+        setGymSelection(gymsData)
+      }
+    )
+    return unsubscribe
+  }, [currentUserId])
   return (
     <>
       <View className="mx-2">
@@ -42,6 +62,13 @@ const HomeGym = () => {
         >
           <View className="flex flex-row justify-center mt-3">
             <Text className="text-xl font-bold">Find Home Gym</Text>
+          </View>
+          <View>
+            {gymSelection.map((gym, index) => (
+              <View key={gym.gym_id}>
+                <Text className="text-xl font-bold">{gym.gym_title}</Text>
+              </View>
+            ))}
           </View>
         </BottomSheetModal>
       </View>
