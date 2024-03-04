@@ -54,7 +54,11 @@ const MessageTab = () => {
           <Text className="font-bold">New Connections</Text>
         </View>
         <View className=" flex flex-row border-b p-1">
-          <ViewUserProfile id={userMatches[0]?.users.user2.id} />
+          <ViewUserProfile
+            id={userMatches[0]?.users.user2.id}
+            size={120}
+            radius={10}
+          />
         </View>
 
         <View className="m-2">

@@ -8,23 +8,21 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { UserProfile } from "../@types/firestore"
-import { FIREBASE_AUTH, db } from "../../firebase"
-import { NavigationType } from "../@types/navigation"
+import { FIREBASE_AUTH } from "../../../firebase"
+import { NavigationType } from "../../@types/navigation"
 import { useNavigation } from "@react-navigation/native"
-import getUserProfile from "../functions/getUserProfile"
+import getUserProfile from "../../functions/getUserProfile"
 import { doc, getDoc, setDoc } from "firebase/firestore"
-import mergeIds from "../functions/mergeId"
-import SinglePic from "./Avatar"
+import mergeIds from "../../functions/mergeId"
+import SinglePic from "../../components/Avatar"
 import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
+import { UserProfile } from "../../@types/firestore"
 
 type MeetCardProps = {
   id: string
-  size: number
-  radius: number
 }
 
-const ViewUserProfile = ({ id, size, radius }: MeetCardProps) => {
+const ViewMessageUserProfile = ({ id }: MeetCardProps) => {
   const [userData, setUserData] = useState<UserProfile>({} as UserProfile)
   const [currentUserData, setCurrentUserData] = useState<UserProfile>(
     {} as UserProfile
@@ -54,13 +52,13 @@ const ViewUserProfile = ({ id, size, radius }: MeetCardProps) => {
   return (
     <>
       <Pressable
-        className="rounded mx-1 border-black border w-24 h-32 overflow-hidden"
+        className="rounded-3xl mx-1 border-black border overflow-hidden"
         onPress={() => {
           handlePresentModalPress()
         }}
       >
         <SinglePic
-          size={125}
+          size={50}
           id={id}
           picNumber={0}
           avatarRadius={10}
@@ -214,4 +212,4 @@ const ViewUserProfile = ({ id, size, radius }: MeetCardProps) => {
   )
 }
 
-export default ViewUserProfile
+export default ViewMessageUserProfile
