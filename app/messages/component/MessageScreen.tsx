@@ -5,6 +5,9 @@ import {
   Pressable,
   KeyboardAvoidingView,
   Platform,
+  FlatList,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native"
 import React, { useEffect, useState } from "react"
 import SinglePic from "../../components/Avatar"
@@ -12,11 +15,20 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { RootStackParamList, RouteParamsType } from "../../@types/navigation"
 import { FIREBASE_AUTH, db } from "../../../firebase"
 import getUserProfile from "../../functions/getUserProfile"
-import { UserProfile } from "../../@types/firestore"
+import { Messages, UserProfile } from "../../@types/firestore"
 import { ScrollView } from "react-native-gesture-handler"
 import ViewUserProfile from "../../components/ViewUserProfile"
 import ViewMessageUserProfile from "./ViewMessageUserProfile"
-import { addDoc, collection, serverTimestamp } from "firebase/firestore"
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+} from "firebase/firestore"
+import MatchesMessage from "./MatchesMessage"
+import UserMessage from "./UserMessages"
 
 const MessageScreen = () => {
   const [matchIdState, setMatchIdState] = useState<string>("")
@@ -28,6 +40,7 @@ const MessageScreen = () => {
     {} as UserProfile
   )
   const [messageToSend, setMessageToSend] = useState<string>()
+  const [messages, setMessages] = useState<Messages[]>([])
   const navigation = useNavigation()
   const route = useRoute<RouteProp<RootStackParamList, "MessagingScreen">>()
   const matchId = route.params?.id
@@ -49,6 +62,25 @@ const MessageScreen = () => {
   useEffect(() => {
     getUserProfile(currentId, setCurrentUserProfile)
   }, [currentId])
+
+  useEffect(() => {
+    if (matchIdDocState) {
+      const unsubscribe = onSnapshot(
+        query(
+          collection(db, "matches", matchIdDocState, "messages"),
+          orderBy("timestamp", "desc")
+        ),
+        (snapshot) => {
+          const messagesData: Messages[] = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...(doc.data() as Messages),
+          }))
+          setMessages(messagesData)
+        }
+      )
+      return unsubscribe
+    }
+  }, [matchIdDocState, db])
 
   const sendMessage = async () => {
     try {
@@ -75,44 +107,32 @@ const MessageScreen = () => {
         </View>
       </View>
 
-      <ScrollView>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-          <View className="flex flex-row justify-center">
-            <Text className="text-xs">You connected on...</Text>
-          </View>
-
-          <View className="flex flex-row justify-end mt-2 mx-1">
-            <View>
-              <View className="rounded-2xl border bg-blue-200 w-40 p-2">
-                <Text className="text-xs">
-                  HiddddddddddddddddddHidddddddddddddddddd
-                </Text>
-              </View>
-              <View className="flex flex-row justify-end">
-                <Text className="text-xs">Sent</Text>
-              </View>
-            </View>
-          </View>
-          <View className="flex flex-row justify-start flex-wrap mt-2 items-center mx-1">
-            <SinglePic
-              size={50}
-              id={matchIdState}
-              picNumber={0}
-              avatarRadius={150}
-              noAvatarRadius={10}
-              collection="user"
-              photoType="userPhotos"
-            />
-            <View className="rounded-2xl border mx-1 bg-blue-200 w-40 p-2">
-              <Text className="text-xs">
-                HiddddddddddddddddddHidddddddddddddddddd
-              </Text>
-            </View>
-          </View>
-        </KeyboardAvoidingView>
-      </ScrollView>
+      <KeyboardAvoidingView
+        className="flex-1"
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <FlatList
+            data={messages}
+            keyExtractor={(item) => item.userId}
+            renderItem={({ item: message, index }) =>
+              message.userId === currentId ? (
+                <UserMessage
+                  key={index}
+                  id={currentUserProfile.id}
+                  message={message.message}
+                />
+              ) : (
+                <MatchesMessage
+                  key={index}
+                  id={matchIdState}
+                  message={message.message}
+                />
+              )
+            }
+          />
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
 
       <View className="flex flex-row mx-1 mb-14 items-center">
         <TextInput
@@ -135,3 +155,18 @@ const MessageScreen = () => {
 }
 
 export default MessageScreen
+
+{
+  /* <ScrollView>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <View className="flex flex-row justify-center">
+            <Text className="text-xs">You connected on...</Text>
+          </View>
+          <UserMessage id={currentUserProfile.id} message="hu" />
+
+          <MatchesMessage id={matchIdState} message="Hi" />
+        </KeyboardAvoidingView>
+      </ScrollView> */
+}

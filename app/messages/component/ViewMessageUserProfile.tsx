@@ -66,10 +66,6 @@ const ViewMessageUserProfile = ({ id }: MeetCardProps) => {
           collection="user"
           photoType="userPhotos"
         />
-        {/* <Image
-              source={{ uri: userImage }}
-              onError={(error) => console.error("Image loading error:", error)}
-            /> */}
       </Pressable>
       <BottomSheetModal
         ref={bottomSheetModalRef}

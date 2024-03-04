@@ -38,3 +38,11 @@ export type Match = {
   }
   usersMatched: string[]
 }
+
+export type Messages = {
+  message: string
+  userId: string
+  photoUrl: string
+  timeStamp: string
+  userName: string
+}
