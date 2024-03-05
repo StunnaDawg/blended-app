@@ -50,6 +50,7 @@ const MessageScreen = () => {
 
   useEffect(() => {
     setMatchIdState(matchId)
+    console.log(messages)
   }, [currentId])
 
   useEffect(() => {

@@ -1,5 +1,5 @@
-import { View, Text } from "react-native"
-import React, { useEffect, useState } from "react"
+import { View, Text, ScrollView, RefreshControl } from "react-native"
+import React, { useCallback, useEffect, useState } from "react"
 import MeetCard from "./components/MeetCard"
 import { FIREBASE_AUTH, db } from "../../../firebase"
 import {
@@ -17,6 +17,15 @@ const Meet = () => {
   const currentUserId = FIREBASE_AUTH.currentUser?.uid
   const [profiles, setProfiles] = useState<string[]>([])
   const [index, setIndex] = useState<number>(0)
+
+  const [refreshing, setRefreshing] = useState<boolean>(false)
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 2000)
+  }, [])
 
   useEffect(() => {
     console.log(profiles)
@@ -108,7 +117,11 @@ const Meet = () => {
   }, [index])
 
   return (
-    <View>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       {profiles.length > 0 ? (
         <MeetCard
           id={profiles[index]}
@@ -119,7 +132,7 @@ const Meet = () => {
       ) : (
         <NoUsers />
       )}
-    </View>
+    </ScrollView>
   )
 }
 

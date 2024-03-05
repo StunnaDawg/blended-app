@@ -10,7 +10,10 @@ type MatchesMessageProps = {
 const MatchesMessage = ({ id, message }: MatchesMessageProps) => {
   return (
     <View>
-      <View className="flex flex-row justify-start flex-wrap mt-2 items-center m-1 my-2">
+      <View
+        key={id}
+        className="flex flex-row justify-start flex-wrap mt-2 items-center m-1 my-2"
+      >
         <SinglePic
           size={30}
           id={id}

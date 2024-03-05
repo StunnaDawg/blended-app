@@ -42,12 +42,12 @@ const ViewMessageUserProfile = ({ id }: MeetCardProps) => {
     console.log("handleSheetChanges", index)
   }, [])
   useEffect(() => {
-    getUserProfile(id, setUserData)
-  }, [])
+    getUserProfile(otherUser, setUserData)
+  }, [otherUser])
 
   useEffect(() => {
     getUserProfile(currentUser, setCurrentUserData)
-  }, [])
+  }, [currentUser])
 
   return (
     <>
@@ -98,7 +98,12 @@ const ViewMessageUserProfile = ({ id }: MeetCardProps) => {
               </View>
               <View className="flex flex-row">
                 <View className="border border-black bg-slate-300 rounded-2xl p-2 mx-1">
-                  <Text className="text-xs font-bold"> Blended Athletics</Text>
+                  <Text className="text-xs font-bold">
+                    {" "}
+                    {userData.homeGym?.gym_title
+                      ? userData.homeGym?.gym_title
+                      : "Blended Athletics"}
+                  </Text>
                 </View>
               </View>
             </View>

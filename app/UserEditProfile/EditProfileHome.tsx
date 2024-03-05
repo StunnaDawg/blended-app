@@ -25,7 +25,7 @@ const EditProfileHome = () => {
 
   useEffect(() => {
     getUserProfile(currentUserId, setUserProfileValues)
-  })
+  }, [])
 
   return (
     <ScrollView className="mb-20">
@@ -74,9 +74,9 @@ const EditProfileHome = () => {
         <Career />
       </View>
 
-      <View className="my-4">
-        <School />
-      </View>
+      {/* <View className="my-4">
+        <School  />
+      </View> */}
 
       {/* <View>
         <Activities />

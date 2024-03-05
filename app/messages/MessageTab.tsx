@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Image } from "react-native"
+import { View, Text, Pressable, Image, RefreshControl } from "react-native"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Match, UserProfile } from "../@types/firestore"
 import { ScrollView } from "react-native-gesture-handler"
@@ -14,6 +14,15 @@ const MessageTab = () => {
   const [userMatches, setUserMatches] = useState<Match[]>([])
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   const navigation = useNavigation<NavigationType>()
+
+  const [refreshing, setRefreshing] = useState<boolean>(false)
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 2000)
+  }, [])
 
   useEffect(() => {
     if (currentUser) {
@@ -42,68 +51,72 @@ const MessageTab = () => {
     }
   }, [currentUser])
 
+  useEffect(() => {
+    console.log("user matches", userMatches)
+  }, [userMatches])
+
   return (
     <>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View>
           <Text className="font-bold text-2xl text-center">
             Made Connections
           </Text>
         </View>
-        <View className="mx-2">
-          <Text className="font-bold">New Connections</Text>
-        </View>
-        <View className=" flex flex-row border-b p-1">
-          <ViewUserProfile
-            id={userMatches[0]?.users.user2.id}
-            size={120}
-            radius={10}
-          />
-        </View>
-
         <View className="m-2">
           <Text>Messages</Text>
 
           <View className="flex flex-row items-center m-2">
-            {userMatches.map((match, index) => (
-              <View key={index} className="flex flex-row items-center">
-                <Pressable
-                  className="rounded-3xl mx-2 border-black border w-12 h-12"
-                  onPress={() => {
-                    navigation.navigate("MessagingScreen", {
-                      id: match.users.user2.id,
-                      matchDocId: match.id,
-                    })
-                    console.log("match idddd", match.id)
-                  }}
-                >
-                  <SinglePic
-                    size={45}
-                    id={match.users.user2.id}
-                    picNumber={0}
-                    avatarRadius={150}
-                    noAvatarRadius={10}
-                    collection="user"
-                    photoType="userPhotos"
-                  />
-                </Pressable>
-                <View className="border-b w-80 pb-2">
-                  <Pressable
-                    onPress={() =>
-                      navigation.navigate("MessagingScreen", {
-                        id: match.users.user2.id,
-                        matchDocId: match.id,
-                      })
-                    }
+            <View>
+              {userMatches.length > 0 &&
+                userMatches.map((match) => (
+                  <View
+                    key={match.id}
+                    className="flex flex-row items-center mb-3"
                   >
-                    <Text className="font-bold text-xl">
-                      {userMatches.length > 0 && match.users.user2.firstName}
-                    </Text>
-                    <Text className="px-2">Hello hello hello hell</Text>
-                  </Pressable>
-                </View>
-              </View>
-            ))}
+                    <Pressable
+                      className="rounded-3xl mx-2 border-black border w-12 h-12"
+                      onPress={() => {
+                        navigation.navigate("MessagingScreen", {
+                          id: match.users.user2.id,
+                          matchDocId: match.id,
+                        })
+                        console.log("match idddd", match.id)
+                      }}
+                    >
+                      <SinglePic
+                        size={45}
+                        id={match.users.user2.id}
+                        picNumber={0}
+                        avatarRadius={150}
+                        noAvatarRadius={10}
+                        collection="user"
+                        photoType="userPhotos"
+                      />
+                    </Pressable>
+                    <View className="border-b w-80 pb-2">
+                      <Pressable
+                        onPress={() =>
+                          navigation.navigate("MessagingScreen", {
+                            id: match.users.user2.id,
+                            matchDocId: match.id,
+                          })
+                        }
+                      >
+                        <Text className="font-bold text-xl">
+                          {userMatches.length > 0 &&
+                            match.users.user2.firstName}
+                        </Text>
+                        <Text className="px-2">Send a Message</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                ))}
+            </View>
           </View>
         </View>
       </ScrollView>

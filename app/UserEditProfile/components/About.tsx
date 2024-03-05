@@ -31,12 +31,6 @@ const About = () => {
     }
   }
 
-  useEffect(() => {
-    getAboutMe()
-  }, [])
-  useEffect(() => {
-    updateAboutMe()
-  }, [aboutMe])
   return (
     <>
       <View className="mx-2">
@@ -44,11 +38,10 @@ const About = () => {
       </View>
       <TextInput
         value={aboutMe}
-        onChangeText={setAboutMe}
         className="border-2 border-black m-2 h-40"
         placeholder="About me!"
         multiline={true}
-      ></TextInput>
+      />
     </>
   )
 }
