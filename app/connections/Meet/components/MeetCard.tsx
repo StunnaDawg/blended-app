@@ -26,6 +26,7 @@ const MeetCard = ({
   index,
   removeFunction,
 }: MeetCardProps) => {
+  const [loading, setLoading] = useState<boolean>(false)
   const [userData, setUserData] = useState<UserProfile>({} as UserProfile)
   const [currentUserData, setCurrentUserData] = useState<UserProfile>(
     {} as UserProfile
@@ -34,7 +35,9 @@ const MeetCard = ({
   const otherUser = userData.id
   const navigation = useNavigation<NavigationType>()
   useEffect(() => {
+    setLoading(true)
     getUserProfile(id, setUserData)
+    setLoading(false)
   }, [])
 
   useEffect(() => {
@@ -42,7 +45,9 @@ const MeetCard = ({
   }, [])
 
   useEffect(() => {
+    setLoading(true)
     getUserProfile(id, setUserData)
+    setLoading(false)
   }, [index])
 
   const passUser = async () => {
