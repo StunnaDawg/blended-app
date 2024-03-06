@@ -1,4 +1,5 @@
-import { View, Text, Image, Button, Pressable } from "react-native"
+import { View, Text, Button, Pressable } from "react-native"
+import { Image } from "expo-image"
 import React, { useEffect, useState } from "react"
 import * as ImagePicker from "expo-image-picker"
 import getProfilePic from "../functions/getProfilePic"

@@ -104,7 +104,10 @@ const MessageScreen = () => {
     <View className="flex-1">
       <View className="flex flex-row justify-center border-b">
         <View className="items-center">
-          <ViewMessageUserProfile id={matchIdState} />
+          <ViewMessageUserProfile
+            id={matchIdState}
+            matchProfile={matchProfile}
+          />
 
           <Text className="font-bold text-md">{matchProfile.firstName}</Text>
         </View>

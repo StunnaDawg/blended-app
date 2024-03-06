@@ -1,6 +1,7 @@
 import { doc, getDoc } from "firebase/firestore"
+import { Image } from "expo-image"
 import { useState, useEffect } from "react"
-import { StyleSheet, View, Image } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { db } from "../../firebase"
 import getProfilePic from "../functions/getProfilePic"
 import { UserProfile } from "../@types/firestore"

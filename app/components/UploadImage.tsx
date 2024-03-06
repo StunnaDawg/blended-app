@@ -1,4 +1,5 @@
-import { View, Image, Button, ScrollView } from "react-native"
+import { View, Button, ScrollView } from "react-native"
+import { Image } from "expo-image"
 import * as ImagePicker from "expo-image-picker"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 

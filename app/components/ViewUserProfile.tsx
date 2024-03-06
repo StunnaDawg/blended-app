@@ -1,20 +1,10 @@
-import { View, Text, Pressable, Image, ScrollView, Button } from "react-native"
-import React, {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { View, Text, Pressable, Button } from "react-native"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { UserProfile } from "../@types/firestore"
 import { FIREBASE_AUTH, db } from "../../firebase"
 import { NavigationType } from "../@types/navigation"
 import { useNavigation } from "@react-navigation/native"
 import getUserProfile from "../functions/getUserProfile"
-import { doc, getDoc, setDoc } from "firebase/firestore"
-import mergeIds from "../functions/mergeId"
 import SinglePic from "./Avatar"
 import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
 

@@ -20,16 +20,11 @@ import { UserProfile } from "../../@types/firestore"
 
 type MeetCardProps = {
   id: string
+  matchProfile: UserProfile
 }
 
-const ViewMessageUserProfile = ({ id }: MeetCardProps) => {
-  const [userData, setUserData] = useState<UserProfile>({} as UserProfile)
-  const [currentUserData, setCurrentUserData] = useState<UserProfile>(
-    {} as UserProfile
-  )
-  const currentUser = FIREBASE_AUTH.currentUser?.uid
-  const otherUser = userData.id
-  const navigation = useNavigation<NavigationType>()
+const ViewMessageUserProfile = ({ id, matchProfile }: MeetCardProps) => {
+  const otherUser = matchProfile.id
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
   const { dismiss } = useBottomSheetModal()
 
@@ -41,25 +36,19 @@ const ViewMessageUserProfile = ({ id }: MeetCardProps) => {
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index)
   }, [])
-  useEffect(() => {
-    getUserProfile(otherUser, setUserData)
-  }, [otherUser])
-
-  useEffect(() => {
-    getUserProfile(currentUser, setCurrentUserData)
-  }, [currentUser])
 
   return (
     <>
       <Pressable
         className="rounded-3xl mx-1 border-black border overflow-hidden"
-        onPress={() => {
+        onPress={async () => {
+          console.log(matchProfile)
           handlePresentModalPress()
         }}
       >
         <SinglePic
           size={50}
-          id={id}
+          id={matchProfile.id}
           picNumber={0}
           avatarRadius={10}
           noAvatarRadius={10}
@@ -77,12 +66,14 @@ const ViewMessageUserProfile = ({ id }: MeetCardProps) => {
           <View className="flex flex-col items-center">
             <Button title="dismiss" onPress={() => dismiss()} />
             <View>
-              <Text className="font-bold text-xl">{userData.firstName}</Text>
+              <Text className="font-bold text-xl">
+                {matchProfile.firstName}
+              </Text>
             </View>
 
             <SinglePic
               size={200}
-              id={otherUser}
+              id={matchProfile.id}
               picNumber={0}
               avatarRadius={10}
               noAvatarRadius={10}
@@ -100,8 +91,8 @@ const ViewMessageUserProfile = ({ id }: MeetCardProps) => {
                 <View className="border border-black bg-slate-300 rounded-2xl p-2 mx-1">
                   <Text className="text-xs font-bold">
                     {" "}
-                    {userData.homeGym?.gym_title
-                      ? userData.homeGym?.gym_title
+                    {matchProfile.homeGym?.gym_title
+                      ? matchProfile.homeGym?.gym_title
                       : "Blended Athletics"}
                   </Text>
                 </View>
@@ -115,8 +106,11 @@ const ViewMessageUserProfile = ({ id }: MeetCardProps) => {
                 </Text>
               </View>
               <View>
-                {userData.about && (
-                  <Text className="text-md font-bold"> {userData.about}</Text>
+                {matchProfile.about && (
+                  <Text className="text-md font-bold">
+                    {" "}
+                    {matchProfile.about}
+                  </Text>
                 )}
               </View>
             </View>
@@ -128,9 +122,9 @@ const ViewMessageUserProfile = ({ id }: MeetCardProps) => {
                 </Text>
               </View>
               <View className="my-1">
-                {userData.activities?.length > 0 && (
+                {matchProfile.activities?.length > 0 && (
                   <View className="flex flex-row">
-                    {userData.activities.map((activity, index) => (
+                    {matchProfile.activities.map((activity, index) => (
                       <View
                         key={index}
                         className="border border-black bg-slate-300 rounded-2xl p-2 mx-1"
@@ -151,10 +145,10 @@ const ViewMessageUserProfile = ({ id }: MeetCardProps) => {
               </View>
               <View className="flex flex-row">
                 <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
-                  {userData.intentions && (
+                  {matchProfile.intentions && (
                     <Text className="text-xs font-bold">
                       {" "}
-                      {userData.intentions}
+                      {matchProfile.intentions}
                     </Text>
                   )}
                 </View>
@@ -169,37 +163,39 @@ const ViewMessageUserProfile = ({ id }: MeetCardProps) => {
                   </Text>
                 </View>
                 <View className="flex flex-row flex-wrap">
-                  {userData.diet && (
+                  {matchProfile.diet && (
                     <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
-                      <Text className="text-xs font-bold">{userData.diet}</Text>
+                      <Text className="text-xs font-bold">
+                        {matchProfile.diet}
+                      </Text>
                     </View>
                   )}
-                  {userData.zodiac && (
+                  {matchProfile.zodiac && (
                     <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
                       <Text className="text-xs font-bold">
                         {" "}
-                        {userData.zodiac}
+                        {matchProfile.zodiac}
                       </Text>
                     </View>
                   )}
-                  {userData.education && (
+                  {matchProfile.education && (
                     <View className="border border-black bg-slate-300 rounded-2xl p-2 mx-1">
                       <Text className="text-xs font-bold">
-                        {userData.education}
+                        {matchProfile.education}
                       </Text>
                     </View>
                   )}
-                  {userData.jobTitle && (
+                  {matchProfile.jobTitle && (
                     <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
                       <Text className="text-xs font-bold">
-                        {userData.jobTitle}
+                        {matchProfile.jobTitle}
                       </Text>
                     </View>
                   )}
-                  {userData.school && (
+                  {matchProfile.school && (
                     <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
                       <Text className="text-xs font-bold">
-                        {userData.school}
+                        {matchProfile.school}
                       </Text>
                     </View>
                   )}
