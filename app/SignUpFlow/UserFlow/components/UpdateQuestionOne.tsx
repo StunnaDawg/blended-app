@@ -1,4 +1,4 @@
-import { View, Text, Button } from "react-native"
+import { View, Text, Button, Pressable } from "react-native"
 import React, { useState } from "react"
 import { NavigationType } from "../../../@types/navigation"
 import { useNavigation } from "@react-navigation/native"
@@ -10,17 +10,9 @@ type QuestionOneProps = {
   id?: string
   firstName: string
   lastName: string
-  gender: string
-  intentions: string
 }
 
-const UpdateQuestionOne = ({
-  id,
-  firstName,
-  lastName,
-  gender,
-  intentions,
-}: QuestionOneProps) => {
+const UpdateQuestionOne = ({ id, firstName, lastName }: QuestionOneProps) => {
   const [location, setLocation] = useState<Location.LocationObject | null>(null)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const navigation = useNavigation<NavigationType>()
@@ -32,8 +24,6 @@ const UpdateQuestionOne = ({
         await updateDoc(userRef, {
           first_name: firstName,
           last_name: lastName,
-          gender: gender,
-          intentions: intentions,
         })
       } else {
         console.log("User does not exist")
@@ -61,14 +51,16 @@ const UpdateQuestionOne = ({
   }
 
   return (
-    <Button
-      title="Next"
+    <Pressable
+      className="border-2 w-96 items-center bg-red-500"
       onPress={async () => {
         await submitUserQuestions()
         await enableLocation()
         navigation.navigate("UserQuestionTwo")
       }}
-    />
+    >
+      <Text className="font-bold text-2xl">Next</Text>
+    </Pressable>
   )
 }
 

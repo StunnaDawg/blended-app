@@ -1,4 +1,4 @@
-import { View, Text, TextInput } from "react-native"
+import { View, Text, TextInput, ScrollView } from "react-native"
 import React, { useState } from "react"
 import { NavigationType } from "../../@types/navigation"
 import { useNavigation } from "@react-navigation/native"
@@ -29,58 +29,45 @@ const QuestionOne = () => {
   ]
 
   return (
-    <View className="flex flex-col items-center">
+    <ScrollView
+      style={{ flex: 1 }} // Ensure the ScrollView takes up all available space
+      contentContainerStyle={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <View className="items-center">
-        <Text className="text-2xl font-bold">First name</Text>
+        <Text className="text-4xl font-bold">Welcome!</Text>
+        <Text className="text-3xl font-bold">What's your name?</Text>
+      </View>
+      <View className="flex mb-7">
+        <Text className="text-lg mb-2">First name</Text>
         <TextInput
-          className="h-9 border-2 w-36 rounded p-1"
+          className="h-9 border-2 w-96 rounded p-1"
           value={firstName}
           onChangeText={setFirstName}
           placeholder="First name"
         />
       </View>
-      <View className="items-center">
-        <Text className="text-2xl font-bold">Last Name</Text>
+      <View>
+        <Text className="text-lg mb-2">Last Name</Text>
         <TextInput
-          className="h-9 border-2 w-36 rounded p-1"
+          className="h-9 border-2 w-96 rounded p-1"
           value={lastName}
           onChangeText={setLastName}
           placeholder="Last name"
         />
       </View>
 
-      <View>
-        <Text className="text-2xl font-bold">Gender</Text>
-        <SelectList
-          boxStyles={{ width: 100, padding: 2 }}
-          search={false}
-          setSelected={(val: string) => setGender(val)}
-          data={genderData}
-          save="value"
-          placeholder="Male"
+      <View className="flex flex-1 flex-col align-bottom">
+        <UpdateQuestionOne
+          id={currentId}
+          firstName={firstName}
+          lastName={lastName}
         />
       </View>
-
-      <View>
-        <Text className="text-2xl font-bold">Intentions</Text>
-        <SelectList
-          maxHeight={100}
-          search={false}
-          setSelected={(val: string) => setIntentions(val)}
-          data={intentionsData}
-          placeholder="Dating"
-          save="value"
-        />
-      </View>
-
-      <UpdateQuestionOne
-        id={currentId}
-        firstName={firstName}
-        lastName={lastName}
-        gender={gender}
-        intentions={intentions}
-      />
-    </View>
+    </ScrollView>
   )
 }
 

@@ -21,12 +21,13 @@ import GymQuestionOne from "./SignUpFlow/GymFlow/GymQuestionOne"
 import EditProfileHome from "./UserEditProfile/EditProfileHome"
 import ChooseActivity from "./components/ChooseActivity"
 import EditGymProfileHome from "./GymEditProfile/EditProfileHome"
-import Connections from "./Dashboard/Connections/Connections"
 import Meet from "./connections/Meet/Meet"
 import MatchModal from "./components/MatchModal"
 import LoadModal from "./components/LoadModal"
 import MessageTab from "./messages/MessageTab"
 import MessageScreen from "./messages/component/MessageScreen"
+import QuestionFour from "./SignUpFlow/UserFlow/QuestionFour"
+import QuestionThree from "./SignUpFlow/UserFlow/QuestionThree"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -129,6 +130,11 @@ const NavStack = () => {
               />
               <Stack.Screen name="UserQuestionOne" component={QuestionOne} />
               <Stack.Screen name="UserQuestionTwo" component={QuestionTwo} />
+              <Stack.Screen
+                name="UserQuestionThree"
+                component={QuestionThree}
+              />
+              <Stack.Screen name="UserQuestionFour" component={QuestionFour} />
               <Stack.Screen
                 name="UserInitalAddPhoto"
                 component={IntialAddPhotos}

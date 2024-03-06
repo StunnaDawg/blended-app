@@ -1,30 +1,14 @@
-import { View, Text, Pressable, Image, ScrollView, Button } from "react-native"
-import React, {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
-import { FIREBASE_AUTH } from "../../../firebase"
-import { NavigationType } from "../../@types/navigation"
-import { useNavigation } from "@react-navigation/native"
-import getUserProfile from "../../functions/getUserProfile"
-import { doc, getDoc, setDoc } from "firebase/firestore"
-import mergeIds from "../../functions/mergeId"
+import { View, Text, Pressable, Button } from "react-native"
+import React, { useCallback, useMemo, useRef } from "react"
 import SinglePic from "../../components/Avatar"
 import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { UserProfile } from "../../@types/firestore"
 
 type MeetCardProps = {
-  id: string
   matchProfile: UserProfile
 }
 
-const ViewMessageUserProfile = ({ id, matchProfile }: MeetCardProps) => {
-  const otherUser = matchProfile.id
+const ViewMessageUserProfile = ({ matchProfile }: MeetCardProps) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
   const { dismiss } = useBottomSheetModal()
 
