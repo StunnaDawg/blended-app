@@ -2,8 +2,14 @@ import { View, Text, Pressable, Image, ScrollView } from "react-native"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { UserProfile } from "../../../@types/firestore"
 import getUserProfile from "../../../functions/getUserProfile"
-import { DocumentSnapshot, doc, getDoc, setDoc } from "firebase/firestore"
-import { FIREBASE_AUTH, db } from "../../../../firebase"
+import {
+  DocumentSnapshot,
+  doc,
+  getDoc,
+  setDoc,
+  Timestamp,
+} from "firebase/firestore"
+import { FIREBASE_AUTH, db, FIREBASE_APP } from "../../../../firebase"
 import mergeIds from "../../../functions/mergeId"
 import SingleImage from "../../../components/SingleImage"
 import SinglePic from "../../../components/Avatar"
@@ -27,6 +33,7 @@ const MeetCard = ({
   removeFunction,
 }: MeetCardProps) => {
   const [loading, setLoading] = useState<boolean>(false)
+  const [matchesAge, setMatchesAge] = useState<number>()
   const [userData, setUserData] = useState<UserProfile>({} as UserProfile)
   const [currentUserData, setCurrentUserData] = useState<UserProfile>(
     {} as UserProfile
@@ -34,6 +41,20 @@ const MeetCard = ({
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   const otherUser = userData.id
   const navigation = useNavigation<NavigationType>()
+  const currentDate: Date = new Date()
+  const fieldVal = userData.birthday as Timestamp
+  const birthdayTimestamp = userData?.birthday
+  // const birthdayDate: Date = birthdayTimestamp.toDate()
+
+  // let age: number = currentDate.getFullYear() - userData.birthday?.getFullYear()
+  // if (
+  //   currentDate.getMonth() < userData?.birthday?.getMonth() ||
+  //   (currentDate.getMonth() === userData?.birthday?.getMonth() &&
+  //     currentDate.getDate() < userData?.birthday?.getDate())
+  // ) {
+  //   age--
+  // }
+
   useEffect(() => {
     setLoading(true)
     getUserProfile(id, setUserData)
@@ -43,6 +64,10 @@ const MeetCard = ({
   useEffect(() => {
     getUserProfile(currentUser, setCurrentUserData)
   }, [])
+
+  useEffect(() => {
+    console.log("Age", matchesAge)
+  }, [matchesAge])
 
   useEffect(() => {
     setLoading(true)
@@ -116,6 +141,7 @@ const MeetCard = ({
 
           <View className="border rounded-3xl bg-slate-200 px-4 py-3 m-2 w-96">
             <View className="my-1 ">
+              {/* <Text>{birthdayDate ? birthdayDate : "No Age on Profile"}</Text> */}
               <Text className="text-black/50 text-xs font-bold">
                 Trains at...
               </Text>

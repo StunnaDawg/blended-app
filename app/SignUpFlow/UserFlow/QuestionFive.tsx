@@ -7,9 +7,9 @@ import {
   Pressable,
 } from "react-native"
 import React, { useEffect, useState } from "react"
-import UpdateQuestionTwo from "./components/UpdateQuestionFour"
 import { FIREBASE_AUTH, db } from "../../../firebase"
 import { collection, getDocs } from "firebase/firestore"
+import UpdateQuestionFive from "./components/UpdateQuestionFive"
 
 const QuestionFive = () => {
   const [selectedActivities, setSelectedActivities] = useState<string[]>([])
@@ -41,7 +41,7 @@ const QuestionFive = () => {
       <Text>Choose Your Exercises of choice</Text>
       <View className="flex flex-row justify-between items-center">
         <Text className="font-bold text-2xl">Activities</Text>
-        <UpdateQuestionTwo id={currentId} activityArray={selectedActivities} />
+        <UpdateQuestionFive id={currentId} activityArray={selectedActivities} />
       </View>
       <View>
         <View>
