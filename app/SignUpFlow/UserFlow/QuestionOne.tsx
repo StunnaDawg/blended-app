@@ -1,64 +1,73 @@
-import { View, Text, TextInput } from "react-native"
+import { View, Text, TextInput, ScrollView } from "react-native"
 import React, { useState } from "react"
 import { NavigationType } from "../../@types/navigation"
 import { useNavigation } from "@react-navigation/native"
 import { Button } from "react-native-elements"
 import UpdateQuestionOne from "./components/UpdateQuestionOne"
 import { FIREBASE_AUTH } from "../../../firebase"
+import { SelectList } from "react-native-dropdown-select-list"
 
 const QuestionOne = () => {
   const [firstName, setFirstName] = useState<string>("")
   const [lastName, setLastName] = useState<string>("")
   const [gender, setGender] = useState<string>("")
   const [intentions, setIntentions] = useState<string>("")
+
   const navigation = useNavigation<NavigationType>()
   const currentId = FIREBASE_AUTH.currentUser?.uid
 
+  const genderData = [
+    { key: "1", value: "Male" },
+    { key: "2", value: "Female" },
+    { key: "3", value: "Other" },
+  ]
+
+  const intentionsData = [
+    { key: "1", value: "Dating" },
+    { key: "2", value: "Friends" },
+    { key: "3", value: "Workout" },
+  ]
+
   return (
-    <View>
-      <View>
-        <Text>First name</Text>
+    <ScrollView
+      style={{ flex: 1 }} // Ensure the ScrollView takes up all available space
+      contentContainerStyle={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <View className="items-center">
+        <Text className="text-4xl font-bold">Welcome!</Text>
+        <Text className="text-3xl font-bold">What's your name?</Text>
+      </View>
+      <View className="flex mb-7">
+        <Text className="text-lg mb-2">First name</Text>
         <TextInput
+          className="h-9 border-2 w-96 rounded p-1"
           value={firstName}
           onChangeText={setFirstName}
-          placeholder="first name"
+          placeholder="First name"
         />
       </View>
       <View>
-        <Text>Last Name</Text>
+        <Text className="text-lg mb-2">Last Name</Text>
         <TextInput
+          className="h-9 border-2 w-96 rounded p-1"
           value={lastName}
           onChangeText={setLastName}
-          placeholder="last name"
+          placeholder="Last name"
         />
       </View>
 
-      <View>
-        <Text>Gender</Text>
-        <TextInput
-          value={gender}
-          onChangeText={setGender}
-          placeholder="Gender"
+      <View className="flex flex-1 flex-col align-bottom">
+        <UpdateQuestionOne
+          id={currentId}
+          firstName={firstName}
+          lastName={lastName}
         />
       </View>
-
-      <View>
-        <Text>Intentions</Text>
-        <TextInput
-          value={intentions}
-          onChangeText={setIntentions}
-          placeholder="Intentions"
-        />
-      </View>
-
-      <UpdateQuestionOne
-        id={currentId}
-        firstName={firstName}
-        lastName={lastName}
-        gender={gender}
-        intentions={intentions}
-      />
-    </View>
+    </ScrollView>
   )
 }
 

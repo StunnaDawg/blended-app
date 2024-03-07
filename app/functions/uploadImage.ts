@@ -6,10 +6,11 @@ const uploadImage = async (
   uri: string,
   fileType: string,
   imageName: string,
-  imageStateArray: Dispatch<SetStateAction<string[]>>,
   handleImageUpload: (imageDownload: string) => void
 ) => {
+  console.log("prop", uri)
   const response = await fetch(uri)
+  console.log("the response before upload", response)
   const blob = await response.blob()
   const min = 1 // Minimum value (inclusive)
   const max = 100 // Maximum value (exclusive)
@@ -18,6 +19,7 @@ const uploadImage = async (
 
   const fileName = imageName + randomInt.toString()
   const storageRef = ref(storage, fileName)
+  console.log("storageRef", storageRef)
   const uploadTask = uploadBytesResumable(storageRef, blob)
 
   uploadTask.on(

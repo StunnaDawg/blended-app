@@ -15,7 +15,7 @@ const IntialAddPhotos = () => {
   return (
     <ScrollView>
       <View>
-        <Text>Add Phot</Text>
+        <Text>Add Photos</Text>
       </View>
 
       <UploadImage setUris={setImageArray} uris={imageArray} />

@@ -1,4 +1,5 @@
-import { View, Image, Button, ScrollView } from "react-native"
+import { View, Button, ScrollView } from "react-native"
+import { Image } from "expo-image"
 import * as ImagePicker from "expo-image-picker"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 
@@ -22,10 +23,12 @@ const UploadImage = ({ setUris, uris }: UploadImageType) => {
       aspect: [9, 16],
       quality: 1,
       allowsMultipleSelection: true,
+      selectionLimit: 6,
     })
 
     if (!result.canceled) {
       pushToImageArray(result.assets[0].uri)
+      console.log(result.assets[0].uri)
     }
   }
 

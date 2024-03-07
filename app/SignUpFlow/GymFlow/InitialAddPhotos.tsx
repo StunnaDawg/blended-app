@@ -14,7 +14,7 @@ const GymInitialAddPhotos = () => {
   return (
     <ScrollView>
       <View>
-        <Text>Add Phot</Text>
+        <Text>Add Photo</Text>
       </View>
       <View>
         <UploadImage setUris={setImageArray} uris={imageArray} />

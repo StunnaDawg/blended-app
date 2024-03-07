@@ -9,16 +9,12 @@ type GymQuestionOneProps = {
   id?: string
   gymTitle: string
   gymStyle: string
-  province: string
-  city: string
 }
 
 const GymQuestionOneButton = ({
   id,
   gymTitle,
   gymStyle,
-  province,
-  city,
 }: GymQuestionOneProps) => {
   const navigation = useNavigation<NavigationType>()
   const submitGymQuestions = async () => {
@@ -29,8 +25,6 @@ const GymQuestionOneButton = ({
         await updateDoc(userRef, {
           gym_title: gymTitle,
           gym_style: gymStyle,
-          province: province,
-          city: city,
         })
       } else {
         console.log("User does not exist")

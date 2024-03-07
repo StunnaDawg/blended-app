@@ -1,16 +1,16 @@
-import { Button } from "react-native"
-import React from "react"
-import { useNavigation } from "@react-navigation/native"
+import { View, Text, Button, Pressable } from "react-native"
+import React, { useState } from "react"
 import { NavigationType } from "../../../@types/navigation"
+import { useNavigation } from "@react-navigation/native"
 import { doc, updateDoc } from "firebase/firestore"
-import { db } from "../../../../firebase"
+import { FIREBASE_AUTH, db } from "../../../../firebase"
 
 type QuestionTwoProps = {
   id?: string
-  activityArray: string[]
+  gender: string
 }
 
-const UpdateQuestionTwo = ({ id, activityArray }: QuestionTwoProps) => {
+const UpdateQuestionTwo = ({ id, gender }: QuestionTwoProps) => {
   const navigation = useNavigation<NavigationType>()
   const submitUserQuestions = async () => {
     try {
@@ -18,7 +18,7 @@ const UpdateQuestionTwo = ({ id, activityArray }: QuestionTwoProps) => {
         const userRef = doc(db, "user", id)
 
         await updateDoc(userRef, {
-          activities: activityArray,
+          gender: gender,
         })
       } else {
         console.log("User does not exist")
@@ -27,14 +27,17 @@ const UpdateQuestionTwo = ({ id, activityArray }: QuestionTwoProps) => {
       console.error(err)
     }
   }
+
   return (
-    <Button
-      title="Next"
+    <Pressable
+      className="border-2 w-96 items-center bg-red-500"
       onPress={async () => {
         await submitUserQuestions()
-        navigation.navigate("UserInitalAddPhoto")
+        navigation.navigate("UserQuestionThree")
       }}
-    />
+    >
+      <Text className="font-bold text-2xl">Next</Text>
+    </Pressable>
   )
 }
 

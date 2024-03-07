@@ -10,15 +10,25 @@ import { doc, getDoc } from "@firebase/firestore"
 import UserAuth from "./SignUpFlow/UserAuth"
 import Login from "./components/Login"
 import GymProfile from "./GymDashboard/GymProfile"
-import UserProfile from "./Dashboard/UserProfile"
+import UserProfile from "./Dashboard/UserProfile/UserProfile"
 import NavBar from "./components/NavBar"
-import Account from "./components/Account"
 import QuestionOne from "./SignUpFlow/UserFlow/QuestionOne"
 import QuestionTwo from "./SignUpFlow/UserFlow/QuestionTwo"
 import IntialAddPhotos from "./SignUpFlow/UserFlow/IntialAddPhotos"
 import GymQuestionTwo from "./SignUpFlow/GymFlow/GymQuestionTwo"
 import GymInitialAddPhotos from "./SignUpFlow/GymFlow/InitialAddPhotos"
 import GymQuestionOne from "./SignUpFlow/GymFlow/GymQuestionOne"
+import EditProfileHome from "./UserEditProfile/EditProfileHome"
+import ChooseActivity from "./components/ChooseActivity"
+import EditGymProfileHome from "./GymEditProfile/EditProfileHome"
+import Meet from "./connections/Meet/Meet"
+import MatchModal from "./components/MatchModal"
+import LoadModal from "./components/LoadModal"
+import MessageTab from "./messages/MessageTab"
+import MessageScreen from "./messages/component/MessageScreen"
+import QuestionThree from "./SignUpFlow/UserFlow/QuestionThree"
+import QuestionFive from "./SignUpFlow/UserFlow/QuestionFive"
+import QuestionFour from "./SignUpFlow/UserFlow/QuestionFour"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -44,7 +54,9 @@ const UserFooter = () => {
       }}
     >
       <Tab.Screen name="Dashboard" component={Dashboard} />
-      <Tab.Screen name="Profile" component={Account} />
+      <Tab.Screen name="Profile" component={UserProfile} />
+      <Tab.Screen name="Connections" component={Meet} />
+      <Tab.Screen name="Messages" component={MessageTab} />
     </Tab.Navigator>
   )
 }
@@ -103,19 +115,47 @@ const NavStack = () => {
       {isSignedIn ? (
         isUser ? (
           <>
-            <Stack.Screen name="Footer" component={UserFooter} />
-            <Stack.Screen name="UserDashboard" component={Dashboard} />
-            <Stack.Screen name="UserQuestionOne" component={QuestionOne} />
-            <Stack.Screen name="UserQuestionTwo" component={QuestionTwo} />
-            <Stack.Screen
-              name="UserInitalAddPhoto"
-              component={IntialAddPhotos}
-            />
+            <Stack.Group>
+              <Stack.Screen name="Footer" component={UserFooter} />
+              <Stack.Screen name="UserDashboard" component={Dashboard} />
+              <Stack.Screen
+                name="ChooseUserActivity"
+                component={ChooseActivity}
+              />
+
+              <Stack.Screen name="Meet" component={Meet} />
+
+              <Stack.Screen
+                name="UserEditProfile"
+                component={EditProfileHome}
+              />
+              <Stack.Screen name="UserQuestionOne" component={QuestionOne} />
+              <Stack.Screen name="UserQuestionTwo" component={QuestionTwo} />
+              <Stack.Screen
+                name="UserQuestionThree"
+                component={QuestionThree}
+              />
+              <Stack.Screen name="UserQuestionFour" component={QuestionFour} />
+              <Stack.Screen name="UserQuestionFive" component={QuestionFive} />
+              <Stack.Screen
+                name="UserInitalAddPhoto"
+                component={IntialAddPhotos}
+              />
+              <Stack.Screen name="MessagingScreen" component={MessageScreen} />
+            </Stack.Group>
+
+            <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
+              <Stack.Screen name="MatchModal" component={MatchModal} />
+              <Stack.Screen name="LoadModal" component={LoadModal} />
+            </Stack.Group>
           </>
         ) : (
           <>
             <Stack.Screen name="GymFooter" component={GymFooter} />
-            <Stack.Screen name="GymDashboard" component={GymDashboard} />
+            <Stack.Screen
+              name="GymEditProfile"
+              component={EditGymProfileHome}
+            />
             <Stack.Screen name="GymQuestionOne" component={GymQuestionOne} />
             <Stack.Screen name="GymQuestionTwo" component={GymQuestionTwo} />
             <Stack.Screen
