@@ -5,12 +5,12 @@ import { useNavigation } from "@react-navigation/native"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "../../../../firebase"
 
-type QuestionTwoProps = {
+type QuestionThreeProps = {
   id?: string
-  birthday: string
+  intentions: string
 }
 
-const UpdateQuestionTwo = ({ id, birthday }: QuestionTwoProps) => {
+const UpdateQuestionThree = ({ id, intentions }: QuestionThreeProps) => {
   const navigation = useNavigation<NavigationType>()
   const submitUserQuestions = async () => {
     try {
@@ -18,7 +18,7 @@ const UpdateQuestionTwo = ({ id, birthday }: QuestionTwoProps) => {
         const userRef = doc(db, "user", id)
 
         await updateDoc(userRef, {
-          birthday: birthday,
+          intentions: intentions,
         })
       } else {
         console.log("User does not exist")
@@ -41,4 +41,4 @@ const UpdateQuestionTwo = ({ id, birthday }: QuestionTwoProps) => {
   )
 }
 
-export default UpdateQuestionTwo
+export default UpdateQuestionThree

@@ -24,7 +24,7 @@ export type UserProfile = {
   school: string | null
   homeGym: GymProfile | null
   userPhotos: string[]
-  birthday: Date
+  birthday?: Date
 }
 
 export type Activities = {

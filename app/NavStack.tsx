@@ -26,8 +26,9 @@ import MatchModal from "./components/MatchModal"
 import LoadModal from "./components/LoadModal"
 import MessageTab from "./messages/MessageTab"
 import MessageScreen from "./messages/component/MessageScreen"
-import QuestionFour from "./SignUpFlow/UserFlow/QuestionFour"
 import QuestionThree from "./SignUpFlow/UserFlow/QuestionThree"
+import QuestionFive from "./SignUpFlow/UserFlow/QuestionFive"
+import QuestionFour from "./SignUpFlow/UserFlow/QuestionFour"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -135,6 +136,7 @@ const NavStack = () => {
                 component={QuestionThree}
               />
               <Stack.Screen name="UserQuestionFour" component={QuestionFour} />
+              <Stack.Screen name="UserQuestionFive" component={QuestionFive} />
               <Stack.Screen
                 name="UserInitalAddPhoto"
                 component={IntialAddPhotos}
