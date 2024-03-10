@@ -4,10 +4,11 @@ import { GymProfile, UserProfile } from "../@types/firestore"
 import { Dispatch, SetStateAction } from "react"
 
 const getGymProfiles = async (
-  setGymProfileData: Dispatch<SetStateAction<GymProfile[]>>
+  setGymProfileData: Dispatch<SetStateAction<GymProfile[]>>,
+  setLoading: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
-    const gymRef = collection(db, "gym")
+    const gymRef = collection(db, "gyms")
     const gymData = await getDocs(gymRef)
     const gymProfiles: GymProfile[] = []
 
@@ -26,8 +27,9 @@ const getGymProfiles = async (
       gymProfiles.push(gymProfile)
     })
 
-    console.log(gymProfiles)
+    console.log("gym profiles", gymProfiles)
     setGymProfileData(gymProfiles)
+    setLoading(false)
   } catch (err) {
     console.error(err)
   }

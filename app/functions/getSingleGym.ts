@@ -5,7 +5,8 @@ import { Dispatch, SetStateAction } from "react"
 
 const getSingleGym = async (
   id: string | undefined,
-  setGymProfileData: Dispatch<SetStateAction<GymProfile>>
+  setGymProfileData: Dispatch<SetStateAction<GymProfile>>,
+  setLoading: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
     if (id) {
@@ -25,10 +26,11 @@ const getSingleGym = async (
           city: gymFetchedData.city,
           gymPhotos: gymFetchedData.gymPhotos,
         }
-        console.log(gymProfile)
         setGymProfileData(gymProfile)
+        setLoading(false)
       }
     }
+    console.log("nothign returned")
   } catch (err) {
     console.error(err)
   }

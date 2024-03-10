@@ -30,6 +30,7 @@ import QuestionThree from "./SignUpFlow/UserFlow/QuestionThree"
 import QuestionFive from "./SignUpFlow/UserFlow/QuestionFive"
 import QuestionFour from "./SignUpFlow/UserFlow/QuestionFour"
 import GymsTab from "./gyms/GymsTab"
+import ViewGymProfile from "./gyms/components/ViewGymProfile"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
