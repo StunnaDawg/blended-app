@@ -29,6 +29,7 @@ import MessageScreen from "./messages/component/MessageScreen"
 import QuestionThree from "./SignUpFlow/UserFlow/QuestionThree"
 import QuestionFive from "./SignUpFlow/UserFlow/QuestionFive"
 import QuestionFour from "./SignUpFlow/UserFlow/QuestionFour"
+import GymsTab from "./gyms/GymsTab"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -54,6 +55,7 @@ const UserFooter = () => {
       }}
     >
       <Tab.Screen name="Dashboard" component={Dashboard} />
+      <Tab.Screen name="Gyms" component={GymsTab} />
       <Tab.Screen name="Profile" component={UserProfile} />
       <Tab.Screen name="Connections" component={Meet} />
       <Tab.Screen name="Messages" component={MessageTab} />
