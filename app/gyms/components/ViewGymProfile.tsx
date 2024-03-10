@@ -1,22 +1,31 @@
-import { View, Text, ActivityIndicator } from "react-native"
-import React, { useEffect, useState } from "react"
-import { RouteProp, useRoute } from "@react-navigation/native"
-import { RootStackParamList } from "../../@types/navigation"
-import getSingleGym from "../../functions/getSingleGym"
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  ScrollView,
+  Pressable,
+} from "react-native"
 import { GymProfile } from "../../@types/firestore"
-import { FIREBASE_AUTH } from "../../../firebase"
+import GymImageCarosel from "../../components/GymImageCarosel"
 
 type GymProfileProps = {
   gymProfile: GymProfile
+  dismiss: (key?: string | undefined) => boolean
 }
 
-const ViewGymProfile = ({ gymProfile }: GymProfileProps) => {
-  const [loading, setLoading] = useState<boolean>(false)
-
+const ViewGymProfile = ({ gymProfile, dismiss }: GymProfileProps) => {
   return (
-    <View>
-      <Text>{gymProfile.gym_title}</Text>
-    </View>
+    <ScrollView className="mt-10 mx-6">
+      <View className="flex flex-row justify-between">
+        <Text className="font-bold text-3xl">{gymProfile.gym_title}</Text>
+        <Pressable onPress={() => dismiss()}>
+          <Text className="underline">Dismiss</Text>
+        </Pressable>
+      </View>
+      <View>
+        <GymImageCarosel id={gymProfile.gym_id} profileType={gymProfile} />
+      </View>
+    </ScrollView>
   )
 }
 

@@ -15,7 +15,7 @@ const GymCard = ({ gymProfile }: GymCardProp) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
   const { dismiss } = useBottomSheetModal()
 
-  const snapPoints = useMemo(() => ["25%", "100%"], [])
+  const snapPoints = useMemo(() => ["1%", "100%"], [])
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present()
@@ -65,7 +65,7 @@ const GymCard = ({ gymProfile }: GymCardProp) => {
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
       >
-        <ViewGymProfile gymProfile={gymProfile} />
+        <ViewGymProfile gymProfile={gymProfile} dismiss={dismiss} />
       </BottomSheetModal>
     </>
   )

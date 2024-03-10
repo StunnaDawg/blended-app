@@ -15,7 +15,8 @@ import SingleImage from "../../../components/SingleImage"
 import SinglePic from "../../../components/Avatar"
 import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../../@types/navigation"
-import ImageCarosel from "../../../components/ImageCarosel"
+import ImageCarosel from "../../../components/GymImageCarosel"
+import UserImageCarosel from "../../../components/UserProfileCarousel"
 
 type RemoveFirstItem = () => void
 
@@ -133,11 +134,7 @@ const MeetCard = ({
             <Text className="font-bold text-xl">{userData.firstName}</Text>
           </View>
 
-          <ImageCarosel
-            id={otherUser}
-            collection="user"
-            photoType="userPhotos"
-          />
+          <UserImageCarosel id={otherUser} profileType={userData} />
 
           <View className="border rounded-3xl bg-slate-200 px-4 py-3 m-2 w-96">
             <View className="my-1 ">
