@@ -11,7 +11,6 @@ export type RootStackParamList = {
   Community: undefined
   FindWorkout: undefined
   GymFooter: undefined
-  ViewGymProfile: undefined
   UserEditProfile: undefined
   UserQuestionOne: undefined
   UserQuestionTwo: undefined

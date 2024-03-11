@@ -11,7 +11,7 @@ type CarouselProps = {
 const GymImageCarosel = ({ id, profileType }: CarouselProps) => {
   return (
     <View>
-      <Carousel height={500}>
+      <Carousel height={350} showsDots={false} autoplay={true}>
         {profileType.gymPhotos ? (
           profileType.gymPhotos?.map((item, index) => (
             <View key={index}>
@@ -19,7 +19,7 @@ const GymImageCarosel = ({ id, profileType }: CarouselProps) => {
               <SinglePic
                 key={index} // Key for each SinglePic component
                 id={id}
-                size={500}
+                size={350}
                 picNumber={index}
                 collection={"gyms"}
                 photoType={"gymPhotos"}

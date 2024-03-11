@@ -23,6 +23,9 @@ const getGymProfiles = async (
         province: gymFetchedData.province,
         city: gymFetchedData.city,
         gymPhotos: gymFetchedData.gymPhotos,
+        about: gymFetchedData.about,
+        members: gymFetchedData.members,
+        coaches: gymFetchedData.coaches,
       }
       gymProfiles.push(gymProfile)
     })

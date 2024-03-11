@@ -25,6 +25,9 @@ const getSingleGym = async (
           province: gymFetchedData.province,
           city: gymFetchedData.city,
           gymPhotos: gymFetchedData.gymPhotos,
+          about: gymFetchedData.about,
+          coaches: gymFetchedData.coaches,
+          members: gymFetchedData.members,
         }
         setGymProfileData(gymProfile)
         setLoading(false)
