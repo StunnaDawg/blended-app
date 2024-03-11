@@ -9,6 +9,8 @@ import { GymProfile } from "../../../@types/firestore"
 import GymImageCarosel from "../../../components/GymImageCarosel"
 import TrainerProfile from "../../../components/TrainerProfile"
 import EventsCard from "../../../components/EventsCard"
+import RequestToBeCoach from "./RequestToBeCoach"
+import RequestToBeMember from "./RequestToBeMember"
 
 type GymProfileProps = {
   gymProfile: GymProfile
@@ -40,8 +42,9 @@ const ViewGymProfile = ({ gymProfile, dismiss }: GymProfileProps) => {
         <Text>Crossfit</Text>
       </View>
 
-      <View className="mx-6">
-        <Text>500 Members</Text>
+      <View className="flex flex-row items-center justify-between mx-6">
+        <Text className="font-bold">500 Members</Text>
+        <RequestToBeMember gymId={gymProfile.gym_id} />
       </View>
 
       <View className="mx-6">
@@ -74,10 +77,11 @@ const ViewGymProfile = ({ gymProfile, dismiss }: GymProfileProps) => {
       </View>
 
       <View className="mt-2">
-        <View className="mx-6">
+        <View className="flex flex-row justify-between items-center mx-6">
           <Text className="text-xl font-bold">
             {gymProfile.gym_title} Trainers
           </Text>
+          <RequestToBeCoach gymId={gymProfile.gym_id} />
         </View>
         <ScrollView
           showsVerticalScrollIndicator={false}
