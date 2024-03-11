@@ -39,6 +39,7 @@ export type TabParamList = {
   Profile: undefined
   Connections: undefined
   Messages: undefined
+  Gyms: undefined
 }
 
 export type TabNavigationType = TabNavigationProp<TabParamList>

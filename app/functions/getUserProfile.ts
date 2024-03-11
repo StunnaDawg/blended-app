@@ -25,13 +25,14 @@ const getUserProfile = async (
           activities: userFetchedData.activities,
           personalRecords: userFetchedData.personalRecords || null,
           intentions: userFetchedData.intentions,
-          food: userFetchedData.food || null,
+          diet: userFetchedData.diet || null,
           zodiac: userFetchedData.zodiac || null,
           education: userFetchedData.education || null,
           jobTitle: userFetchedData.jobTitle || null,
           school: userFetchedData.school || null,
           homeGym: userFetchedData.homeGym || null,
           userPhotos: userFetchedData.userPhotos,
+          birthday: userFetchedData.birthday || null,
         }
         console.log(userProfile)
         setUserProfileData(userProfile)

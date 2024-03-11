@@ -9,5 +9,15 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["app", "App.tsx", "app/SignUpFlow", "app/SignUpFlow/UserAuth.tsx"]
+  "include": [
+    "app",
+    "App.tsx",
+    "app/SignUpFlow",
+    "app/SignUpFlow/UserAuth.tsx",
+    "app/userSide/UserEditProfile",
+    "app/userSide/gyms",
+    "app/userSide/messages",
+    "app/userSide/Dashboard",
+    "app/userSide/connections"
+  ]
 }

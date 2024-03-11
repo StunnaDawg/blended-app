@@ -7,6 +7,9 @@ export type GymProfile = {
   country: string
   province: string
   city: string
+  about?: string
+  members?: UserProfile[]
+  coaches?: UserProfile[]
   gymPhotos?: string[]
 }
 
@@ -49,4 +52,13 @@ export type Messages = {
   photoUrl: string
   timeStamp: string
   userName: string
+}
+
+export type Event = {
+  id: string
+  gymHost: GymProfile
+  description: string
+  location: string
+  price: number
+  attendees: UserProfile[]
 }

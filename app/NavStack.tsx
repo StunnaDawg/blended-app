@@ -1,16 +1,16 @@
 import { RootStackParamList, TabParamList } from "./@types/navigation"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import Dashboard from "./Dashboard"
-import GymDashboard from "./GymDashboard"
+import Dashboard from "./userSide/Dashboard"
+import GymDashboard from "./gymSide/GymDashboard"
 import { useUserAuth } from "./context/auth"
 import { useState, useEffect } from "react"
 import { FIREBASE_AUTH, db } from "../firebase"
 import { doc, getDoc } from "@firebase/firestore"
 import UserAuth from "./SignUpFlow/UserAuth"
 import Login from "./components/Login"
-import GymProfile from "./GymDashboard/GymProfile"
-import UserProfile from "./Dashboard/UserProfile/UserProfile"
+import GymProfile from "./gymSide/GymDashboard/GymProfile"
+import UserProfile from "./userSide/Dashboard/UserProfile/UserProfile"
 import NavBar from "./components/NavBar"
 import QuestionOne from "./SignUpFlow/UserFlow/QuestionOne"
 import QuestionTwo from "./SignUpFlow/UserFlow/QuestionTwo"
@@ -18,17 +18,19 @@ import IntialAddPhotos from "./SignUpFlow/UserFlow/IntialAddPhotos"
 import GymQuestionTwo from "./SignUpFlow/GymFlow/GymQuestionTwo"
 import GymInitialAddPhotos from "./SignUpFlow/GymFlow/InitialAddPhotos"
 import GymQuestionOne from "./SignUpFlow/GymFlow/GymQuestionOne"
-import EditProfileHome from "./UserEditProfile/EditProfileHome"
+import EditProfileHome from "./userSide/UserEditProfile/EditProfileHome"
 import ChooseActivity from "./components/ChooseActivity"
-import EditGymProfileHome from "./GymEditProfile/EditProfileHome"
-import Meet from "./connections/Meet/Meet"
+import EditGymProfileHome from "./gymSide/GymEditProfile/EditProfileHome"
+import Meet from "./userSide/connections/Meet/Meet"
 import MatchModal from "./components/MatchModal"
 import LoadModal from "./components/LoadModal"
-import MessageTab from "./messages/MessageTab"
-import MessageScreen from "./messages/component/MessageScreen"
+import MessageTab from "./userSide/messages/MessageTab"
+import MessageScreen from "./userSide/messages/component/MessageScreen"
 import QuestionThree from "./SignUpFlow/UserFlow/QuestionThree"
 import QuestionFive from "./SignUpFlow/UserFlow/QuestionFive"
 import QuestionFour from "./SignUpFlow/UserFlow/QuestionFour"
+import GymsTab from "./userSide/gyms/GymsTab"
+import ViewGymProfile from "./userSide/gyms/components/ViewGymProfile"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -54,6 +56,7 @@ const UserFooter = () => {
       }}
     >
       <Tab.Screen name="Dashboard" component={Dashboard} />
+      <Tab.Screen name="Gyms" component={GymsTab} />
       <Tab.Screen name="Profile" component={UserProfile} />
       <Tab.Screen name="Connections" component={Meet} />
       <Tab.Screen name="Messages" component={MessageTab} />
