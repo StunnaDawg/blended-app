@@ -42,28 +42,15 @@ const MeetCard = ({
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   const otherUser = userData.id
   const navigation = useNavigation<NavigationType>()
-  // const currentDate: Date = new Date()
-  // const fieldVal = userData.birthday as Timestamp
-  // const birthdayTimestamp = userData?.birthday
-  // const birthdayDate: Date = birthdayTimestamp.toDate()
-
-  // let age: number = currentDate.getFullYear() - birthdayDate?.getFullYear()
-  // if (
-  //   currentDate.getMonth() < birthdayDate.getMonth() ||
-  //   (currentDate.getMonth() === birthdayDate.getMonth() &&
-  //     currentDate.getDate() < birthdayDate.getDate())
-  // ) {
-  //   age--
-  // }
 
   useEffect(() => {
     setLoading(true)
-    getUserProfile(id, setUserData)
+    getUserProfile(id, setUserData, setLoading)
     setLoading(false)
   }, [])
 
   useEffect(() => {
-    getUserProfile(currentUser, setCurrentUserData)
+    getUserProfile(currentUser, setCurrentUserData, setLoading)
   }, [])
 
   useEffect(() => {
@@ -72,7 +59,7 @@ const MeetCard = ({
 
   useEffect(() => {
     setLoading(true)
-    getUserProfile(id, setUserData)
+    getUserProfile(id, setUserData, setLoading)
     setLoading(false)
   }, [index])
 

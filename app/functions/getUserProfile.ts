@@ -5,7 +5,8 @@ import { Dispatch, SetStateAction } from "react"
 
 const getUserProfile = async (
   id: string | undefined,
-  setUserProfileData: Dispatch<SetStateAction<UserProfile>>
+  setUserProfileData: Dispatch<SetStateAction<UserProfile>>,
+  setLoading: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
     if (id) {
@@ -37,10 +38,12 @@ const getUserProfile = async (
         }
         console.log(userProfile)
         setUserProfileData(userProfile)
+        setLoading(false)
       }
     }
   } catch (err) {
     console.error(err)
+    setLoading(false)
   }
 }
 

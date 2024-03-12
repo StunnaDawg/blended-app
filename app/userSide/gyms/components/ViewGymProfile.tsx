@@ -44,7 +44,10 @@ const ViewGymProfile = ({ gymProfile, dismiss }: GymProfileProps) => {
       </View>
 
       <View className="flex flex-row items-center justify-between mx-6">
-        <Text className="font-bold">{gymProfile.members?.length} Members</Text>
+        <Text className="font-bold">
+          {gymProfile.members == undefined ? 0 : gymProfile.members?.length}{" "}
+          Members
+        </Text>
         {/* <GymMembersModal members={gymProfile.members} /> */}
         <RequestToBeMember gymId={gymProfile.gym_id} />
       </View>
@@ -91,9 +94,11 @@ const ViewGymProfile = ({ gymProfile, dismiss }: GymProfileProps) => {
           horizontal
           className="flex flex-row flex-wrap"
         >
-          <TrainerProfile />
-          <TrainerProfile />
-          <TrainerProfile />
+          {gymProfile?.coaches?.map((coach) => (
+            <View key={coach.id}>
+              <TrainerProfile trainerId={coach.id} />
+            </View>
+          ))}
         </ScrollView>
       </View>
     </ScrollView>

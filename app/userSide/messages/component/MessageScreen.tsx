@@ -51,7 +51,7 @@ const MessageScreen = () => {
   }, [currentId])
 
   useEffect(() => {
-    getUserProfile(matchIdState, setMatchProfile)
+    getUserProfile(matchIdState, setMatchProfile, setLoading)
   }, [matchIdState])
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const MessageScreen = () => {
   }, [currentId])
 
   useEffect(() => {
-    getUserProfile(currentId, setCurrentUserProfile)
+    getUserProfile(currentId, setCurrentUserProfile, setLoading)
   }, [currentId])
 
   useEffect(() => {
