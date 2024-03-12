@@ -11,7 +11,7 @@ const requestToGym = async (gymId: string, requestType: string) => {
       if (userData.exists()) {
         const userFetchedData = { ...userData.data() }
         const userId = userData.id
-        const userProfile = {
+        await setDoc(doc(db, "gyms", gymId, requestType, currentUser), {
           ...userFetchedData,
           id: userId,
           firstName: userFetchedData.first_name,
@@ -29,9 +29,6 @@ const requestToGym = async (gymId: string, requestType: string) => {
           homeGym: userFetchedData.homeGym || null,
           userPhotos: userFetchedData.userPhotos,
           birthday: userFetchedData.birthday || null,
-        }
-        setDoc(doc(db, "gyms", gymId, requestType, currentUser), {
-          userProfile,
         })
       }
     }

@@ -31,6 +31,7 @@ import QuestionFive from "./SignUpFlow/UserFlow/QuestionFive"
 import QuestionFour from "./SignUpFlow/UserFlow/QuestionFour"
 import GymsTab from "./userSide/gyms/GymsTab"
 import ViewGymProfile from "./userSide/gyms/components/ViewGymProfile"
+import GymRequests from "./gymSide/GymRequests/GymRequests"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -44,6 +45,7 @@ const GymFooter = () => {
     >
       <Tab.Screen name="Dashboard" component={GymDashboard} />
       <Tab.Screen name="Profile" component={GymProfile} />
+      <Tab.Screen name="Requests" component={GymRequests} />
     </Tab.Navigator>
   )
 }

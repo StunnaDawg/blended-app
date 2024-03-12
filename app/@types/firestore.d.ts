@@ -62,3 +62,7 @@ export type Event = {
   price: number
   attendees: UserProfile[]
 }
+
+export type GymRequest = {
+  userProfile: UserProfile
+}
