@@ -33,6 +33,7 @@ const getUserProfile = async (
           homeGym: userFetchedData.homeGym || null,
           userPhotos: userFetchedData.userPhotos,
           birthday: userFetchedData.birthday || null,
+          gyms: userFetchedData.gyms || null,
         }
         console.log(userProfile)
         setUserProfileData(userProfile)

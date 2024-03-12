@@ -73,12 +73,7 @@ const ViewMessageUserProfile = ({ matchProfile }: MeetCardProps) => {
               </View>
               <View className="flex flex-row">
                 <View className="border border-black bg-slate-300 rounded-2xl p-2 mx-1">
-                  <Text className="text-xs font-bold">
-                    {" "}
-                    {matchProfile.homeGym?.gym_title
-                      ? matchProfile.homeGym?.gym_title
-                      : "Blended Athletics"}
-                  </Text>
+                  <Text className="text-xs font-bold">Blended</Text>
                 </View>
               </View>
             </View>

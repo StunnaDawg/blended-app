@@ -1,5 +1,6 @@
 import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore"
 import { FIREBASE_AUTH, db } from "../../firebase"
+import updateUsersGyms from "./updateUserHomeGym"
 
 const reviewRequest = async (
   requestId: string,
@@ -36,6 +37,7 @@ const reviewRequest = async (
           birthday: userFetchedData.birthday || null,
         })
         await deleteDoc(doc(db, "gyms", currentUser, deleteFrom, requestId))
+        await updateUsersGyms(requestId, currentUser)
       }
     } else {
       if (currentUser)

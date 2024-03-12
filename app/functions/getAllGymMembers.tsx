@@ -3,20 +3,15 @@ import { FIREBASE_AUTH, db } from "../../firebase"
 import { UserProfile } from "../@types/firestore"
 import { Dispatch, SetStateAction } from "react"
 
-const getUserProfiles = async (
+const getGymMembers = async (
   setUserProfileData: Dispatch<SetStateAction<UserProfile[]>>,
-  collectionString: string,
+  gymId: string,
   subCollectionString: string
 ) => {
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   try {
     if (currentUser) {
-      const userCollection = collection(
-        db,
-        collectionString,
-        currentUser,
-        subCollectionString
-      )
+      const userCollection = collection(db, "gyms", gymId, subCollectionString)
       const querySnapshot = await getDocs(userCollection)
 
       const profiles: UserProfile[] = []
@@ -45,7 +40,6 @@ const getUserProfiles = async (
             birthday: userFetchedData.birthday || null,
             gyms: userFetchedData.gyms || null,
           }
-          console.log(subCollectionString, userProfile)
           profiles.push(userProfile)
         }
       })
@@ -57,4 +51,4 @@ const getUserProfiles = async (
   }
 }
 
-export default getUserProfiles
+export default getGymMembers

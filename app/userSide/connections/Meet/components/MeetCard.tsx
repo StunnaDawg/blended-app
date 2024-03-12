@@ -147,9 +147,7 @@ const MeetCard = ({
               <View className="border border-black bg-slate-300 rounded-2xl p-2 mx-1">
                 <Text className="text-xs font-bold">
                   {" "}
-                  {userData.homeGym?.gym_title
-                    ? userData.homeGym?.gym_title
-                    : "Blended Athletics"}
+                  {"Blended Athletics"}
                 </Text>
               </View>
             </View>
