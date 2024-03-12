@@ -4,10 +4,14 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import getUserProfiles from "../../functions/getUserProfiles"
 import { GymRequest, UserProfile } from "../../@types/firestore"
+import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
+import MeetCard from "../../userSide/connections/Meet/components/MeetCard"
+import ReviewUser from "./components/ReviewUser"
 
 const GymRequests = () => {
   const [loading, setLoading] = useState<boolean>(false)
@@ -16,6 +20,28 @@ const GymRequests = () => {
   const [memberRequestsList, setShowMemberRequestList] = useState<boolean>(true)
   const [coachRequests, setCoachRequests] = useState<UserProfile[]>([])
   const [memberRequests, setMemberRequests] = useState<UserProfile[]>([])
+  const [refreshing, setRefreshing] = useState<boolean>(false)
+  const [userToReview, setUserToReview] = useState<UserProfile>(
+    {} as UserProfile
+  )
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
+  const { dismiss } = useBottomSheetModal()
+
+  const snapPoints = useMemo(() => ["1%", "100%"], [])
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present()
+  }, [])
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index)
+  }, [])
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 2000)
+  }, [])
   const handlePressIn = () => {
     setIsPressed(true)
   }
@@ -84,22 +110,51 @@ const GymRequests = () => {
       </View>
 
       {!loading ? (
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           {!memberRequestsList
             ? coachRequests.map((coachRequest) => (
-                <View key={coachRequest.id}>
+                <Pressable
+                  onPress={async () => {
+                    setUserToReview(coachRequest)
+                    handlePresentModalPress()
+                  }}
+                  className="flex flex-row justify-between p-2 border-b"
+                  key={coachRequest.id}
+                >
                   <Text>{coachRequest.lastName}</Text>
-                </View>
+                  <Text>View Request</Text>
+                </Pressable>
               ))
             : memberRequests.map((memberRequest) => (
-                <View key={memberRequest.id}>
+                <Pressable
+                  onPress={() => {
+                    setUserToReview(memberRequest)
+                    handlePresentModalPress()
+                  }}
+                  className="flex flex-row justify-between p-2 border-b"
+                  key={memberRequest.id}
+                >
                   <Text>{memberRequest.firstName}</Text>
-                </View>
+                  <Text>View Request</Text>
+                </Pressable>
               ))}
         </ScrollView>
       ) : (
         <ActivityIndicator />
       )}
+
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={1}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+      >
+        <ReviewUser profile={userToReview} />
+      </BottomSheetModal>
     </>
   )
 }
