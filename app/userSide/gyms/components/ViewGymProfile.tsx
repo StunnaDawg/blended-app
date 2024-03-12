@@ -94,11 +94,17 @@ const ViewGymProfile = ({ gymProfile, dismiss }: GymProfileProps) => {
           horizontal
           className="flex flex-row flex-wrap"
         >
-          {gymProfile?.coaches?.map((coach) => (
-            <View key={coach.id}>
-              <TrainerProfile trainerId={coach.id} />
+          {gymProfile.members == undefined ? (
+            gymProfile?.coaches?.map((coach) => (
+              <View key={coach.id}>
+                <TrainerProfile trainerId={coach.id} />
+              </View>
+            ))
+          ) : (
+            <View>
+              <Text className="font-bold text-xl">No Coaches!</Text>
             </View>
-          ))}
+          )}
         </ScrollView>
       </View>
     </ScrollView>

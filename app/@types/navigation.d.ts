@@ -26,6 +26,7 @@ export type RootStackParamList = {
   GymEditProfile: undefined
   MatchModal: undefined
   LoadModal: undefined
+  CreateEvent: undefined
   MessagingScreen: {
     id: string
     matchDocId: string
@@ -41,6 +42,7 @@ export type TabParamList = {
   Messages: undefined
   Gyms: undefined
   Requests: undefined
+  GymEvents: undefined
 }
 
 export type TabNavigationType = TabNavigationProp<TabParamList>

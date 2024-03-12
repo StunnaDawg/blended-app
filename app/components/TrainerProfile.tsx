@@ -1,7 +1,8 @@
-import { View, Text, ActivityIndicator } from "react-native"
+import { View, Text, ActivityIndicator, Pressable } from "react-native"
 import React, { useEffect, useState } from "react"
 import getUserProfile from "../functions/getUserProfile"
 import { UserProfile } from "../@types/firestore"
+import SinglePic from "./Avatar"
 
 type TrainerProfileProps = {
   trainerId: string
@@ -25,7 +26,21 @@ const TrainerProfile = ({ trainerId }: TrainerProfileProps) => {
   return (
     <View className="border flex h-48 w-48 mx-3 mt-4">
       {!loading ? (
-        <Text>{trainerProfile.firstName}</Text>
+        <View className="items-center">
+          <Text>{trainerProfile.firstName}</Text>
+          <SinglePic
+            id={trainerProfile.id}
+            size={100}
+            picNumber={0}
+            avatarRadius={10}
+            noAvatarRadius={10}
+            collection="user"
+            photoType="userPhotos"
+          />
+          <Pressable>
+            <Text>View Profile</Text>
+          </Pressable>
+        </View>
       ) : (
         <ActivityIndicator />
       )}

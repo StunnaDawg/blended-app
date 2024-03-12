@@ -32,6 +32,8 @@ import QuestionFour from "./SignUpFlow/UserFlow/QuestionFour"
 import GymsTab from "./userSide/gyms/GymsTab"
 import ViewGymProfile from "./userSide/gyms/components/ViewGymProfile"
 import GymRequests from "./gymSide/GymRequests/GymRequests"
+import EventsTab from "./gymSide/Events/EventsTab"
+import CreateEvent from "./gymSide/Events/CreateEvent"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -44,6 +46,7 @@ const GymFooter = () => {
       }}
     >
       <Tab.Screen name="Dashboard" component={GymDashboard} />
+      <Tab.Screen name="GymEvents" component={EventsTab} />
       <Tab.Screen name="Profile" component={GymProfile} />
       <Tab.Screen name="Requests" component={GymRequests} />
     </Tab.Navigator>
@@ -157,6 +160,7 @@ const NavStack = () => {
         ) : (
           <>
             <Stack.Screen name="GymFooter" component={GymFooter} />
+            <Stack.Screen name="CreateEvent" component={CreateEvent} />
             <Stack.Screen
               name="GymEditProfile"
               component={EditGymProfileHome}
