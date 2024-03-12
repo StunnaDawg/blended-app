@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../../@types/navigation"
 import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
 import ViewGymProfile from "./ViewGymProfile"
+import GymMembersModal from "./GymMembersModal"
 
 type GymCardProp = {
   gymProfile: GymProfile

@@ -11,6 +11,7 @@ import TrainerProfile from "../../../components/TrainerProfile"
 import EventsCard from "../../../components/EventsCard"
 import RequestToBeCoach from "./RequestToBeCoach"
 import RequestToBeMember from "./RequestToBeMember"
+import GymMembersModal from "./GymMembersModal"
 
 type GymProfileProps = {
   gymProfile: GymProfile
@@ -43,7 +44,8 @@ const ViewGymProfile = ({ gymProfile, dismiss }: GymProfileProps) => {
       </View>
 
       <View className="flex flex-row items-center justify-between mx-6">
-        <Text className="font-bold">500 Members</Text>
+        <Text className="font-bold">{gymProfile.members?.length} Members</Text>
+        {/* <GymMembersModal members={gymProfile.members} /> */}
         <RequestToBeMember gymId={gymProfile.gym_id} />
       </View>
 
