@@ -24,6 +24,8 @@ const GymRequests = () => {
   const [userToReview, setUserToReview] = useState<UserProfile>(
     {} as UserProfile
   )
+  const [requestType, setRequestType] = useState<string>("")
+  const [deleteFrom, setDeleteFrom] = useState<string>("")
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
   const { dismiss } = useBottomSheetModal()
 
@@ -120,6 +122,8 @@ const GymRequests = () => {
                 <Pressable
                   onPress={async () => {
                     setUserToReview(coachRequest)
+                    setRequestType("coaches")
+                    setDeleteFrom("coachRequests")
                     handlePresentModalPress()
                   }}
                   className="flex flex-row justify-between p-2 border-b"
@@ -133,6 +137,8 @@ const GymRequests = () => {
                 <Pressable
                   onPress={() => {
                     setUserToReview(memberRequest)
+                    setRequestType("members")
+                    setDeleteFrom("memberRequests")
                     handlePresentModalPress()
                   }}
                   className="flex flex-row justify-between p-2 border-b"
@@ -153,7 +159,11 @@ const GymRequests = () => {
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
       >
-        <ReviewUser profile={userToReview} />
+        <ReviewUser
+          profile={userToReview}
+          deleteFrom={deleteFrom}
+          requestType={requestType}
+        />
       </BottomSheetModal>
     </>
   )
