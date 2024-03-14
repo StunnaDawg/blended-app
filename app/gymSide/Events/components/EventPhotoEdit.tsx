@@ -42,13 +42,13 @@ type EventPicProps = {
 }
 
 const EventEditImage = ({ event }: EventPicProps) => {
-  const [image, setImage] = useState<string>(event.eventPhoto)
+  const [image, setImage] = useState<string>("")
   const avatarSize = { height: 150, width: 150 }
   const id = FIREBASE_AUTH.currentUser?.uid
 
-  // useEffect(() => {
-  //   if (id) getSinglePhoto(id, eventId, setImage)
-  // }, [])
+  useEffect(() => {
+    if (id) getSinglePhoto(id, event.id, setImage)
+  }, [id, event])
 
   const submitNewUserPhotos = async (downloadImage: string) => {
     try {
