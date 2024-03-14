@@ -60,11 +60,11 @@ export type Event = {
   gymHost: GymProfile
   eventTitle: string
   description: string
-  date: Date
+  date: Date | Timestamp
   location: string
-  price: number
+  price: string
   attendees: UserProfile[]
-  eventPictures: string[]
+  eventPicture: string
 }
 
 export type GymRequest = {

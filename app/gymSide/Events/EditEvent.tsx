@@ -4,6 +4,7 @@ import UploadImage from "../../components/UploadImage"
 import { FIREBASE_AUTH, db } from "../../../firebase"
 import { ScrollView } from "react-native"
 import {
+  Timestamp,
   addDoc,
   arrayUnion,
   collection,
@@ -17,17 +18,22 @@ import DateTimePicker, {
 import uploadImage from "../../functions/uploadImage"
 import useDebouncedValue from "../../functions/debounce"
 import UploadEventImage from "../../components/UploadEventImage"
+import { RootStackParamList, RouteParamsType } from "../../@types/navigation"
+import { RouteProp, useRoute } from "@react-navigation/native"
+import getGymEvent from "../../functions/getGymEvent"
+import { Event } from "../../@types/firestore"
 
 const updateEvent = async (
   currentGymId: string,
+  eventId: string,
   valueToUpdate: string,
   updateValue: any,
   setSaving: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
     if (currentGymId) {
-      const gymRef = collection(db, "gyms", currentGymId, "events")
-      await addDoc(gymRef, {
+      const gymRef = doc(db, "gyms", currentGymId, "events", eventId)
+      await updateDoc(gymRef, {
         [valueToUpdate]: updateValue,
       })
       setSaving(false)
@@ -40,17 +46,23 @@ const updateEvent = async (
 }
 
 const EditEvent = () => {
+  const [eventToEdit, setEventToEdit] = useState<Event>({} as Event)
   const [saving, setSaving] = useState<boolean>(false)
-  const [description, setDescription] = useState<string>("")
+  const [loading, setLoading] = useState<boolean>(false)
+  const [description, setDescription] = useState<string>()
   const debounceDescription = useDebouncedValue(description, 1000)
-  const [eventTitle, setEventTitle] = useState<string>("")
+  const [eventTitle, setEventTitle] = useState<string>()
   const debounceEventTitle = useDebouncedValue(eventTitle, 500)
-  const [date, setDate] = useState<Date>(new Date())
+  const [date, setDate] = useState<Date>()
   const debounceDate = useDebouncedValue(date, 500)
-  const [price, setPrice] = useState<string>("")
+  const [price, setPrice] = useState<string>()
   const debouncePrice = useDebouncedValue(price, 500)
   const [eventPicture, setEventPicture] = useState<string>("")
-  const [newEventID, setNewEventID] = useState<string>("")
+  const route = useRoute<RouteProp<Record<string, RouteParamsType>, string>>()
+
+  const { eventId } = route.params
+  //   const route = useRoute<RouteProp<RootStackParamList, "EditEvent">>()
+  //   const eventId = route.params?.eventId
 
   const currentGymId = FIREBASE_AUTH.currentUser?.uid
 
@@ -63,30 +75,48 @@ const EditEvent = () => {
   }
 
   useEffect(() => {
+    getGymEvent(currentGymId, eventId, setEventToEdit, setLoading)
+  }, [eventId, currentGymId])
+
+  useEffect(() => {
+    if (eventToEdit) {
+      setDescription(eventToEdit.description)
+      setEventTitle(eventToEdit.eventTitle)
+
+      setPrice(eventToEdit.price)
+      setEventPicture(eventToEdit.eventPicture || "")
+      if (eventToEdit && eventToEdit.date) {
+        const jsDate = eventToEdit.date.toDate()
+        setDate(jsDate)
+      }
+    }
+  }, [eventToEdit])
+
+  useEffect(() => {
     setSaving(true)
     if (currentGymId) {
-      updateEvent(currentGymId, "date", date, setSaving)
+      updateEvent(currentGymId, eventId, "date", date, setSaving)
     }
   }, [debounceDate])
 
   useEffect(() => {
     setSaving(true)
     if (currentGymId) {
-      updateEvent(currentGymId, "eventTitle", eventTitle, setSaving)
+      updateEvent(currentGymId, eventId, "eventTitle", eventTitle, setSaving)
     }
   }, [debounceEventTitle])
 
   useEffect(() => {
     setSaving(true)
     if (currentGymId) {
-      updateEvent(currentGymId, "description", description, setSaving)
+      updateEvent(currentGymId, eventId, "description", description, setSaving)
     }
   }, [debounceDescription])
 
   useEffect(() => {
     setSaving(true)
     if (currentGymId) {
-      updateEvent(currentGymId, "price", price, setSaving)
+      updateEvent(currentGymId, eventId, "price", price, setSaving)
     }
   }, [debouncePrice])
 
@@ -137,27 +167,27 @@ const EditEvent = () => {
       </View>
       <View>
         <View>
-          <Text>{date.toLocaleString()}</Text>
+          <Text>{date ? date.toLocaleString() : "No date set"}</Text>
 
           <DateTimePicker
             testID="dateTimePicker"
-            value={date}
+            value={date || new Date()}
             mode="date"
             is24Hour={true}
             display="default"
             onChange={onChangeDate}
           />
         </View>
-      </View>
-      <DateTimePicker
-        testID="dateTimePicker"
-        value={date}
-        mode="time"
-        is24Hour={true}
-        display="default"
-        onChange={onChangeDate}
-      />
 
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date || new Date()}
+          mode="time"
+          is24Hour={true}
+          display="default"
+          onChange={onChangeDate}
+        />
+      </View>
       <View>
         <Text>Price?</Text>
         <TextInput
