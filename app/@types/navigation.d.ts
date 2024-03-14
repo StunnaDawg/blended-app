@@ -27,6 +27,9 @@ export type RootStackParamList = {
   MatchModal: undefined
   LoadModal: undefined
   CreateEvent: undefined
+  EditEvent: {
+    eventId: string
+  }
   MessagingScreen: {
     id: string
     matchDocId: string
@@ -50,4 +53,5 @@ export type TabNavigationType = TabNavigationProp<TabParamList>
 export type RouteParamsType = {
   id?: string
   matchDocId: string
+  eventId: string
 }
