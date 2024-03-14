@@ -10,7 +10,7 @@ const EventCard = ({ event }: EventCardProp) => {
   return (
     <View className="w-full border-t border-b h-36">
       <View className="flex flex-row justify-center">
-        <Text className="font-bold text-xl">EventCard</Text>
+        <Text className="font-bold text-xl">{event.eventTitle}</Text>
       </View>
       <View className="flex flex-row justify-end">
         <View>

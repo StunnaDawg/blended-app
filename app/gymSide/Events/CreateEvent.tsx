@@ -25,6 +25,8 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker"
 import uploadImage from "../../functions/uploadImage"
+import UploadSingleImage from "../../components/UploadSingleImage"
+import UploadEventImage from "../../components/UploadEventImage"
 
 const CreateEvent = () => {
   const { location, errorMsg } = useLocation()
@@ -32,7 +34,7 @@ const CreateEvent = () => {
   const [eventTitle, setEventTitle] = useState<string>("")
   const [date, setDate] = useState<Date>(new Date())
   const [price, setPrice] = useState<string>("")
-  const [eventPictures, setEventPictures] = useState<string[]>([])
+  const [eventPicture, setEventPicture] = useState<string>("")
   const [mode, setMode] = useState<any>("date")
   const [show, setShow] = useState(false)
   const [newEventID, setNewEventID] = useState<string>("")
@@ -62,7 +64,9 @@ const CreateEvent = () => {
         })
         // Access the document ID of the newly created document
         const newDocId = docRef.id
-        setNewEventID(newDocId)
+        uploadImage(eventPicture, "image", currentGymId + "element", (image) =>
+          submitUserPhotos(image, newDocId)
+        )
         console.log("New document created with ID:", newDocId)
       } else {
         console.log("Gym does not exist")
@@ -71,13 +75,13 @@ const CreateEvent = () => {
       console.error(err)
     }
   }
-  const submitUserPhotos = async (image: string) => {
+  const submitUserPhotos = async (image: string, eventId: string) => {
     try {
-      if (newEventID && currentGymId) {
-        const userRef = doc(db, "gyms", currentGymId, "events", newEventID)
+      if (eventId && currentGymId) {
+        const userRef = doc(db, "gyms", currentGymId, "events", eventId)
 
         await updateDoc(userRef, {
-          userPhotos: arrayUnion(image),
+          eventPhoto: image,
         })
       } else {
         console.log("User does not exist")
@@ -85,13 +89,6 @@ const CreateEvent = () => {
     } catch (err) {
       console.error(err)
     }
-  }
-
-  const uploadImagesArray = async (imageArray: string[]) => {
-    imageArray.forEach((element) => {
-      uploadImage(element, "image", currentGymId + "element", submitUserPhotos)
-      console.log(element)
-    })
   }
 
   return (
@@ -149,13 +146,12 @@ const CreateEvent = () => {
       </View>
 
       <View>
-        <UploadImage setUris={setEventPictures} uris={eventPictures} />
+        <UploadEventImage setUri={setEventPicture} uri={eventPicture} />
       </View>
 
       <Pressable
         onPress={async () => {
           await createEvent()
-          uploadImagesArray(eventPictures)
         }}
       >
         <Text className="font-bold text-xl">Create Event</Text>
