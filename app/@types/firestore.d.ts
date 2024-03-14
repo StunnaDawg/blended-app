@@ -64,7 +64,7 @@ export type Event = {
   location: string
   price: string
   attendees: UserProfile[]
-  eventPicture: string
+  eventPhoto: string
 }
 
 export type GymRequest = {

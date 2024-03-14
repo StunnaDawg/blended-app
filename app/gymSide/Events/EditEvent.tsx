@@ -22,6 +22,8 @@ import { RootStackParamList, RouteParamsType } from "../../@types/navigation"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import getGymEvent from "../../functions/getGymEvent"
 import { Event } from "../../@types/firestore"
+import SingleImage from "../../components/SingleImage"
+import EventEditImage from "./components/EventPhotoEdit"
 
 const updateEvent = async (
   currentGymId: string,
@@ -84,7 +86,7 @@ const EditEvent = () => {
       setEventTitle(eventToEdit.eventTitle)
 
       setPrice(eventToEdit.price)
-      setEventPicture(eventToEdit.eventPicture || "")
+      setEventPicture(eventToEdit.eventPhoto || "")
       if (eventToEdit && eventToEdit.date) {
         const jsDate = eventToEdit.date.toDate()
         setDate(jsDate)
@@ -146,7 +148,7 @@ const EditEvent = () => {
   return (
     <ScrollView>
       <View className="flex flex-row justify-center">
-        <Text className="text-3xl font-semibold">Create Event</Text>
+        <Text className="text-3xl font-semibold">Edit Event</Text>
       </View>
 
       <View>
@@ -197,17 +199,7 @@ const EditEvent = () => {
         />
       </View>
 
-      <View>
-        <UploadEventImage setUri={setEventPicture} uri={eventPicture} />
-      </View>
-
-      {/* <Pressable
-        onPress={async () => {
-          uploadImagesArray(eventPicture)
-        }}
-      >
-        <Text className="font-bold text-xl">Edit Event</Text>
-      </Pressable> */}
+      <EventEditImage event={eventToEdit} />
     </ScrollView>
   )
 }

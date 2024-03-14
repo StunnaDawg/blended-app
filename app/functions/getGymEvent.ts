@@ -30,7 +30,7 @@ const getGymEvent = async (
           location: eventFetchedData.location,
           price: eventFetchedData.price,
           attendees: eventFetchedData.attendees || [],
-          eventPicture: eventFetchedData.eventPicture,
+          eventPhoto: eventFetchedData.eventPhoto,
         }
 
         setEventData(eventData)
