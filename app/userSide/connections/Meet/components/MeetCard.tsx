@@ -80,32 +80,21 @@ const MeetCard = ({
   const swipeUser = async () => {
     try {
       if (currentUser) {
-        getDoc(doc(db, "user", userData.id, "swipes", currentUser)).then(
-          (documentSnapshot) => {
-            console.log("trying")
-            if (documentSnapshot.exists()) {
-              setDoc(
-                doc(db, "user", currentUser, "swipes", userData.id),
-                userData
-              )
-              setDoc(doc(db, "matches", mergeIds(currentUser, userData.id)), {
-                users: {
-                  user1: currentUserData,
-                  user2: userData,
-                },
-                usersMatched: [currentUser, userData.id],
-              })
-              navigation.navigate("MatchModal")
-              console.log("User Matched first")
-            } else {
-              console.log("You matched first")
-              setDoc(
-                doc(db, "user", currentUser, "swipes", userData.id),
-                userData
-              )
-            }
-          }
+        setDoc(doc(db, "user", currentUser, "messaged", userData.id), userData)
+        setDoc(
+          doc(db, "user", userData.id, "messaged", currentUser),
+          currentUserData
         )
+        setDoc(doc(db, "matches", mergeIds(currentUser, userData.id)), {
+          users: {
+            user1: currentUserData,
+            user2: userData,
+          },
+          usersMatched: [currentUser, userData.id],
+        })
+        navigation.navigate("MatchModal")
+        console.log("User Matched first")
+
         nextProfile(index + 1)
       }
     } catch (err) {

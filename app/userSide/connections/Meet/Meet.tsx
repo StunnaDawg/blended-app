@@ -43,19 +43,22 @@ const Meet = () => {
           const passes = await getDocs(
             collection(db, "user", currentUserId, "passes")
           ).then((snapshot) => snapshot.docs.map((doc) => doc.id))
-          const swipes = await getDocs(
-            collection(db, "user", currentUserId, "swipes")
+          const messaged = await getDocs(
+            collection(db, "user", currentUserId, "messaged")
           ).then((snapshot) => snapshot.docs.map((doc) => doc.id))
 
           const passedUserIds = passes.length > 0 ? passes : ["test"]
-          const swipedUserIds = passes.length > 0 ? swipes : ["test"]
+          const messagedUserIds = messaged.length > 0 ? messaged : ["test"]
 
-          console.log("seen users", [...passedUserIds, ...swipedUserIds])
+          console.log("seen users", [...passedUserIds, ...messagedUserIds])
           //   // query(
           unsub = onSnapshot(
             query(
               collection(db, "user"),
-              where("__name__", "not-in", [...passedUserIds, ...swipedUserIds])
+              where("__name__", "not-in", [
+                ...passedUserIds,
+                ...messagedUserIds,
+              ])
             ),
             (snapshot) => {
               setProfiles(
@@ -83,19 +86,22 @@ const Meet = () => {
           const passes = await getDocs(
             collection(db, "user", currentUserId, "passes")
           ).then((snapshot) => snapshot.docs.map((doc) => doc.id))
-          const swipes = await getDocs(
-            collection(db, "user", currentUserId, "swipes")
+          const messaged = await getDocs(
+            collection(db, "user", currentUserId, "messaged")
           ).then((snapshot) => snapshot.docs.map((doc) => doc.id))
 
           const passedUserIds = passes.length > 0 ? passes : ["test"]
-          const swipedUserIds = passes.length > 0 ? swipes : ["test"]
+          const messagedUserIds = messaged.length > 0 ? messaged : ["test"]
 
-          console.log("seen users", [...passedUserIds, ...swipedUserIds])
+          console.log("seen users", [...passedUserIds, ...messagedUserIds])
           //   // query(
           unsub = onSnapshot(
             query(
               collection(db, "user"),
-              where("__name__", "not-in", [...passedUserIds, ...swipedUserIds])
+              where("__name__", "not-in", [
+                ...passedUserIds,
+                ...messagedUserIds,
+              ])
             ),
             (snapshot) => {
               setProfiles(
