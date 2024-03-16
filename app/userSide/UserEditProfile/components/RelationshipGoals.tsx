@@ -23,7 +23,7 @@ const RelationshipGoals = ({ lookingFor }: RelationshipGoalsProps) => {
   return (
     <>
       <View className="mx-2">
-        <Text className="font-bold text-xl">Relationship Goals</Text>
+        <Text className="font-bold text-xl">Social Tag</Text>
       </View>
       <View>
         <Pressable
@@ -45,81 +45,42 @@ const RelationshipGoals = ({ lookingFor }: RelationshipGoalsProps) => {
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
         >
-          <View className="flex flex-row justify-center mt-3">
-            <Text className="text-xl font-bold">I am looking for...</Text>
-          </View>
-          <View className="flex flex-row justify-center flex-wrap items-center my-2">
-            <Pressable
-              className=" flex justify-center border h-24 mx-2 rounded w-24"
-              onPress={async () => {
-                {
-                  await singleValueEdit(
-                    "user",
-                    "intentions",
-                    "Long-term Partner"
-                  )
-                  dismiss()
-                }
-              }}
-            >
-              <Text className="text-center">Long-term Partner</Text>
-            </Pressable>
-            <Pressable
-              className=" flex justify-center border h-24 mx-2 rounded w-24"
-              onPress={async () => {
-                {
-                  singleValueEdit("user", "intentions", "Short-term Partner")
-                  dismiss()
-                }
-              }}
-            >
-              <Text className="text-center">Short-term Partner</Text>
-            </Pressable>
-            <Pressable
-              className="flex justify-center border h-24 mx-2 rounded w-24"
-              onPress={() => {
-                singleValueEdit("user", "intentions", "Workout Partner")
-              }}
-            >
-              <Text className="text-center">Workout Partner</Text>
-            </Pressable>
-            <Pressable
-              className="flex justify-center border h-24 mx-2 my-2 rounded w-24"
-              onPress={async () => {
-                {
-                  await singleValueEdit("user", "intentions", "New Friends")
-                  dismiss()
-                }
-              }}
-            >
-              <Text className="text-center">New Friends</Text>
-            </Pressable>
-            <Pressable
-              className="flex justify-center border px-1 h-24 mx-2 my-2 h-30 rounded w-24"
-              onPress={async () => {
-                {
-                  await singleValueEdit(
-                    "user",
-                    "intentions",
-                    "Still Figuring it Out"
-                  )
-                  dismiss()
-                }
-              }}
-            >
-              <Text className="text-center">Still Figuring it Out</Text>
-            </Pressable>
-            <Pressable
-              className="flex justify-center border h-24 mx-2 my-2 rounded w-24"
-              onPress={async () => {
-                {
-                  await singleValueEdit("user", "intentions", "One day Workout")
-                  dismiss()
-                }
-              }}
-            >
-              <Text className="text-center">One day Workout</Text>
-            </Pressable>
+          <View className="flex-1">
+            <View className="flex flex-row justify-center mt-3">
+              <Text className="text-xl font-bold">Looking For...</Text>
+            </View>
+            <View className="flex flex-row justify-center flex-wrap items-center my-2">
+              <Pressable
+                className=" flex justify-center border h-24 mx-2 rounded w-24"
+                onPress={async () => {
+                  {
+                    await singleValueEdit("user", "intentions", "Social")
+                    dismiss()
+                  }
+                }}
+              >
+                <Text className="text-center">Social</Text>
+              </Pressable>
+              <Pressable
+                className=" flex justify-center border h-24 mx-2 rounded w-24"
+                onPress={async () => {
+                  {
+                    singleValueEdit("user", "intentions", "Dating")
+                    dismiss()
+                  }
+                }}
+              >
+                <Text className="text-center">Dating</Text>
+              </Pressable>
+              <Pressable
+                className="flex justify-center border h-24 mx-2 rounded w-24"
+                onPress={() => {
+                  singleValueEdit("user", "intentions", "Business")
+                }}
+              >
+                <Text className="text-center">Career</Text>
+              </Pressable>
+            </View>
           </View>
         </BottomSheetModal>
       </View>
@@ -128,16 +89,3 @@ const RelationshipGoals = ({ lookingFor }: RelationshipGoalsProps) => {
 }
 
 export default RelationshipGoals
-{
-  /*  <Pressable className="flex justify-center border h-24 mx-2 rounded text-ellipsis">
-              <Text>Short-term Partner</Text>
-            </Pressable>
-          </View>
-          <View className="flex flex-row justify-center flex-wrap items-center">
-            <Pressable className="flex justify-center border h-24 mx-2 rounded text-ellipsis">
-              <Text>Workout Partner</Text>
-            </Pressable>
-            <Pressable className="flex justify-center border h-24 mx-2 rounded text-ellipsis">
-              <Text>Dunno</Text>
-            </Pressable> */
-}

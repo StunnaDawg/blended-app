@@ -5,6 +5,7 @@ import {
   Image,
   ScrollView,
   TextInput,
+  StyleSheet,
 } from "react-native"
 import React, {
   Dispatch,
@@ -336,3 +337,26 @@ const MeetCard = ({
 }
 
 export default MeetCard
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: "relative", // Needed for absolute positioning of children
+  },
+  overlayContent: {
+    // Style your overlay content as needed
+    position: "absolute", // Overlay content positioned absolutely
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center", // Center content vertically
+    alignItems: "center", // Center content horizontally
+  },
+  text: {
+    // Styling for the text
+    color: "#fff", // White color for better visibility
+    fontSize: 20,
+    // Add more styling as needed
+  },
+})
