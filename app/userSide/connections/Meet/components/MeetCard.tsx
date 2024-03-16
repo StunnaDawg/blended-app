@@ -15,7 +15,7 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { UserProfile } from "../../../../@types/firestore"
+import { GymProfile, UserProfile } from "../../../../@types/firestore"
 import getUserProfile from "../../../../functions/getUserProfile"
 import {
   DocumentSnapshot,
@@ -36,6 +36,7 @@ import { NavigationType } from "../../../../@types/navigation"
 import ImageCarosel from "../../../../components/GymImageCarosel"
 import UserImageCarosel from "../../../../components/UserProfileCarousel"
 import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
+import getSingleGym from "../../../../functions/getSingleGym"
 
 type RemoveFirstItem = () => void
 
@@ -59,6 +60,7 @@ const MeetCard = ({
     {} as UserProfile
   )
   const [matchIdState, setMatchIdState] = useState<string>("")
+  const [homeGym, setHomeGym] = useState<GymProfile>({} as GymProfile)
   const [message, setMessageToSend] = useState<string>("")
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
   const { dismiss } = useBottomSheetModal()
@@ -86,14 +88,16 @@ const MeetCard = ({
   }, [])
 
   useEffect(() => {
-    console.log("Age", matchesAge)
-  }, [matchesAge])
-
-  useEffect(() => {
     setLoading(true)
     getUserProfile(id, setUserData, setLoading)
     setLoading(false)
   }, [index])
+
+  useEffect(() => {
+    if (userData.homeGym) {
+      getSingleGym(userData.homeGym, setHomeGym, setLoading)
+    }
+  }, [userData])
 
   const passUser = async () => {
     try {
@@ -173,10 +177,7 @@ const MeetCard = ({
               </View>
               <View className="flex flex-row">
                 <View className="border border-black bg-slate-300 rounded-2xl p-2 mx-1">
-                  <Text className="text-xs font-bold">
-                    {" "}
-                    {"Blended Athletics"}
-                  </Text>
+                  <Text className="text-xs font-bold">{homeGym.gym_title}</Text>
                 </View>
               </View>
             </View>
