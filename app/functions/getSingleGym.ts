@@ -10,7 +10,7 @@ const getSingleGym = async (
 ) => {
   try {
     if (id) {
-      const gymRef = doc(db, "gym", id)
+      const gymRef = doc(db, "gyms", id)
       const gymData = await getDoc(gymRef)
 
       if (gymData.exists()) {
@@ -32,8 +32,9 @@ const getSingleGym = async (
         setGymProfileData(gymProfile)
         setLoading(false)
       }
+    } else {
+      console.log("nothign returned")
     }
-    console.log("nothign returned")
   } catch (err) {
     console.error(err)
   }

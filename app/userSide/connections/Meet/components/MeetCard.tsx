@@ -298,7 +298,7 @@ const MeetCard = ({
                     await swipeUser()
                   }}
                 >
-                  <Text className="font-bold">Swipe</Text>
+                  <Text className="font-bold">Message!</Text>
                 </Pressable>
               </View>
             </View>
