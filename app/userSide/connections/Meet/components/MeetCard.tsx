@@ -160,153 +160,80 @@ const MeetCard = ({
 
   return (
     <>
-      <ScrollView className="mb-20">
+      <View className="flex-1 bg-black/50">
         <View className="flex flex-row justify-center items-center">
+          <Text className="font-bold text-xl text-white">
+            {userData.firstName}
+          </Text>
+          {userData.intentions && (
+            <View className="flex flex-row items-center">
+              <View className="border border-black rounded-2xl bg-black/50 p-1 mx-1">
+                <Text className="text-xs font-bold">{userData.intentions}</Text>
+              </View>
+            </View>
+          )}
+        </View>
+        <UserImageCarosel id={otherUser} profileType={userData} />
+        <View className="bg-black/50">
           <View className="flex flex-col items-center">
-            <View>
-              <Text className="font-bold text-xl">{userData.firstName}</Text>
-            </View>
+            {homeGym.gym_title ? (
+              <Text className="text-xs font-bold">
+                Trains at {homeGym.gym_title}
+              </Text>
+            ) : (
+              <Text className="text-xs font-bold">No current Home Gym</Text>
+            )}
+          </View>
+          {userData.intentions && (
+            <Text className="text-md font-bold text-white">
+              {userData.intentions}
+            </Text>
+          )}
+          {userData.about && (
+            <Text className="text-md font-bold text-white">
+              {userData.about}
+            </Text>
+          )}
 
-            <UserImageCarosel id={otherUser} profileType={userData} />
-
-            <View className="border rounded-3xl bg-slate-200 px-4 py-3 m-2 w-96">
-              <View className="my-1 ">
-                {/* <Text>{birthdayDate ? birthdayDate : "No Age on Profile"}</Text> */}
-                <Text className="text-black/50 text-xs font-bold">
-                  Trains at...
-                </Text>
-              </View>
-              <View className="flex flex-row">
-                <View className="border border-black bg-slate-300 rounded-2xl p-2 mx-1">
-                  <Text className="text-xs font-bold">{homeGym.gym_title}</Text>
-                </View>
-              </View>
-            </View>
-
-            <View className="border rounded-3xl bg-slate-200 px-4 py-3 m-2 w-96">
-              <View className="my-1">
-                <Text className="text-black/50 text-xs font-bold">
-                  About Me
-                </Text>
-              </View>
-              <View>
-                {userData.about && (
-                  <Text className="text-md font-bold"> {userData.about}</Text>
-                )}
-              </View>
-            </View>
-
-            <View className="border rounded-3xl bg-slate-200 px-4 py-3 m-2 w-96">
-              <View className="my-1">
-                <Text className="text-black/50 text-xs font-bold">
-                  Activites
-                </Text>
-              </View>
-              <View className="my-1">
-                {userData.activities?.length > 0 && (
-                  <View className="flex flex-row">
-                    {userData.activities.map((activity, index) => (
-                      <View
-                        key={index}
-                        className="border border-black bg-slate-300 rounded-2xl p-2 mx-1"
-                      >
-                        <Text className="text-xs font-bold">{activity}</Text>
-                      </View>
-                    ))}
-                  </View>
-                )}
-              </View>
-            </View>
-
-            <View className="border rounded-3xl bg-slate-200 px-4 py-3 m-2 w-96">
-              <View className="my-1 ">
-                <Text className="text-black/50 text-xs font-bold">
-                  I am looking for...
-                </Text>
-              </View>
-              <View className="flex flex-row">
-                <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
-                  {userData.intentions && (
-                    <Text className="text-xs font-bold">
-                      {" "}
-                      {userData.intentions}
-                    </Text>
-                  )}
-                </View>
-              </View>
-            </View>
-
-            <View className="flex flex-row border rounded-3xl bg-slate-200 px-4 py-3 m-2 w-96 ">
-              <View>
-                <View className="my-1">
-                  <Text className="text-black/50 text-xs font-bold">
-                    Essentials
+          <Text className="my-1 text-xs font-bold text-black/50">
+            Activites
+          </Text>
+          {userData.activities?.length > 0 && (
+            <View className="flex flex-row">
+              {userData.activities.map((activity, index) => (
+                <View key={index} className="mx-1">
+                  <Text className="text-xs font-bold text-white">
+                    {activity}
                   </Text>
                 </View>
-                <View className="flex flex-row flex-wrap">
-                  {userData.diet && (
-                    <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
-                      <Text className="text-xs font-bold">{userData.diet}</Text>
-                    </View>
-                  )}
-                  {userData.zodiac && (
-                    <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
-                      <Text className="text-xs font-bold">
-                        {" "}
-                        {userData.zodiac}
-                      </Text>
-                    </View>
-                  )}
-                  {userData.education && (
-                    <View className="border border-black bg-slate-300 rounded-2xl p-2 mx-1">
-                      <Text className="text-xs font-bold">
-                        {userData.education}
-                      </Text>
-                    </View>
-                  )}
-                  {userData.jobTitle && (
-                    <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
-                      <Text className="text-xs font-bold">
-                        {userData.jobTitle}
-                      </Text>
-                    </View>
-                  )}
-                  {userData.school && (
-                    <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
-                      <Text className="text-xs font-bold">
-                        {userData.school}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-              </View>
+              ))}
             </View>
+          )}
+        </View>
 
-            <View className="flex flex-row">
-              <View className="mx-2">
-                <Pressable
-                  className="border rounded-3xl bg-red-700 p-3"
-                  onPress={async () => {
-                    await passUser()
-                  }}
-                >
-                  <Text className="font-bold">Pass</Text>
-                </Pressable>
-              </View>
-              <View className="mx-2">
-                <Pressable
-                  className="border rounded-3xl p-3"
-                  onPress={async () => {
-                    await swipeUser()
-                  }}
-                >
-                  <Text className="font-bold">Message!</Text>
-                </Pressable>
-              </View>
-            </View>
+        <View className="flex flex-row justify-center">
+          <View className="mx-2">
+            <Pressable
+              className="border rounded-3xl bg-red-700 p-3"
+              onPress={async () => {
+                await passUser()
+              }}
+            >
+              <Text className="font-bold">Pass</Text>
+            </Pressable>
+          </View>
+          <View className="mx-2">
+            <Pressable
+              className="border rounded-3xl p-3"
+              onPress={async () => {
+                await swipeUser()
+              }}
+            >
+              <Text className="font-bold">Message!</Text>
+            </Pressable>
           </View>
         </View>
-      </ScrollView>
+      </View>
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={1}
@@ -344,14 +271,17 @@ const styles = StyleSheet.create({
     position: "relative", // Needed for absolute positioning of children
   },
   overlayContent: {
-    // Style your overlay content as needed
-    position: "absolute", // Overlay content positioned absolutely
-    top: 0,
+    position: "absolute", // Keep the content positioned absolutely
     left: 0,
     right: 0,
-    bottom: 0,
-    justifyContent: "center", // Center content vertically
+    bottom: 0, // Anchor the content to the bottom
+    flexDirection: "row",
+    justifyContent: "flex-end", // Align content to the bottom
     alignItems: "center", // Center content horizontally
+    // Add padding or a specific height if needed to control the overlay size
+    padding: 10, // Example padding, adjust as needed
+    // height: 100, // Optional: If you want a specific height for your overlay
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Optional: Add a background color to enhance readability
   },
   text: {
     // Styling for the text

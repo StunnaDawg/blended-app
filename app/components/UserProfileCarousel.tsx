@@ -1,4 +1,4 @@
-import { View } from "react-native"
+import { Text, View } from "react-native"
 import Carousel from "pinar"
 import SinglePic from "./Avatar"
 import { UserProfile } from "../@types/firestore"
@@ -15,7 +15,7 @@ const UserImageCarosel = ({ id, profileType }: CarouselProps) => {
         {profileType.userPhotos ? (
           profileType.userPhotos?.map((item, index) => (
             <View key={index}>
-              {/* Key should be unique for each element */}
+              <Text>Hi</Text>
               <SinglePic
                 key={index} // Key for each SinglePic component
                 id={id}

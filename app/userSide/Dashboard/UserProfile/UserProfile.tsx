@@ -42,11 +42,10 @@ const UserProfile = () => {
       setLoading(true)
       await getUserNameAge()
       await getCity(setCity, location)
-
       setLoading(false)
     }
     callFuncs()
-  }, [])
+  }, [location])
 
   useEffect(() => {
     getSingleGym(gymId, setHomeGym, setLoading)

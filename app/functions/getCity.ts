@@ -9,6 +9,7 @@ export const getCity = async (
   try {
     if (location && location.coords) {
       const { latitude, longitude } = location.coords
+      console.log(latitude, longitude)
       let currentCity = await Location.reverseGeocodeAsync({
         latitude,
         longitude,
@@ -19,6 +20,8 @@ export const getCity = async (
       } else {
         console.log("City not found in the geocoded results")
       }
+    } else {
+      console.log("didn't call")
     }
   } catch (err) {
     console.error(err)
