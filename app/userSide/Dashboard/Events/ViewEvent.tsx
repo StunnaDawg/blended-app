@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator } from "react-native"
+import { View, Text, ActivityIndicator, Pressable } from "react-native"
 import React, { useEffect, useState } from "react"
 import { Event, GymProfile } from "../../../@types/firestore"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
@@ -9,7 +9,8 @@ import getSingleGym from "../../../functions/getSingleGym"
 import { format } from "date-fns"
 import SinglePicNoArray from "../../../components/SingleImageNoArray"
 import { doc } from "firebase/firestore"
-import { db } from "../../../../firebase"
+import { FIREBASE_AUTH, db } from "../../../../firebase"
+import updateEventAttendees from "../../../functions/addUserToAttended"
 
 const ViewEvent = () => {
   const [event, setEvent] = useState<Event | null>({} as Event)
@@ -17,6 +18,7 @@ const ViewEvent = () => {
   const [gymProfile, setGymProfile] = useState<GymProfile>({} as GymProfile)
   const [eventDate, setEventDate] = useState<string>("")
   const [eventTime, setEventTime] = useState<string>("")
+  const currentUser = FIREBASE_AUTH.currentUser?.uid
   const route = useRoute<RouteProp<RootStackParamList, "ViewEvent">>()
   const eventId = route.params.eventId
   const navigation = useNavigation<NavigationType>()
@@ -60,6 +62,20 @@ const ViewEvent = () => {
             <Text>{gymProfile.gym_title}</Text>
             <Text>{eventDate !== "" ? eventDate : "No Specified Date"}</Text>
             <Text>{eventTime !== "" ? eventTime : "No Specified Time"}</Text>
+            <Pressable
+              onPress={() => {
+                if (currentUser) {
+                  updateEventAttendees(
+                    currentUser,
+                    event.gymHost,
+                    eventId,
+                    true
+                  )
+                }
+              }}
+            >
+              <Text>Attend Event</Text>
+            </Pressable>
           </>
         ) : (
           <ActivityIndicator />
