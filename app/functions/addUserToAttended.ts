@@ -6,14 +6,17 @@ import {
   writeBatch,
 } from "firebase/firestore"
 import { db } from "../../firebase"
+import { Dispatch, SetStateAction } from "react"
 
 const updateEventAttendees = async (
   memberId: string,
   gymId: string,
   eventId: string,
-  newAttendee: boolean
+  newAttendee: boolean,
+  setLoading: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
+    setLoading(true)
     if (!newAttendee) {
       const batch = writeBatch(db)
       const gymRef = doc(db, "gyms", gymId, "events", eventId)
@@ -43,6 +46,7 @@ const updateEventAttendees = async (
     }
 
     console.log("hello...?")
+    setLoading(false)
   } catch (err) {
     console.error(err)
   }

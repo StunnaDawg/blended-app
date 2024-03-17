@@ -87,13 +87,24 @@ const ViewEvent = () => {
                     currentUser,
                     event.gymHost,
                     eventId,
-                    currentAttendee
+                    currentAttendee,
+                    setLoading
                   )
-                  console.log("pressed")
+                  setCurrentAttendee(!currentAttendee)
                 }
               }}
             >
-              <Text>{currentAttendee ? "Cancel" : "RVSP"}</Text>
+              <Text>
+                {!loading ? (
+                  currentAttendee ? (
+                    "Cancel"
+                  ) : (
+                    "RVSP"
+                  )
+                ) : (
+                  <ActivityIndicator />
+                )}
+              </Text>
             </Pressable>
           </>
         ) : (
