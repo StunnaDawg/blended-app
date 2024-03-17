@@ -1,4 +1,4 @@
-import { doc, getDoc } from "firebase/firestore"
+import { DocumentReference, doc, getDoc } from "firebase/firestore"
 import { Image } from "expo-image"
 import { useState, useEffect, SetStateAction, Dispatch } from "react"
 import { StyleSheet, View } from "react-native"
@@ -12,17 +12,19 @@ type SinglePicProps = {
   size: number
   avatarRadius: number
   noAvatarRadius: number
+  docRef: DocumentReference
 }
 
 const getSinglePhoto = async (
   id: string,
   eventId: string,
-  setProfilePic: Dispatch<SetStateAction<string>>
+  setProfilePic: Dispatch<SetStateAction<string>>,
+  docRef: DocumentReference
 ) => {
   try {
     if (id) {
       const eventRef = doc(db, "gyms", id, "events", eventId)
-      const docSnap = await getDoc(eventRef)
+      const docSnap = await getDoc(docRef)
 
       if (docSnap.exists()) {
         const userData = { ...docSnap.data() } as Event
@@ -41,6 +43,7 @@ export default function SinglePicNoArray({
   size = 150,
   avatarRadius,
   noAvatarRadius,
+  docRef,
 }: SinglePicProps) {
   const [avatarUrl, setAvatarUrl] = useState<string>("")
   const avatarSize = { height: size, width: size }
@@ -67,7 +70,7 @@ export default function SinglePicNoArray({
   useEffect(() => {
     const fetchAvatar = async () => {
       if (id) {
-        await getSinglePhoto(id, eventId, setAvatarUrl)
+        await getSinglePhoto(id, eventId, setAvatarUrl, docRef)
       }
     }
 

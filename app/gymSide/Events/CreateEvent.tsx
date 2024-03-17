@@ -92,10 +92,13 @@ const CreateEvent = () => {
         batch.update(gymRef, {
           eventPhoto: image,
         })
+
         const eventCollectionRef = doc(db, "events", eventId)
         batch.update(eventCollectionRef, {
           eventPhoto: image,
         })
+
+        await batch.commit()
       } else {
         console.log("User does not exist")
       }

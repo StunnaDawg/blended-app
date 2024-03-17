@@ -39,10 +39,10 @@ const EventsTab = () => {
         <Text>My Upcoming events</Text>
       </View>
       <ScrollView>
-        {!loading ? (
+        {!loading && currentId ? (
           eventsArray.map((event) => (
             <View key={event.id}>
-              <EventCard event={event} />
+              <EventCard event={event} id={currentId} />
             </View>
           ))
         ) : (

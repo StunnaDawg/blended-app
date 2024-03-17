@@ -1,10 +1,10 @@
 import { View, Text, Pressable, Image } from "react-native"
 import React from "react"
-import { Event } from "../../../@types/firestore"
 import { useNavigation } from "@react-navigation/native"
-import { NavigationType } from "../../../@types/navigation"
-import SinglePicNoArray from "../../../components/SingleImageNoArray"
-import { FIREBASE_AUTH, db } from "../../../../firebase"
+import { NavigationType } from "../../../../@types/navigation"
+import { FIREBASE_AUTH, db } from "../../../../../firebase"
+import SinglePicNoArray from "../../../../components/SingleImageNoArray"
+import { Event } from "../../../../@types/firestore"
 import { doc } from "firebase/firestore"
 
 type EventCardProp = {
@@ -14,7 +14,7 @@ type EventCardProp = {
 
 const EventCard = ({ event, id }: EventCardProp) => {
   const navigation = useNavigation<NavigationType>()
-  const eventRef = doc(db, "gyms", id, "events", event.id)
+  const eventRef = doc(db, "events", event.id)
   return (
     <View className="w-full border-t border-b h-36">
       <View className="flex flex-row justify-center">
