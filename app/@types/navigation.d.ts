@@ -46,6 +46,7 @@ export type TabParamList = {
   Gyms: undefined
   Requests: undefined
   GymEvents: undefined
+  Events: undefined
 }
 
 export type TabNavigationType = TabNavigationProp<TabParamList>

@@ -10,6 +10,7 @@ import {
   collection,
   doc,
   updateDoc,
+  writeBatch,
 } from "firebase/firestore"
 import { useLocation } from "../../context/LocationContext"
 import DateTimePicker, {
@@ -34,8 +35,14 @@ const updateEvent = async (
 ) => {
   try {
     if (currentGymId) {
+      const batch = writeBatch(db)
       const gymRef = doc(db, "gyms", currentGymId, "events", eventId)
-      await updateDoc(gymRef, {
+      batch.update(gymRef, {
+        [valueToUpdate]: updateValue,
+      })
+
+      const eventCollectionRef = doc(db, "events", eventId)
+      batch.update(eventCollectionRef, {
         [valueToUpdate]: updateValue,
       })
       setSaving(false)

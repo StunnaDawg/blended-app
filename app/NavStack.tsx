@@ -35,6 +35,7 @@ import GymRequests from "./gymSide/GymRequests/GymRequests"
 import EventsTab from "./gymSide/Events/EventsTab"
 import CreateEvent from "./gymSide/Events/CreateEvent"
 import EditEvent from "./gymSide/Events/EditEvent"
+import Events from "./userSide/Dashboard/Events/Events"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -61,7 +62,7 @@ const UserFooter = () => {
         headerShown: false,
       }}
     >
-      <Tab.Screen name="Dashboard" component={Dashboard} />
+      <Tab.Screen name="Events" component={Events} />
       <Tab.Screen name="Gyms" component={GymsTab} />
       <Tab.Screen name="Profile" component={UserProfile} />
       <Tab.Screen name="Connections" component={Meet} />

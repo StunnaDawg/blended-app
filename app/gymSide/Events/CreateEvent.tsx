@@ -16,7 +16,9 @@ import {
   arrayUnion,
   collection,
   doc,
+  setDoc,
   updateDoc,
+  writeBatch,
 } from "firebase/firestore"
 import { Calendar } from "react-native-calendars"
 import { format, parseISO } from "date-fns"
@@ -50,19 +52,26 @@ const CreateEvent = () => {
     setDate(currentDate)
   }
 
-  const createEvent = async () => {
+  const createEventInGymCollection = async () => {
     try {
       if (currentGymId) {
-        const gymRef = collection(db, "gyms", currentGymId, "events")
-        const docRef = await addDoc(gymRef, {
+        const eventData = {
           gymHost: currentGymId,
           eventTitle: eventTitle,
           description: description,
           location: location,
           date: date,
           price: price,
-        })
-        // Access the document ID of the newly created document
+        }
+
+        const gymEventsRef = collection(db, "gyms", currentGymId, "events")
+
+        const docRef = await addDoc(gymEventsRef, eventData)
+
+        const eventRef = doc(db, "events", docRef.id)
+
+        await setDoc(eventRef, eventData)
+
         const newDocId = docRef.id
         uploadImage(eventPicture, "image", currentGymId + "element", (image) =>
           submitUserPhotos(image, newDocId)
@@ -78,9 +87,13 @@ const CreateEvent = () => {
   const submitUserPhotos = async (image: string, eventId: string) => {
     try {
       if (eventId && currentGymId) {
-        const userRef = doc(db, "gyms", currentGymId, "events", eventId)
-
-        await updateDoc(userRef, {
+        const batch = writeBatch(db)
+        const gymRef = doc(db, "gyms", currentGymId, "events", eventId)
+        batch.update(gymRef, {
+          eventPhoto: image,
+        })
+        const eventCollectionRef = doc(db, "events", eventId)
+        batch.update(eventCollectionRef, {
           eventPhoto: image,
         })
       } else {
@@ -151,7 +164,7 @@ const CreateEvent = () => {
 
       <Pressable
         onPress={async () => {
-          await createEvent()
+          await createEventInGymCollection()
         }}
       >
         <Text className="font-bold text-xl">Create Event</Text>
