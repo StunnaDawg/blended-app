@@ -5,7 +5,7 @@ import {
   updateDoc,
   writeBatch,
 } from "firebase/firestore"
-import { FIREBASE_AUTH, db } from "../../firebase"
+import { db } from "../../firebase"
 
 const updateEventAttendees = async (
   memberId: string,
@@ -14,7 +14,7 @@ const updateEventAttendees = async (
   newAttendee: boolean
 ) => {
   try {
-    if (newAttendee) {
+    if (!newAttendee) {
       const batch = writeBatch(db)
       const gymRef = doc(db, "gyms", gymId, "events", eventId)
 
@@ -26,6 +26,7 @@ const updateEventAttendees = async (
         attendees: arrayUnion(memberId),
       })
       await batch.commit()
+      console.log("I RVSP'd")
     } else {
       const batch = writeBatch(db)
       const gymRef = doc(db, "gyms", gymId, "events", eventId)
@@ -38,7 +39,10 @@ const updateEventAttendees = async (
         attendees: arrayRemove(memberId),
       })
       await batch.commit()
+      console.log("I canceled")
     }
+
+    console.log("hello...?")
   } catch (err) {
     console.error(err)
   }

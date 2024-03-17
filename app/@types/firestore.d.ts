@@ -63,7 +63,7 @@ export type Event = {
   date: Date | Timestamp
   location: string
   price: string
-  attendees: UserProfile[]
+  attendees: string[]
   eventPhoto: string
 }
 

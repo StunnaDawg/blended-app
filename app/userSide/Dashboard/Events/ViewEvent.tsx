@@ -15,6 +15,7 @@ import updateEventAttendees from "../../../functions/addUserToAttended"
 const ViewEvent = () => {
   const [event, setEvent] = useState<Event | null>({} as Event)
   const [loading, setLoading] = useState<boolean>(false)
+  const [currentAttendee, setCurrentAttendee] = useState<boolean>(false)
   const [gymProfile, setGymProfile] = useState<GymProfile>({} as GymProfile)
   const [eventDate, setEventDate] = useState<string>("")
   const [eventTime, setEventTime] = useState<string>("")
@@ -25,8 +26,20 @@ const ViewEvent = () => {
   const eventRef = doc(db, "events", eventId)
 
   useEffect(() => {
-    if (event) {
+    if (event && currentUser) {
       getSingleGym(event.gymHost, setGymProfile, setLoading)
+      if (event.attendees) {
+        const isUserInAttendees = event.attendees.includes(currentUser)
+        if (isUserInAttendees) {
+          setCurrentAttendee(true)
+          console.log("user is an attendee")
+        } else {
+          setCurrentAttendee(false)
+        }
+      } else {
+        setCurrentAttendee(false)
+      }
+
       if (event.date) {
         const readableDate = event.date.toDate()
         const eventDate = format(readableDate, "MMMM d")
@@ -62,6 +75,11 @@ const ViewEvent = () => {
             <Text>{gymProfile.gym_title}</Text>
             <Text>{eventDate !== "" ? eventDate : "No Specified Date"}</Text>
             <Text>{eventTime !== "" ? eventTime : "No Specified Time"}</Text>
+            <Text>
+              {event.attendees && event.attendees.length > 0
+                ? event.attendees.length
+                : "No Attendees Yet! Get the Party started"}
+            </Text>
             <Pressable
               onPress={() => {
                 if (currentUser) {
@@ -69,12 +87,13 @@ const ViewEvent = () => {
                     currentUser,
                     event.gymHost,
                     eventId,
-                    true
+                    currentAttendee
                   )
+                  console.log("pressed")
                 }
               }}
             >
-              <Text>Attend Event</Text>
+              <Text>{currentAttendee ? "Cancel" : "RVSP"}</Text>
             </Pressable>
           </>
         ) : (
