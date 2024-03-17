@@ -57,7 +57,7 @@ export type Messages = {
 
 export type Event = {
   id: string
-  gymHost: GymProfile
+  gymHost: string
   eventTitle: string
   description: string
   date: Date | Timestamp

@@ -30,9 +30,8 @@ const EventCard = ({ event, id }: EventCardProp) => {
         </Pressable>
       </View>
       <SinglePicNoArray
-        id={id}
+        id={event.id}
         size={100}
-        eventId={event.id}
         avatarRadius={10}
         noAvatarRadius={10}
         docRef={eventRef}

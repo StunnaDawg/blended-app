@@ -8,7 +8,6 @@ import { Event, UserProfile } from "../@types/firestore"
 
 type SinglePicProps = {
   id?: string
-  eventId: string
   size: number
   avatarRadius: number
   noAvatarRadius: number
@@ -17,13 +16,11 @@ type SinglePicProps = {
 
 const getSinglePhoto = async (
   id: string,
-  eventId: string,
   setProfilePic: Dispatch<SetStateAction<string>>,
   docRef: DocumentReference
 ) => {
   try {
     if (id) {
-      const eventRef = doc(db, "gyms", id, "events", eventId)
       const docSnap = await getDoc(docRef)
 
       if (docSnap.exists()) {
@@ -39,7 +36,6 @@ const getSinglePhoto = async (
 }
 export default function SinglePicNoArray({
   id,
-  eventId,
   size = 150,
   avatarRadius,
   noAvatarRadius,
@@ -70,7 +66,7 @@ export default function SinglePicNoArray({
   useEffect(() => {
     const fetchAvatar = async () => {
       if (id) {
-        await getSinglePhoto(id, eventId, setAvatarUrl, docRef)
+        await getSinglePhoto(id, setAvatarUrl, docRef)
       }
     }
 

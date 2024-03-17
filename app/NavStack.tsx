@@ -36,6 +36,7 @@ import EventsTab from "./gymSide/Events/EventsTab"
 import CreateEvent from "./gymSide/Events/CreateEvent"
 import EditEvent from "./gymSide/Events/EditEvent"
 import Events from "./userSide/Dashboard/Events/Events"
+import ViewEvent from "./userSide/Dashboard/Events/ViewEvent"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -139,6 +140,7 @@ const NavStack = () => {
                 name="UserEditProfile"
                 component={EditProfileHome}
               />
+              <Stack.Screen name="ViewEvent" component={ViewEvent} />
               <Stack.Screen name="UserQuestionOne" component={QuestionOne} />
               <Stack.Screen name="UserQuestionTwo" component={QuestionTwo} />
               <Stack.Screen

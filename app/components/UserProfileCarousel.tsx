@@ -15,7 +15,6 @@ const UserImageCarosel = ({ id, profileType }: CarouselProps) => {
         {profileType.userPhotos ? (
           profileType.userPhotos?.map((item, index) => (
             <View key={index}>
-              <Text>Hi</Text>
               <SinglePic
                 key={index} // Key for each SinglePic component
                 id={id}
