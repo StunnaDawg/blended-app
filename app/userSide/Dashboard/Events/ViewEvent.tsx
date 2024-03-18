@@ -73,6 +73,9 @@ const ViewEvent = () => {
             />
 
             <Text>{gymProfile.gym_title}</Text>
+            <Text className="font-bold text-lg">
+              {Number(event.price) > 0 ? `$${event.price}` : "Free"}
+            </Text>
             <Text>{eventDate !== "" ? eventDate : "No Specified Date"}</Text>
             <Text>{eventTime !== "" ? eventTime : "No Specified Time"}</Text>
             <Text>

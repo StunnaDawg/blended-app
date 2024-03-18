@@ -27,6 +27,7 @@ export type RootStackParamList = {
   GymQuestionTwo: undefined
   GymQuestionThree: undefined
   GymInitalAddPhoto: undefined
+  GymMessages: undefined
   GymEditProfile: undefined
   MatchModal: undefined
   LoadModal: undefined

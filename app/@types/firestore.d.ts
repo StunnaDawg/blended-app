@@ -70,3 +70,12 @@ export type Event = {
 export type GymRequest = {
   userProfile: UserProfile
 }
+
+export type GymMessaging = {
+  id: string
+  users: {
+    user1: UserProfile | GymProfile
+    user2: UserProfile | GymProfile
+  }
+  gymUser: string[]
+}

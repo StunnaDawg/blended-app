@@ -53,6 +53,9 @@ const EventCard = ({ event, id }: EventCardProp) => {
           <View className="flex flex-row justify-end">
             <View>
               <Text className="font-bold text-lg">{gymProfile.gym_title}</Text>
+              <Text className="font-bold text-lg">
+                {event.price ? event.price : "Free"}
+              </Text>
               <Text className="font-bold text-lg">{eventDate}</Text>
               <Text className="font-bold text-lg">{eventTime}</Text>
             </View>
