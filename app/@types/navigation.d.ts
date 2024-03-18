@@ -39,6 +39,10 @@ export type RootStackParamList = {
     id: string
     matchDocId: string
   }
+  GymMessagingScreen: {
+    id: string
+    userDocId: string
+  }
 }
 
 export type NavigationType = NativeStackNavigationProp<RootStackParamList>

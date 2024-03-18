@@ -10,6 +10,7 @@ import { Event } from "../../../@types/firestore"
 import getEvents from "../../../functions/getAllEvents"
 import EventCard from "./components/EventCard"
 import { FIREBASE_AUTH } from "../../../../firebase"
+import SinglePicBackGround from "../../../components/ImageBackground"
 
 const Events = () => {
   const [loading, setLoading] = useState<boolean>(false)
@@ -34,18 +35,23 @@ const Events = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      {!loading && currentId ? (
-        events.length > 0 &&
-        events.map((element, index) => {
-          return (
-            <View key={element.id}>
-              <EventCard event={element} id={currentId} />
-            </View>
-          )
-        })
-      ) : (
-        <ActivityIndicator />
-      )}
+      <View>
+        <Text className="font-bold text-2xl">Events</Text>
+      </View>
+      <View className="flex flex-row flex-wrap justify-center m-2">
+        {!loading && currentId ? (
+          events.length > 0 &&
+          events.map((element, index) => {
+            return (
+              <View className="m-3" key={element.id}>
+                <EventCard event={element} id={currentId} />
+              </View>
+            )
+          })
+        ) : (
+          <ActivityIndicator />
+        )}
+      </View>
     </ScrollView>
   )
 }

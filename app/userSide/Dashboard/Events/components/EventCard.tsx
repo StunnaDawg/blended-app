@@ -8,17 +8,17 @@ import { Event, GymProfile } from "../../../../@types/firestore"
 import { doc } from "firebase/firestore"
 import getSingleGym from "../../../../functions/getSingleGym"
 import { format } from "date-fns"
+import SinglePicBackGround from "../../../../components/ImageBackground"
 
 type EventCardProp = {
   event: Event
   id: string
 }
 
-const EventCard = ({ event, id }: EventCardProp) => {
+const EventCardData = ({ event, id }: EventCardProp) => {
   const [gymProfile, setGymProfile] = useState<GymProfile>({} as GymProfile)
   const [loading, setLoading] = useState<boolean>(false)
   const navigation = useNavigation<NavigationType>()
-  const eventRef = doc(db, "events", event.id)
   const readableDate = event.date.toDate()
   const eventDate = format(readableDate, "MMMM d")
   const eventTime = format(readableDate, "h:mm a")
@@ -27,44 +27,54 @@ const EventCard = ({ event, id }: EventCardProp) => {
     getSingleGym(event.gymHost, setGymProfile, setLoading)
   }, [])
   return (
-    <View className="w-full border-t border-b h-36">
+    <>
       {!loading ? (
         <>
-          <View className="flex flex-row justify-center">
-            <Text className="font-bold text-lg">{event.eventTitle}</Text>
-            <Pressable
-              onPress={() => {
-                navigation.navigate("ViewEvent", {
-                  eventId: event.id,
-                  id: id,
-                })
-              }}
-            >
-              <Text>View Event</Text>
-            </Pressable>
+          <View className="m-1">
+            <Text className="font-bold text-md text-white">
+              {event.price ? `$${event.price}` : "Free"}
+            </Text>
           </View>
-          <SinglePicNoArray
-            id={event.id}
-            size={100}
-            avatarRadius={10}
-            noAvatarRadius={10}
-            docRef={eventRef}
-          />
-          <View className="flex flex-row justify-end">
-            <View>
-              <Text className="font-bold text-lg">{gymProfile.gym_title}</Text>
-              <Text className="font-bold text-lg">
-                {event.price ? event.price : "Free"}
-              </Text>
-              <Text className="font-bold text-lg">{eventDate}</Text>
-              <Text className="font-bold text-lg">{eventTime}</Text>
-            </View>
-          </View>
+          <Pressable
+            className="flex-1 flex-col items-start justify-end"
+            onPress={() => {
+              navigation.navigate("ViewEvent", {
+                eventId: event.id,
+                id: id,
+              })
+            }}
+          >
+            <Text className="font-bold text-lg text-white">
+              {eventDate},{eventTime}
+            </Text>
+            <Text className="font-bold text-2xl text-white">
+              {event.eventTitle}
+            </Text>
+
+            <Text className="font-bold text-lg text-shadow text-white">
+              {gymProfile.gym_title}
+            </Text>
+          </Pressable>
         </>
       ) : (
         <ActivityIndicator />
       )}
-    </View>
+    </>
+  )
+}
+
+const EventCard = ({ event, id }: EventCardProp) => {
+  const eventRef = doc(db, "events", event.id)
+  return (
+    <SinglePicBackGround
+      id={event.id}
+      height={200}
+      width={160}
+      avatarRadius={10}
+      noAvatarRadius={10}
+      docRef={eventRef}
+      children={<EventCardData event={event} id={id} />}
+    />
   )
 }
 

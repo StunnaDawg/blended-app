@@ -7,7 +7,7 @@ type MatchesMessageProps = {
   message: string
 }
 
-const MatchesMessage = ({ id, message }: MatchesMessageProps) => {
+const UserMessage = ({ id, message }: MatchesMessageProps) => {
   return (
     <View key={id}>
       <View className="flex flex-row justify-start flex-wrap mt-2 items-center m-1 my-2">
@@ -28,4 +28,4 @@ const MatchesMessage = ({ id, message }: MatchesMessageProps) => {
   )
 }
 
-export default MatchesMessage
+export default UserMessage

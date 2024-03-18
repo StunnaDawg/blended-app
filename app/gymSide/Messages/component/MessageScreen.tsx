@@ -20,19 +20,17 @@ import {
   query,
   serverTimestamp,
 } from "firebase/firestore"
-import MatchesMessage from "./MatchesMessage"
-import UserMessage from "./UserMessages"
+import useresMessage from "./UserMessage"
+import UserMessage from "./GymMessages"
 import { FIREBASE_AUTH, db } from "../../../../firebase"
 import { Messages, UserProfile } from "../../../@types/firestore"
 import { RootStackParamList } from "../../../@types/navigation"
 import getUserProfile from "../../../functions/getUserProfile"
 
-const MessageScreen = () => {
-  const [matchIdState, setMatchIdState] = useState<string>("")
-  const [matchIdDocState, setMatchIdDoc] = useState<string>("")
-  const [matchProfile, setMatchProfile] = useState<UserProfile>(
-    {} as UserProfile
-  )
+const GymMessageScreen = () => {
+  const [userIdState, setuserIdState] = useState<string>("")
+  const [userIdDocState, setuserIdDoc] = useState<string>("")
+  const [userProfile, setuserProfile] = useState<UserProfile>({} as UserProfile)
   const [currentUserProfile, setCurrentUserProfile] = useState<UserProfile>(
     {} as UserProfile
   )
@@ -40,22 +38,22 @@ const MessageScreen = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [messages, setMessages] = useState<Messages[]>([])
   const navigation = useNavigation()
-  const route = useRoute<RouteProp<RootStackParamList, "MessagingScreen">>()
-  const matchId = route.params?.id
-  const matchDocId = route.params?.matchDocId
+  const route = useRoute<RouteProp<RootStackParamList, "GymMessagingScreen">>()
+  const userId = route.params?.id
+  const userDocId = route.params?.userDocId
   const currentId = FIREBASE_AUTH.currentUser?.uid
 
   useEffect(() => {
-    setMatchIdState(matchId)
+    setuserIdState(userId)
     console.log(messages)
   }, [currentId])
 
   useEffect(() => {
-    getUserProfile(matchIdState, setMatchProfile, setLoading)
-  }, [matchIdState])
+    getUserProfile(userIdState, setuserProfile, setLoading)
+  }, [userIdState])
 
   useEffect(() => {
-    setMatchIdDoc(matchDocId)
+    setuserIdDoc(userDocId)
   }, [currentId])
 
   useEffect(() => {
@@ -63,10 +61,10 @@ const MessageScreen = () => {
   }, [currentId])
 
   useEffect(() => {
-    if (matchIdDocState) {
+    if (userIdDocState) {
       const unsubscribe = onSnapshot(
         query(
-          collection(db, "matches", matchIdDocState, "messages"),
+          collection(db, "gyms", userIdDocState, "messages"),
           orderBy("timestamp", "desc")
         ),
         (snapshot) => {
@@ -78,12 +76,12 @@ const MessageScreen = () => {
       )
       return unsubscribe
     }
-  }, [matchIdDocState, db])
+  }, [userIdDocState, db])
 
   const sendMessage = async () => {
     try {
       setLoading(true)
-      await addDoc(collection(db, "matches", matchIdDocState, "messages"), {
+      await addDoc(collection(db, "useres", userIdDocState, "messages"), {
         timestamp: serverTimestamp(),
         userId: currentId,
         username: currentUserProfile.firstName,
@@ -101,9 +99,9 @@ const MessageScreen = () => {
     <View className="flex-1">
       <View className="flex flex-row justify-center border-b">
         <View className="items-center">
-          <ViewMessageUserProfile matchProfile={matchProfile} />
+          <ViewMessageUserProfile matchProfile={userProfile} />
 
-          <Text className="font-bold text-md">{matchProfile.firstName}</Text>
+          <Text className="font-bold text-md">{userProfile.firstName}</Text>
         </View>
       </View>
 
@@ -125,9 +123,9 @@ const MessageScreen = () => {
                   message={message.message}
                 />
               ) : (
-                <MatchesMessage
+                <UserMessage
                   key={message.id}
-                  id={matchIdState}
+                  id={userIdState}
                   message={message.message}
                 />
               )
@@ -158,19 +156,4 @@ const MessageScreen = () => {
   )
 }
 
-export default MessageScreen
-
-{
-  /* <ScrollView>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-          <View className="flex flex-row justify-center">
-            <Text className="text-xs">You connected on...</Text>
-          </View>
-          <UserMessage id={currentUserProfile.id} message="hu" />
-
-          <MatchesMessage id={matchIdState} message="Hi" />
-        </KeyboardAvoidingView>
-      </ScrollView> */
-}
+export default GymMessageScreen
