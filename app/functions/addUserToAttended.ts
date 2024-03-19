@@ -5,6 +5,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  setDoc,
   updateDoc,
   writeBatch,
 } from "firebase/firestore"
@@ -29,14 +30,11 @@ const updateEventAttendees = async (
         eventId,
         "attendees"
       )
-
-      await addDoc(gymRef, {
-        memberId: memberId,
-      })
-      const eventRef = collection(db, "events")
-      await addDoc(eventRef, {
-        memberId: memberId,
-      })
+      const eventRef = collection(db, "events", eventId, "attendees")
+      const memberRef = doc(gymRef, memberId)
+      const memberEventRef = doc(eventRef, memberId)
+      await setDoc(memberRef, { memberId: memberId })
+      await setDoc(memberEventRef, { memberId: memberId })
 
       console.log("I RVSP'd")
     } else {
