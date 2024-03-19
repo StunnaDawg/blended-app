@@ -60,10 +60,10 @@ export type Event = {
   gymHost: string
   eventTitle: string
   description: string
-  date: Date | Timestamp
+  date: Timestamp
   location: string
   price: string
-  attendees: string[]
+  attendees: UserProfile[]
   eventPhoto: string
 }
 

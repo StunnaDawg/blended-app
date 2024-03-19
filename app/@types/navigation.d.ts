@@ -32,6 +32,9 @@ export type RootStackParamList = {
   MatchModal: undefined
   LoadModal: undefined
   CreateEvent: undefined
+  AttendingEvent: {
+    eventId: string
+  }
   EditEvent: {
     eventId: string
   }

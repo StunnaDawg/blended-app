@@ -1,6 +1,6 @@
 import { DocumentSnapshot, collection, getDocs } from "firebase/firestore"
 import { db } from "../../firebase"
-import { Event } from "../@types/firestore"
+import { Event, UserProfile } from "../@types/firestore"
 import { Dispatch, SetStateAction } from "react"
 
 const getGymEvents = async (
@@ -12,6 +12,11 @@ const getGymEvents = async (
     if (gymId) {
       const eventCollection = collection(db, "gyms", gymId, "events")
       const querySnapshot = await getDocs(eventCollection)
+      const attendeesRef = collection(db, `gyms/${gymId}/events/attendees`)
+      const attendeesData = await getDocs(attendeesRef)
+      const attendees = attendeesData.docs.map(
+        (doc) => doc.data() as UserProfile
+      )
 
       const events: Event[] = []
 
@@ -28,7 +33,7 @@ const getGymEvents = async (
             date: eventFetchedData.date,
             location: eventFetchedData.location,
             price: eventFetchedData.price,
-            attendees: eventFetchedData.attendees || [],
+            attendees: attendees || [],
             eventPhoto: eventFetchedData.eventPhoto,
           }
           events.push(gymEvent)

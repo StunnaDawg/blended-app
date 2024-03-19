@@ -28,7 +28,7 @@ const getEvents = async (
           price: eventFetchedData.price,
           attendees: eventFetchedData.attendees || [],
           eventPhoto: eventFetchedData.eventPhoto,
-        }
+        } as Event
         events.push(gymEvent)
       }
     })

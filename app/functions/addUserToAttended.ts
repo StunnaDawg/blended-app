@@ -1,6 +1,9 @@
 import {
+  addDoc,
   arrayRemove,
   arrayUnion,
+  collection,
+  deleteDoc,
   doc,
   updateDoc,
   writeBatch,
@@ -18,30 +21,39 @@ const updateEventAttendees = async (
   try {
     setLoading(true)
     if (!newAttendee) {
-      const batch = writeBatch(db)
-      const gymRef = doc(db, "gyms", gymId, "events", eventId)
+      const gymRef = collection(
+        db,
+        "gyms",
+        gymId,
+        "events",
+        eventId,
+        "attendees"
+      )
 
-      batch.update(gymRef, {
-        attendees: arrayUnion(memberId),
+      await addDoc(gymRef, {
+        memberId: memberId,
       })
-      const eventRef = doc(db, "events", eventId)
-      batch.update(eventRef, {
-        attendees: arrayUnion(memberId),
+      const eventRef = collection(db, "events")
+      await addDoc(eventRef, {
+        memberId: memberId,
       })
-      await batch.commit()
+
       console.log("I RVSP'd")
     } else {
-      const batch = writeBatch(db)
-      const gymRef = doc(db, "gyms", gymId, "events", eventId)
+      const gymRef = doc(
+        db,
+        "gyms",
+        gymId,
+        "events",
+        eventId,
+        "attendees",
+        memberId
+      )
 
-      batch.update(gymRef, {
-        attendees: arrayRemove(memberId),
-      })
-      const eventRef = doc(db, "events", eventId)
-      batch.update(eventRef, {
-        attendees: arrayRemove(memberId),
-      })
-      await batch.commit()
+      const eventRef = doc(db, "events", eventId, "attendees", memberId)
+      deleteDoc(gymRef)
+      deleteDoc(eventRef)
+
       console.log("I canceled")
     }
 

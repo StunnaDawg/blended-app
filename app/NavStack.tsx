@@ -40,6 +40,7 @@ import Events from "./userSide/Dashboard/Events/Events"
 import ViewEvent from "./userSide/Dashboard/Events/ViewEvent"
 import GymTopTabs from "./userSide/gyms/components/GymViewComponents/GymTopTabs"
 import About from "./userSide/gyms/components/GymViewComponents/About"
+import AttendingEvent from "./userSide/Dashboard/Events/AttendingEvent"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -143,6 +144,7 @@ const NavStack = () => {
               <Stack.Screen name="Footer" component={UserFooter} />
               <Stack.Screen name="ViewGymTopTabs" component={GymTopTabs} />
               <Stack.Screen name="UserDashboard" component={Dashboard} />
+              <Stack.Screen name="AttendingEvent" component={AttendingEvent} />
               <Stack.Screen
                 name="ChooseUserActivity"
                 component={ChooseActivity}

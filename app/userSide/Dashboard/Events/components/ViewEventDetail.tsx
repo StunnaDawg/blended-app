@@ -59,36 +59,16 @@ const ViewEventDetail = ({ event, eventId }: EventProps) => {
 
 export const EventCardDetails = ({ event, eventId }: EventProps) => {
   const [loading, setLoading] = useState<boolean>(false)
-  const [currentAttendee, setCurrentAttendee] = useState<boolean>(false)
   const [gymProfile, setGymProfile] = useState<GymProfile>({} as GymProfile)
-  const [isPressed, setIsPressed] = useState<boolean>(false)
   const [eventDate, setEventDate] = useState<string>("")
   const [eventTime, setEventTime] = useState<string>("")
   const eventRef = doc(db, "events", eventId)
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   const navigation = useNavigation<NavigationType>()
 
-  const handlePressIn = () => {
-    setIsPressed(true)
-  }
-
-  const handlePressOut = () => {
-    setIsPressed(false)
-  }
-
   useEffect(() => {
-    if (event.attendees && currentUser) {
-      const isUserInAttendees = event.attendees.includes(currentUser)
-      if (isUserInAttendees) {
-        setCurrentAttendee(true)
-        console.log("user is an attendee")
-      } else {
-        setCurrentAttendee(false)
-      }
-    } else {
-      setCurrentAttendee(false)
-    }
     if (event.date) {
+      console.log(event.date)
       const readableDate = event.date.toDate()
       const eventDate = format(readableDate, "MMMM d")
       const eventTime = format(readableDate, "h:mm a")
@@ -117,11 +97,19 @@ export const EventCardDetails = ({ event, eventId }: EventProps) => {
         <Text className="font-bold text-lg">
           {Number(event.price) > 0 ? `$${event.price}` : "Free"}
         </Text>
-        <Text className="font-bold text-lg">
-          {event.attendees && event.attendees.length > 0
-            ? event.attendees.length
-            : "No Attendees Yet!"}
-        </Text>
+        <Pressable
+          onPress={() =>
+            navigation.navigate("AttendingEvent", {
+              eventId: eventId,
+            })
+          }
+        >
+          <Text className="font-bold text-lg">
+            {event.attendees && event.attendees.length > 0
+              ? event.attendees.length
+              : "No Attendees Yet!"}
+          </Text>
+        </Pressable>
       </View>
 
       <View className="mx-2">
@@ -133,6 +121,44 @@ export const EventCardDetails = ({ event, eventId }: EventProps) => {
           Athletics! Join For a fun night out, with Blended Athletics!
         </Text>
       </View>
+
+      <View className="flex flex-row justify-center"></View>
     </View>
   )
+}
+
+{
+  /* <Pressable
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
+          className={
+            isPressed
+              ? "w-28 border p-1 rounded bg-white"
+              : "w-28 border p-1 rounded bg-slate-200"
+          }
+          onPress={() => {
+            if (currentUser) {
+              updateEventAttendees(
+                currentUser,
+                event.gymHost,
+                eventId,
+                currentAttendee,
+                setLoading
+              )
+              setCurrentAttendee(!currentAttendee)
+            }
+          }}
+        >
+          <Text>
+            {!loading ? (
+              currentAttendee ? (
+                "Cancel"
+              ) : (
+                "RVSP"
+              )
+            ) : (
+              <ActivityIndicator />
+            )}
+          </Text>
+        </Pressable> */
 }
