@@ -19,9 +19,19 @@ const EventCardData = ({ event, id }: EventCardProp) => {
   const [gymProfile, setGymProfile] = useState<GymProfile>({} as GymProfile)
   const [loading, setLoading] = useState<boolean>(false)
   const navigation = useNavigation<NavigationType>()
-  const readableDate = event.date.toDate()
-  const eventDate = format(readableDate, "MMMM d")
-  const eventTime = format(readableDate, "h:mm a")
+  const [eventDate, setEventDate] = useState<string>("")
+  const [eventTime, setEventTime] = useState<string>("")
+
+  useEffect(() => {
+    if (event.date) {
+      console.log(event.date)
+      const readableDate = event.date.toDate()
+      const eventDate = format(readableDate, "MMMM d")
+      const eventTime = format(readableDate, "h:mm a")
+      setEventDate(eventDate)
+      setEventTime(eventTime)
+    }
+  }, [event])
 
   useEffect(() => {
     getSingleGym(event.gymHost, setGymProfile, setLoading)

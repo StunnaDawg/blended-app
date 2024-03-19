@@ -90,7 +90,7 @@ export const EventCardDetails = ({ event, eventId }: EventProps) => {
       <View>
         <Text className="font-bold text-lg">
           {" "}
-          {eventDate !== ""
+          {eventDate !== "" && eventDate && eventTime
             ? `${eventDate}, ${eventTime}`
             : "No Specified Date"}
         </Text>
