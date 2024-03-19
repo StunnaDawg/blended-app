@@ -18,7 +18,6 @@ type EventProps = {
 
 const ViewEventDetail = ({ event, eventId }: EventProps) => {
   const [loading, setLoading] = useState<boolean>(false)
-  const [currentAttendee, setCurrentAttendee] = useState<boolean>(false)
   const [gymProfile, setGymProfile] = useState<GymProfile>({} as GymProfile)
   const [eventDate, setEventDate] = useState<string>("")
   const [eventTime, setEventTime] = useState<string>("")
@@ -28,17 +27,6 @@ const ViewEventDetail = ({ event, eventId }: EventProps) => {
   useEffect(() => {
     if (event && currentUser) {
       getSingleGym(event.gymHost, setGymProfile, setLoading)
-      if (event.attendees) {
-        const isUserInAttendees = event.attendees.includes(currentUser)
-        if (isUserInAttendees) {
-          setCurrentAttendee(true)
-          console.log("user is an attendee")
-        } else {
-          setCurrentAttendee(false)
-        }
-      } else {
-        setCurrentAttendee(false)
-      }
 
       if (event.date) {
         const readableDate = event.date.toDate()
@@ -51,53 +39,25 @@ const ViewEventDetail = ({ event, eventId }: EventProps) => {
   }, [event])
 
   return (
-    <View>
+    <View className="flex-1 flex-col items-start justify-end">
       {event !== null ? (
         !loading ? (
           <>
-            <DefaultButton
-              text="go back"
-              buttonFunction={() => navigation.goBack()}
-            />
-            <Text>{event.eventTitle}</Text>
+            <Text className="text-3xl font-bold text-white">
+              {event.eventTitle}
+            </Text>
 
-            <Text>{gymProfile.gym_title}</Text>
-            <Text className="font-bold text-lg">
+            <Text className="text-3xl font-bold text-white">
+              Hosted by {gymProfile.gym_title}
+            </Text>
+            <Text className="font-bold text-lg text-white">
               {Number(event.price) > 0 ? `$${event.price}` : "Free"}
             </Text>
-            <Text>{eventDate !== "" ? eventDate : "No Specified Date"}</Text>
-            <Text>{eventTime !== "" ? eventTime : "No Specified Time"}</Text>
-            <Text>
-              {event.attendees && event.attendees.length > 0
-                ? event.attendees.length
-                : "No Attendees Yet! Get the Party started"}
+            <Text className="font-semibold">
+              {eventDate !== ""
+                ? `${eventDate}, ${eventTime}`
+                : "No Specified Date"}
             </Text>
-            <Pressable
-              onPress={() => {
-                if (currentUser) {
-                  updateEventAttendees(
-                    currentUser,
-                    event.gymHost,
-                    eventId,
-                    currentAttendee,
-                    setLoading
-                  )
-                  setCurrentAttendee(!currentAttendee)
-                }
-              }}
-            >
-              <Text>
-                {!loading ? (
-                  currentAttendee ? (
-                    "Cancel"
-                  ) : (
-                    "RVSP"
-                  )
-                ) : (
-                  <ActivityIndicator />
-                )}
-              </Text>
-            </Pressable>
           </>
         ) : (
           <ActivityIndicator />
@@ -116,16 +76,84 @@ const ViewEventDetail = ({ event, eventId }: EventProps) => {
 }
 
 export const EventCardDetails = ({ event, eventId }: EventProps) => {
+  const [loading, setLoading] = useState<boolean>(false)
+  const [currentAttendee, setCurrentAttendee] = useState<boolean>(false)
+  const [gymProfile, setGymProfile] = useState<GymProfile>({} as GymProfile)
+  const [isPressed, setIsPressed] = useState<boolean>(false)
   const eventRef = doc(db, "events", eventId)
+  const currentUser = FIREBASE_AUTH.currentUser?.uid
+  const navigation = useNavigation<NavigationType>()
+
+  const handlePressIn = () => {
+    setIsPressed(true)
+  }
+
+  const handlePressOut = () => {
+    setIsPressed(false)
+  }
+
+  useEffect(() => {
+    if (event.attendees && currentUser) {
+      const isUserInAttendees = event.attendees.includes(currentUser)
+      if (isUserInAttendees) {
+        setCurrentAttendee(true)
+        console.log("user is an attendee")
+      } else {
+        setCurrentAttendee(false)
+      }
+    } else {
+      setCurrentAttendee(false)
+    }
+  }, [event])
   return (
-    <SinglePicBackGround
-      id={event.id}
-      height={200}
-      width={160}
-      avatarRadius={10}
-      noAvatarRadius={10}
-      docRef={eventRef}
-      children={<ViewEventDetail event={event} eventId={eventId} />}
-    />
+    <View>
+      <SinglePicBackGround
+        id={event.id}
+        height={400}
+        width={400}
+        avatarRadius={10}
+        noAvatarRadius={10}
+        docRef={eventRef}
+        children={<ViewEventDetail event={event} eventId={eventId} />}
+      />
+      <Text>
+        {event.attendees && event.attendees.length > 0
+          ? event.attendees.length
+          : "No Attendees Yet! Get the Party started"}
+      </Text>
+      <Pressable
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        className={
+          isPressed
+            ? "w-28 border p-1 rounded bg-white"
+            : "w-28 border p-1 rounded bg-slate-200"
+        }
+        onPress={() => {
+          if (currentUser) {
+            updateEventAttendees(
+              currentUser,
+              event.gymHost,
+              eventId,
+              currentAttendee,
+              setLoading
+            )
+            setCurrentAttendee(!currentAttendee)
+          }
+        }}
+      >
+        <Text>
+          {!loading ? (
+            currentAttendee ? (
+              "Cancel"
+            ) : (
+              "RVSP"
+            )
+          ) : (
+            <ActivityIndicator />
+          )}
+        </Text>
+      </Pressable>
+    </View>
   )
 }
