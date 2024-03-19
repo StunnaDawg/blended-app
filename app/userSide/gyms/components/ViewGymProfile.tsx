@@ -12,102 +12,54 @@ import EventsCard from "../../../components/EventsCard"
 import RequestToBeCoach from "./RequestToBeCoach"
 import RequestToBeMember from "./RequestToBeMember"
 import GymMembersModal from "./GymMembersModal"
+import { useEffect, useState } from "react"
+import { RootStackParamList } from "../../../@types/navigation"
+import { RouteProp, useRoute } from "@react-navigation/native"
+import getSingleGym from "../../../functions/getSingleGym"
+import GymTopTabs from "./GymViewComponents/GymTopTabs"
 
-type GymProfileProps = {
-  gymProfile: GymProfile
-  dismiss: (key?: string | undefined) => boolean
-}
+import About from "./GymViewComponents/About"
 
-const ViewGymProfile = ({ gymProfile, dismiss }: GymProfileProps) => {
+const ViewGymProfile = () => {
+  const [loading, setLoading] = useState<boolean>(false)
+  const [gymProfile, setGymProfile] = useState<GymProfile>({} as GymProfile)
+  const [isPressed, setIsPressed] = useState<boolean>(false)
+  const [isPressed2, setIsPressed2] = useState<boolean>(false)
+  const [aboutSection, setAboutSection] = useState<boolean>(true)
+  const [membersSection, setMembersSection] = useState<boolean>(true)
+  const [photoSection, setPhotoSection] = useState<boolean>(true)
+  const [gymIdState, setGymIdState] = useState<string>("")
+  const route = useRoute<RouteProp<RootStackParamList, "ViewGymScreen">>()
+  const gymId = route.params.gymId
+  const handlePressIn = () => {
+    setIsPressed(true)
+  }
+
+  const handlePressOut = () => {
+    setIsPressed(false)
+  }
+
+  const handlePressIn2 = () => {
+    setIsPressed2(true)
+  }
+
+  const handlePressOut2 = () => {
+    setIsPressed2(false)
+  }
+
+  useEffect(() => {
+    getSingleGym(gymId, setGymProfile, setLoading)
+    setGymIdState(gymId)
+  }, [gymId])
+
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}
-      className="mt-10"
-    >
-      <View className="flex flex-row justify-between mx-6">
-        <Text className="font-bold text-3xl">{gymProfile.gym_title}</Text>
-        <Pressable onPress={() => dismiss()}>
-          <Text className="underline">Dismiss</Text>
-        </Pressable>
-      </View>
-      <View>
-        <GymImageCarosel id={gymProfile.gym_id} profileType={gymProfile} />
-      </View>
-
-      <View className="mx-6">
-        <Text>Location</Text>
-      </View>
-
-      <View className="mx-6">
-        <Text>Crossfit</Text>
-      </View>
-
-      <View className="flex flex-row items-center justify-between mx-6">
-        <Text className="font-bold">
-          {gymProfile.members == undefined ? 0 : gymProfile.members?.length}{" "}
-          Members
-        </Text>
-        {/* <GymMembersModal members={gymProfile.members} /> */}
-        <RequestToBeMember gymId={gymProfile.gym_id} />
-      </View>
-
-      <View className="mx-6">
-        <Text>About</Text>
-        <Text>
-          Gym is your ultimate destination for fitness and wellness. Located in
-          the heart of the city, our state-of-the-art facility offers a diverse
-          range of equipment and programs tailored to meet your fitness goals,
-          whether you're a beginner or a seasoned athlete. Our certified
-          trainers provide personalized training sessions, ensuring you get the
-          guidance and support you need to succeed. With spacious workout areas,
-          group fitness classes, and cutting-edge amenities such as sauna and
-          steam rooms, Gym provides an unparalleled fitness experience. Join us
-          today and embark on your journey to a healthier, stronger you at Gym!
-        </Text>
-      </View>
-
-      <View className="mt-2">
-        <View className="mx-6">
-          <Text className="text-xl font-bold">Upcoming Events</Text>
-        </View>
-        <ScrollView
-          horizontal
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          className="flex flex-row flex-wrap"
-        >
-          <EventsCard />
-        </ScrollView>
-      </View>
-
-      <View className="mt-2">
-        <View className="flex flex-row justify-between items-center mx-6">
-          <Text className="text-xl font-bold">
-            {gymProfile.gym_title} Trainers
-          </Text>
-          <RequestToBeCoach gymId={gymProfile.gym_id} />
-        </View>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          className="flex flex-row flex-wrap"
-        >
-          {gymProfile.members == undefined ? (
-            gymProfile?.coaches?.map((coach) => (
-              <View key={coach.id}>
-                <TrainerProfile trainerId={coach.id} />
-              </View>
-            ))
-          ) : (
-            <View>
-              <Text className="font-bold text-xl">No Coaches!</Text>
-            </View>
-          )}
-        </ScrollView>
-      </View>
-    </ScrollView>
+    <>
+      {!loading && gymId ? (
+        <About gymProfile={gymProfile} gymId={gymIdState} />
+      ) : (
+        <ActivityIndicator />
+      )}
+    </>
   )
 }
 

@@ -1,4 +1,4 @@
-import { doc, getDoc } from "firebase/firestore"
+import { collection, doc, getDoc, getDocs } from "firebase/firestore"
 import { db } from "../../firebase"
 import { GymProfile, UserProfile } from "../@types/firestore"
 import { Dispatch, SetStateAction } from "react"
@@ -13,6 +13,14 @@ const getSingleGym = async (
       const gymRef = doc(db, "gyms", id)
       const gymData = await getDoc(gymRef)
 
+      const membersRef = collection(db, `gyms/${id}/members`)
+      const membersData = await getDocs(membersRef)
+      const members = membersData.docs.map((doc) => doc.data() as UserProfile)
+
+      const coachesRef = collection(db, `gyms/${id}/coaches`)
+      const coachesData = await getDocs(coachesRef)
+      const coaches = coachesData.docs.map((doc) => doc.data() as UserProfile)
+
       if (gymData.exists()) {
         const gymFetchedData = { ...gymData.data() }
         const gymId = gymFetchedData.id
@@ -26,8 +34,8 @@ const getSingleGym = async (
           city: gymFetchedData.city,
           gymPhotos: gymFetchedData.gymPhotos,
           about: gymFetchedData.about,
-          coaches: gymFetchedData.coaches,
-          members: gymFetchedData.members,
+          coaches: coaches,
+          members: members,
         }
         setGymProfileData(gymProfile)
         setLoading(false)

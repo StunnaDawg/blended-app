@@ -28,15 +28,6 @@ const TrainerProfile = ({ trainerId }: TrainerProfileProps) => {
       {!loading ? (
         <View className="items-center">
           <Text>{trainerProfile.firstName}</Text>
-          <SinglePic
-            id={trainerProfile.id}
-            size={100}
-            picNumber={0}
-            avatarRadius={10}
-            noAvatarRadius={10}
-            collection="user"
-            photoType="userPhotos"
-          />
           <Pressable>
             <Text>View Profile</Text>
           </Pressable>

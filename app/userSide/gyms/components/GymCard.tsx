@@ -9,65 +9,54 @@ import ViewGymProfile from "./ViewGymProfile"
 import GymMembersModal from "./GymMembersModal"
 
 type GymCardProp = {
+  id?: string
   gymProfile: GymProfile
 }
 
-const GymCard = ({ gymProfile }: GymCardProp) => {
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
-  const { dismiss } = useBottomSheetModal()
+const GymCard = ({ gymProfile, id }: GymCardProp) => {
+  const navigation = useNavigation<NavigationType>()
 
-  const snapPoints = useMemo(() => ["1%", "100%"], [])
-
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present()
-  }, [])
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index)
-  }, [])
   return (
     <>
       <Pressable
         onPress={() => {
-          handlePresentModalPress()
+          navigation.navigate("ViewGymScreen", {
+            id: id,
+            gymId: gymProfile.gym_id,
+          })
         }}
       >
-        <View className=" flex flex-row border-t-2 border-b">
-          <View className="border-r-2">
+        <View className="flex flex-row items-center">
+          <View className="m-2">
             <SinglePic
               id={gymProfile.gym_id}
-              size={125}
+              size={50}
               picNumber={0}
-              avatarRadius={10}
+              avatarRadius={100}
               noAvatarRadius={10}
               photoType="gymPhotos"
               collection="gyms"
             />
           </View>
 
-          <View className=" flex flex-col justify-between">
-            <View className="p-1">
+          <View className="flex-1 flex-col border-b">
+            <View className="flex-1 flex-row items-center">
               <Text className="font-bold text-xl">{gymProfile.gym_title}</Text>
-              <Text className="text-xs">10km away</Text>
             </View>
 
-            <View className="flex flex-row">
+            <View className="flex-1 flex-row items-center">
+              <Text className="text-xs">10km away</Text>
+            </View>
+          </View>
+          {/* <View className="flex flex-row">
               <Pressable className="border rounded-full bg-slate-300 p-1 m-1">
                 <Text className=" text-xs text-center">
                   {gymProfile.gym_style}
                 </Text>
               </Pressable>
-            </View>
-          </View>
+            </View> */}
         </View>
       </Pressable>
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={1}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-      >
-        <ViewGymProfile gymProfile={gymProfile} dismiss={dismiss} />
-      </BottomSheetModal>
     </>
   )
 }

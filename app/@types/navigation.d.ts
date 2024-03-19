@@ -43,6 +43,11 @@ export type RootStackParamList = {
     id: string
     userDocId: string
   }
+  ViewGymScreen: {
+    id?: string
+    gymId: string
+  }
+  ViewGymTopTabs: undefined
 }
 
 export type NavigationType = NativeStackNavigationProp<RootStackParamList>
@@ -56,6 +61,9 @@ export type TabParamList = {
   Requests: undefined
   GymEvents: undefined
   Events: undefined
+  AboutGym: undefined
+  GymMembers: undefined
+  GymPhotos: undefined
 }
 
 export type TabNavigationType = TabNavigationProp<TabParamList>
@@ -64,4 +72,5 @@ export type RouteParamsType = {
   id?: string
   matchDocId: string
   eventId: string
+  gymId: string
 }
