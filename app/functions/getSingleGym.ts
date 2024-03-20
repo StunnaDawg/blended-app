@@ -10,6 +10,7 @@ const getSingleGym = async (
 ) => {
   try {
     if (id) {
+      console.log("getting gym", id)
       const gymRef = doc(db, "gyms", id)
       const gymData = await getDoc(gymRef)
 
@@ -26,7 +27,7 @@ const getSingleGym = async (
         const gymId = gymFetchedData.id
         const gymProfile = {
           ...gymFetchedData,
-          gym_id: gymId,
+          gymId: gymId,
           gym_title: gymFetchedData.gym_title,
           gym_style: gymFetchedData.gym_style,
           country: gymFetchedData.country,

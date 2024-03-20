@@ -1,7 +1,7 @@
 import { TimeStamp } from "firebase/firestore"
 
 export type GymProfile = {
-  gym_id: string
+  gymId: string
   gym_title: string
   gym_style: string
   country: string
@@ -10,7 +10,7 @@ export type GymProfile = {
   about?: string
   members?: UserProfile[]
   coaches?: UserProfile[]
-  gymPhotos?: string[]
+  gymPhotos: string[]
 }
 
 export type UserProfile = {

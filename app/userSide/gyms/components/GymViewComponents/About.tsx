@@ -33,7 +33,7 @@ const About = ({ gymProfile, gymId }: About) => {
           Members
         </Text>
         {/* <GymMembersModal members={gymProfile.members} /> */}
-        <RequestToBeMember gymId={gymProfile.gym_id} />
+        <RequestToBeMember gymId={gymProfile.gymId} />
       </View>
 
       <View className="mx-6">
@@ -99,7 +99,7 @@ const About = ({ gymProfile, gymId }: About) => {
           )}
         </ScrollView>
       </View>
-      <RequestToBeCoach gymId={gymProfile.gym_id} />
+      <RequestToBeCoach gymId={gymProfile.gymId} />
     </ScrollView>
   )
 }

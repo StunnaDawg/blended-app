@@ -40,7 +40,7 @@ const GymsTab = () => {
       {!loading ? (
         gymProfiles.length > 0 &&
         gymProfiles.map((gym) => (
-          <View key={gym.gym_id} className="m-2">
+          <View key={gym.gymId} className="m-2">
             <GymCard gymProfile={gym} id={currentUser} />
           </View>
         ))

@@ -22,14 +22,14 @@ const GymCard = ({ gymProfile, id }: GymCardProp) => {
         onPress={() => {
           navigation.navigate("ViewGymScreen", {
             id: id,
-            gymId: gymProfile.gym_id,
+            gymId: gymProfile.gymId,
           })
         }}
       >
         <View className="flex flex-row items-center">
           <View className="m-2">
             <SinglePic
-              id={gymProfile.gym_id}
+              id={gymProfile.gymId}
               size={50}
               picNumber={0}
               avatarRadius={100}

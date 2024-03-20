@@ -23,7 +23,7 @@ const getGymProfiles = async (
       const coaches = coachesData.docs.map((doc) => doc.data() as UserProfile)
 
       const gymProfile: GymProfile = {
-        gym_id: gymId,
+        gymId: gymId,
         gym_title: gymFetchedData.gym_title,
         gym_style: gymFetchedData.gym_style,
         country: gymFetchedData.country,
