@@ -39,6 +39,7 @@ const getGymMembers = async (
             userPhotos: userFetchedData.userPhotos,
             birthday: userFetchedData.birthday || null,
             gyms: userFetchedData.gyms || null,
+            eventsGoing: null,
           }
           profiles.push(userProfile)
         }

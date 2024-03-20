@@ -1,17 +1,25 @@
-import { View, Text, ScrollView, ActivityIndicator } from "react-native"
+import {
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  Pressable,
+} from "react-native"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { NavigationType, RootStackParamList } from "../@types/navigation"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import BackButton from "./BackButton"
 import SinglePicBackGround from "./ImageBackground"
 import { doc } from "firebase/firestore"
-import { db } from "../../firebase"
-import { GymProfile, UserProfile } from "../@types/firestore"
+import { FIREBASE_AUTH, db } from "../../firebase"
+import { Event, GymProfile, UserProfile } from "../@types/firestore"
 import SinglePicBackGroundUser from "./ImageBackgroundUser"
 import getUserProfile from "../functions/getUserProfile"
 import ActivityTags from "./ActivityTags"
 import getSingleGym from "../functions/getSingleGym"
 import SinglePicBackGroundGym from "./ImageBackgroundGym"
+import EventCard from "../userSide/Dashboard/Events/components/EventCard"
+import getUserEvent from "../functions/getUserEvents"
 
 type PicDetailsProps = {
   profile: UserProfile
@@ -48,8 +56,13 @@ const ViewUserProfileScreen = () => {
     {} as UserProfile
   )
   const [gymProfile, setGymProfile] = useState<GymProfile>({} as GymProfile)
+  const [events, setEvents] = useState<Event[]>([])
   const route = useRoute<RouteProp<RootStackParamList, "ViewUserProfile">>()
   const userProfile = route.params.userProfile
+
+  const getUserEventFunc = async () => {
+    getUserEvent(setEvents, userProfileState.id, setLoading)
+  }
 
   useEffect(() => {
     if (userProfile && userProfile.id) {
@@ -65,6 +78,8 @@ const ViewUserProfileScreen = () => {
     } else {
       console.log("nogym")
     }
+
+    getUserEventFunc()
   }, [userProfileState])
 
   return (
@@ -85,13 +100,29 @@ const ViewUserProfileScreen = () => {
       </ScrollView>
 
       {!loading && userProfile.homeGym ? (
-        <View>
-          <Text className="text-3xl font-bold">Home Gym</Text>
+        <View className="flex flex-row justify-center">
+          <View>
+            <Text className="text-3xl font-bold">Home Gym</Text>
 
-          <GymCard
-            profile={userProfileState}
-            gymProfile={userProfileState.homeGym}
-          />
+            <GymCard
+              profile={userProfileState}
+              gymProfile={userProfileState.homeGym}
+            />
+          </View>
+        </View>
+      ) : null}
+
+      {!loading && userProfile.eventsGoing !== null ? (
+        <View>
+          <Text className="text-3xl font-bold">Going to</Text>
+
+          <ScrollView horizontal={true}>
+            <View className="flex flex-row justify-center flex-wrap">
+              {events.map((event, index) => (
+                <EventCard key={event.id} event={event} id={event.id} />
+              ))}
+            </View>
+          </ScrollView>
         </View>
       ) : null}
     </ScrollView>
@@ -130,7 +161,7 @@ const GymCardData = ({ profile, gymProfile }: GymCardProps) => {
   return (
     <>
       <View className=" m-1 flex-1 flex-col items-start justify-end">
-        <Text className="font-bold text-3xl text-shadow text-black">
+        <Text className="font-bold text-xl text-shadow text-black">
           {gymProfileState.gym_title}
         </Text>
       </View>
@@ -140,8 +171,19 @@ const GymCardData = ({ profile, gymProfile }: GymCardProps) => {
 
 const GymCard = ({ profile, gymProfile }: GymCardProps) => {
   const [loading, setLoading] = useState<boolean>(false)
+  const navigation = useNavigation<NavigationType>()
+  const currentuser = FIREBASE_AUTH.currentUser?.uid
   return (
-    <View>
+    <Pressable
+      onPress={() => {
+        if (gymProfile) {
+          navigation.navigate("ViewGymScreen", {
+            id: currentuser,
+            gymId: gymProfile,
+          })
+        }
+      }}
+    >
       {gymProfile ? (
         <SinglePicBackGroundGym
           id={gymProfile}
@@ -154,7 +196,7 @@ const GymCard = ({ profile, gymProfile }: GymCardProps) => {
           setLoading={setLoading}
         />
       ) : null}
-    </View>
+    </Pressable>
   )
 }
 

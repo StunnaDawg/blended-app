@@ -31,6 +31,7 @@ export type UserProfile = {
   userPhotos: string[]
   birthday: TimeStamp
   gyms: string[]
+  eventsGoing: EventsAttending[] | null
 }
 
 export type Activities = {
@@ -82,4 +83,8 @@ export type GymMessaging = {
 
 export type Attendee = {
   memberId: string
+}
+
+export type EventsAttending = {
+  eventId: string
 }

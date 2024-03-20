@@ -1,6 +1,6 @@
 import { collection, getDocs, DocumentSnapshot } from "firebase/firestore"
 import { FIREBASE_AUTH, db } from "../../firebase"
-import { UserProfile } from "../@types/firestore"
+import { EventsAttending, UserProfile } from "../@types/firestore"
 import { Dispatch, SetStateAction } from "react"
 
 const getUserProfiles = async (
@@ -25,6 +25,7 @@ const getUserProfiles = async (
         if (doc.exists()) {
           const userFetchedData = doc.data()
           const userId = doc.id
+
           const userProfile: UserProfile = {
             ...userFetchedData,
             id: userId,
@@ -44,6 +45,7 @@ const getUserProfiles = async (
             userPhotos: userFetchedData.userPhotos,
             birthday: userFetchedData.birthday || null,
             gyms: userFetchedData.gyms || null,
+            eventsGoing: null,
           }
           console.log(subCollectionString, userProfile)
           profiles.push(userProfile)
