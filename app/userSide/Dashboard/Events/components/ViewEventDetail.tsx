@@ -75,6 +75,8 @@ export const EventCardDetails = ({ event, eventId }: EventProps) => {
       setEventDate(eventDate)
       setEventTime(eventTime)
     }
+
+    console.log(event.attendees)
   }, [event])
   return (
     <View>

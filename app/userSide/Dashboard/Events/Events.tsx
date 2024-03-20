@@ -10,7 +10,6 @@ import { Event } from "../../../@types/firestore"
 import getEvents from "../../../functions/getAllEvents"
 import EventCard from "./components/EventCard"
 import { FIREBASE_AUTH } from "../../../../firebase"
-import SinglePicBackGround from "../../../components/ImageBackground"
 
 const Events = () => {
   const [loading, setLoading] = useState<boolean>(false)

@@ -1,44 +1,27 @@
 import { collection, getDocs, DocumentSnapshot } from "firebase/firestore"
 import { FIREBASE_AUTH, db } from "../../firebase"
-import { UserProfile } from "../@types/firestore"
+import { Attendee, UserProfile } from "../@types/firestore"
 import { Dispatch, SetStateAction } from "react"
 
 const getEventAttendees = async (
-  setUserProfileData: Dispatch<SetStateAction<UserProfile[]>>,
-  gymId: string,
+  setUserProfileData: Dispatch<SetStateAction<Attendee[]>>,
   eventId: string
 ) => {
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   try {
-    if (currentUser) {
-      const userCollection = collection(db, "events", eventId)
+    if (currentUser && eventId) {
+      const userCollection = collection(db, "events", eventId, "attendees")
       const querySnapshot = await getDocs(userCollection)
 
-      const profiles: UserProfile[] = []
+      const profiles: Attendee[] = []
 
       querySnapshot.forEach((doc: DocumentSnapshot) => {
         if (doc.exists()) {
           const userFetchedData = doc.data()
           const userId = doc.id
-          const userProfile: UserProfile = {
+          const userProfile: Attendee = {
             ...userFetchedData,
-            id: userId,
-            firstName: userFetchedData.firstName,
-            lastName: userFetchedData.lastName,
-            gender: userFetchedData.gender,
-            about: userFetchedData.about || null,
-            activities: userFetchedData.activities,
-            personalRecords: userFetchedData.personalRecords || null,
-            intentions: userFetchedData.intentions,
-            diet: userFetchedData.diet || null,
-            zodiac: userFetchedData.zodiac || null,
-            education: userFetchedData.education || null,
-            jobTitle: userFetchedData.jobTitle || null,
-            school: userFetchedData.school || null,
-            homeGym: userFetchedData.homeGym || null,
-            userPhotos: userFetchedData.userPhotos,
-            birthday: userFetchedData.birthday || null,
-            gyms: userFetchedData.gyms || null,
+            memberId: userId,
           }
           profiles.push(userProfile)
         }

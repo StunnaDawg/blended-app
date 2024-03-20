@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs } from "firebase/firestore"
 import { db } from "../../firebase"
-import { Event, UserProfile } from "../@types/firestore"
+import { Attendee, Event, UserProfile } from "../@types/firestore"
 import { Dispatch, SetStateAction } from "react"
 
 const getSingleEvent = async (
@@ -13,12 +13,9 @@ const getSingleEvent = async (
     const eventDocRef = doc(db, "events", eventId)
     const docSnapshot = await getDoc(eventDocRef)
 
-    const attendeesRef = collection(
-      db,
-      `gyms/${gymId}/events/${eventId}/attendees`
-    )
+    const attendeesRef = collection(db, `events/${eventId}/attendees`)
     const attendeesData = await getDocs(attendeesRef)
-    const attendees = attendeesData.docs.map((doc) => doc.data() as UserProfile)
+    const attendees = attendeesData.docs.map((doc) => doc.data() as Attendee)
 
     if (docSnapshot.exists()) {
       const eventFetchedData = docSnapshot.data()
@@ -31,7 +28,7 @@ const getSingleEvent = async (
         date: eventFetchedData.date,
         location: eventFetchedData.location,
         price: eventFetchedData.price,
-        attendees: eventFetchedData.attendees || [],
+        attendees: attendees,
         eventPhoto: eventFetchedData.eventPhoto,
       }
 

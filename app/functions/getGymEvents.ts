@@ -1,6 +1,6 @@
 import { DocumentSnapshot, collection, getDocs } from "firebase/firestore"
 import { db } from "../../firebase"
-import { Event, UserProfile } from "../@types/firestore"
+import { Attendee, Event, UserProfile } from "../@types/firestore"
 import { Dispatch, SetStateAction } from "react"
 
 const getGymEvents = async (
@@ -14,9 +14,7 @@ const getGymEvents = async (
       const querySnapshot = await getDocs(eventCollection)
       const attendeesRef = collection(db, `gyms/${gymId}/events/attendees`)
       const attendeesData = await getDocs(attendeesRef)
-      const attendees = attendeesData.docs.map(
-        (doc) => doc.data() as UserProfile
-      )
+      const attendees = attendeesData.docs.map((doc) => doc.data() as Attendee)
 
       const events: Event[] = []
 

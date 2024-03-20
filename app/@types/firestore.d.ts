@@ -63,7 +63,7 @@ export type Event = {
   date: Timestamp
   location: string
   price: string
-  attendees: UserProfile[]
+  attendees: Attendee[]
   eventPhoto: string
 }
 
@@ -78,4 +78,8 @@ export type GymMessaging = {
     user2: UserProfile | GymProfile
   }
   gymUser: string[]
+}
+
+export type Attendee = {
+  memberId: string
 }

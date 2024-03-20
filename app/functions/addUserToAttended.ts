@@ -20,7 +20,6 @@ const updateEventAttendees = async (
   setLoading: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
-    setLoading(true)
     if (!newAttendee) {
       const gymRef = collection(
         db,
@@ -36,7 +35,7 @@ const updateEventAttendees = async (
       await setDoc(memberRef, { memberId: memberId })
       await setDoc(memberEventRef, { memberId: memberId })
 
-      console.log("I RVSP'd")
+      setLoading(false)
     } else {
       const gymRef = doc(
         db,
@@ -49,16 +48,15 @@ const updateEventAttendees = async (
       )
 
       const eventRef = doc(db, "events", eventId, "attendees", memberId)
-      deleteDoc(gymRef)
-      deleteDoc(eventRef)
+      await deleteDoc(gymRef)
+      await deleteDoc(eventRef)
 
       console.log("I canceled")
+      setLoading(false)
     }
-
-    console.log("hello...?")
-    setLoading(false)
   } catch (err) {
     console.error(err)
+    setLoading(false)
   }
 }
 

@@ -29,19 +29,21 @@ const RVSPButton = ({
     setIsPressed(false)
   }
 
-  //   useEffect(() => {
-  //     if (event && event.attendees && currentUser) {
-  //       const isUserInAttendees = event.attendees.includes(currentUser)
-  //       if (isUserInAttendees) {
-  //         setCurrentAttendee(true)
-  //         console.log("user is an attendee")
-  //       } else {
-  //         setCurrentAttendee(false)
-  //       }
-  //     } else {
-  //       setCurrentAttendee(false)
-  //     }
-  //   }, [event])
+  useEffect(() => {
+    if (event && event.attendees && currentUser) {
+      const isUserInAttendees = event.attendees.some(
+        (attendee) => attendee.memberId === currentUser
+      )
+      if (isUserInAttendees) {
+        setCurrentAttendee(true)
+        console.log("user is an attendee")
+      } else {
+        setCurrentAttendee(false)
+      }
+    } else {
+      setCurrentAttendee(false)
+    }
+  }, [event])
   return (
     <Pressable
       onPressIn={handlePressIn}
@@ -53,6 +55,7 @@ const RVSPButton = ({
       }
       onPress={() => {
         if (currentUser && event) {
+          setLoading(true)
           updateEventAttendees(
             currentUser,
             event.gymHost,
@@ -64,19 +67,15 @@ const RVSPButton = ({
         }
       }}
     >
-      <Text className="text-center">
-        {!loading ? (
-          currentAttendee ? (
-            "Cancel"
-          ) : (
-            "RVSP"
-          )
-        ) : (
-          <View className="flex flex-row justify-center items-center">
-            <ActivityIndicator />
-          </View>
-        )}
-      </Text>
+      {!loading ? (
+        <Text className="text-center">
+          {currentAttendee ? "Cancel" : "RVSP"}
+        </Text>
+      ) : (
+        <View className="flex flex-row justify-center items-center">
+          <ActivityIndicator size="small" color="#0000ff" />
+        </View>
+      )}
     </Pressable>
   )
 }
