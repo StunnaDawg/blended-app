@@ -23,13 +23,14 @@ import getUserProfile from "../../functions/getUserProfile"
 import { UserProfile } from "../../@types/firestore"
 
 const EditProfileHome = () => {
+  const [loading, setLoading] = useState<boolean>(false)
   const [userProfileValues, setUserProfileValues] = useState<UserProfile>(
     {} as UserProfile
   )
   const currentUserId = FIREBASE_AUTH.currentUser?.uid
 
   useEffect(() => {
-    getUserProfile(currentUserId, setUserProfileValues)
+    getUserProfile(currentUserId, setUserProfileValues, setLoading)
   }, [])
 
   return (
@@ -50,9 +51,9 @@ const EditProfileHome = () => {
 
         <About />
 
-        <View className="mt-4">
+        {/* <View className="mt-4">
           <HomeGym currentGym={userProfileValues.homeGym?.gym_title} />
-        </View>
+        </View> */}
 
         <View className="mt-4">
           <Activities />

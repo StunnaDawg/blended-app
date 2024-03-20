@@ -27,8 +27,8 @@ const UploadImage = ({ setUris, uris }: UploadImageType) => {
     })
 
     if (!result.canceled) {
-      pushToImageArray(result.assets[0].uri)
-      console.log(result.assets[0].uri)
+      const imageUris = result.assets.map((asset) => asset.uri)
+      setUris((prevUris) => [...prevUris, ...imageUris])
     }
   }
 

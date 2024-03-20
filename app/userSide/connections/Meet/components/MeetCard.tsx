@@ -1,6 +1,22 @@
-import { View, Text, Pressable, Image, ScrollView } from "react-native"
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
-import { UserProfile } from "../../../../@types/firestore"
+import {
+  View,
+  Text,
+  Pressable,
+  Image,
+  ScrollView,
+  TextInput,
+  StyleSheet,
+} from "react-native"
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
+import { GymProfile, UserProfile } from "../../../../@types/firestore"
 import getUserProfile from "../../../../functions/getUserProfile"
 import {
   DocumentSnapshot,
@@ -8,6 +24,9 @@ import {
   getDoc,
   setDoc,
   Timestamp,
+  serverTimestamp,
+  addDoc,
+  collection,
 } from "firebase/firestore"
 import { FIREBASE_AUTH, db, FIREBASE_APP } from "../../../../../firebase"
 import mergeIds from "../../../../functions/mergeId"
@@ -17,6 +36,8 @@ import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../../../@types/navigation"
 import ImageCarosel from "../../../../components/GymImageCarosel"
 import UserImageCarosel from "../../../../components/UserProfileCarousel"
+import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
+import getSingleGym from "../../../../functions/getSingleGym"
 
 type RemoveFirstItem = () => void
 
@@ -39,42 +60,45 @@ const MeetCard = ({
   const [currentUserData, setCurrentUserData] = useState<UserProfile>(
     {} as UserProfile
   )
+  const [matchIdState, setMatchIdState] = useState<string>("")
+  const [homeGym, setHomeGym] = useState<GymProfile>({} as GymProfile)
+  const [message, setMessageToSend] = useState<string>("")
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
+  const { dismiss } = useBottomSheetModal()
+
+  const snapPoints = useMemo(() => ["25%", "50%"], [])
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present()
+  }, [])
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index)
+  }, [])
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   const otherUser = userData.id
   const navigation = useNavigation<NavigationType>()
-  // const currentDate: Date = new Date()
-  // const fieldVal = userData.birthday as Timestamp
-  // const birthdayTimestamp = userData?.birthday
-  // const birthdayDate: Date = birthdayTimestamp.toDate()
-
-  // let age: number = currentDate.getFullYear() - birthdayDate?.getFullYear()
-  // if (
-  //   currentDate.getMonth() < birthdayDate.getMonth() ||
-  //   (currentDate.getMonth() === birthdayDate.getMonth() &&
-  //     currentDate.getDate() < birthdayDate.getDate())
-  // ) {
-  //   age--
-  // }
 
   useEffect(() => {
     setLoading(true)
-    getUserProfile(id, setUserData)
+    getUserProfile(id, setUserData, setLoading)
     setLoading(false)
   }, [])
 
   useEffect(() => {
-    getUserProfile(currentUser, setCurrentUserData)
+    getUserProfile(currentUser, setCurrentUserData, setLoading)
   }, [])
 
   useEffect(() => {
-    console.log("Age", matchesAge)
-  }, [matchesAge])
-
-  useEffect(() => {
     setLoading(true)
-    getUserProfile(id, setUserData)
+    getUserProfile(id, setUserData, setLoading)
     setLoading(false)
   }, [index])
+
+  useEffect(() => {
+    if (userData.homeGym) {
+      getSingleGym(userData.homeGym, setHomeGym, setLoading)
+    }
+  }, [userData])
 
   const passUser = async () => {
     try {
@@ -93,187 +117,176 @@ const MeetCard = ({
   const swipeUser = async () => {
     try {
       if (currentUser) {
-        getDoc(doc(db, "user", userData.id, "swipes", currentUser)).then(
-          (documentSnapshot) => {
-            console.log("trying")
-            if (documentSnapshot.exists()) {
-              setDoc(
-                doc(db, "user", currentUser, "swipes", userData.id),
-                userData
-              )
-              setDoc(doc(db, "matches", mergeIds(currentUser, userData.id)), {
-                users: {
-                  user1: currentUserData,
-                  user2: userData,
-                },
-                usersMatched: [currentUser, userData.id],
-              })
-              navigation.navigate("MatchModal")
-              console.log("User Matched first")
-            } else {
-              console.log("You matched first")
-              setDoc(
-                doc(db, "user", currentUser, "swipes", userData.id),
-                userData
-              )
-            }
-          }
+        setDoc(doc(db, "user", currentUser, "messaged", userData.id), userData)
+        setDoc(
+          doc(db, "user", userData.id, "messaged", currentUser),
+          currentUserData
         )
-        nextProfile(index + 1)
+        setDoc(doc(db, "matches", mergeIds(currentUser, userData.id)), {
+          users: {
+            user1: currentUserData,
+            user2: userData,
+          },
+          usersMatched: [currentUser, userData.id],
+        })
+        setMatchIdState(mergeIds(currentUser, userData.id))
+
+        handlePresentModalPress()
       }
     } catch (err) {
       console.error(err)
     }
   }
 
+  const sendMessage = async () => {
+    try {
+      setLoading(true)
+      await addDoc(collection(db, "matches", matchIdState, "messages"), {
+        timestamp: serverTimestamp(),
+        userId: currentUser,
+        username: currentUserData.firstName,
+        photoUrl: currentUserData.userPhotos[0],
+        message: message,
+      })
+
+      setMessageToSend("")
+      setLoading(false)
+      dismiss()
+      nextProfile(index + 1)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   return (
-    <ScrollView className="mb-20">
-      <View className="flex flex-row justify-center items-center">
-        <View className="flex flex-col items-center">
-          <View>
-            <Text className="font-bold text-xl">{userData.firstName}</Text>
-          </View>
-
-          <UserImageCarosel id={otherUser} profileType={userData} />
-
-          <View className="border rounded-3xl bg-slate-200 px-4 py-3 m-2 w-96">
-            <View className="my-1 ">
-              {/* <Text>{birthdayDate ? birthdayDate : "No Age on Profile"}</Text> */}
-              <Text className="text-black/50 text-xs font-bold">
-                Trains at...
-              </Text>
-            </View>
-            <View className="flex flex-row">
-              <View className="border border-black bg-slate-300 rounded-2xl p-2 mx-1">
-                <Text className="text-xs font-bold">
-                  {" "}
-                  {userData.homeGym?.gym_title
-                    ? userData.homeGym?.gym_title
-                    : "Blended Athletics"}
-                </Text>
+    <>
+      <View className="flex-1 bg-black/50">
+        <View className="flex flex-row justify-center items-center">
+          <Text className="font-bold text-xl text-white">
+            {userData.firstName}
+          </Text>
+          {userData.intentions && (
+            <View className="flex flex-row items-center">
+              <View className="border border-black rounded-2xl bg-black/50 p-1 mx-1">
+                <Text className="text-xs font-bold">{userData.intentions}</Text>
               </View>
             </View>
-          </View>
-
-          <View className="border rounded-3xl bg-slate-200 px-4 py-3 m-2 w-96">
-            <View className="my-1">
-              <Text className="text-black/50 text-xs font-bold">About Me</Text>
-            </View>
-            <View>
-              {userData.about && (
-                <Text className="text-md font-bold"> {userData.about}</Text>
-              )}
-            </View>
-          </View>
-
-          <View className="border rounded-3xl bg-slate-200 px-4 py-3 m-2 w-96">
-            <View className="my-1">
-              <Text className="text-black/50 text-xs font-bold">Activites</Text>
-            </View>
-            <View className="my-1">
-              {userData.activities?.length > 0 && (
-                <View className="flex flex-row">
-                  {userData.activities.map((activity, index) => (
-                    <View
-                      key={index}
-                      className="border border-black bg-slate-300 rounded-2xl p-2 mx-1"
-                    >
-                      <Text className="text-xs font-bold">{activity}</Text>
-                    </View>
-                  ))}
-                </View>
-              )}
-            </View>
-          </View>
-
-          <View className="border rounded-3xl bg-slate-200 px-4 py-3 m-2 w-96">
-            <View className="my-1 ">
-              <Text className="text-black/50 text-xs font-bold">
-                I am looking for...
+          )}
+        </View>
+        <UserImageCarosel id={otherUser} profileType={userData} />
+        <View className="bg-black/50">
+          <View className="flex flex-col items-center">
+            {homeGym.gym_title ? (
+              <Text className="text-xs font-bold">
+                Trains at {homeGym.gym_title}
               </Text>
-            </View>
+            ) : (
+              <Text className="text-xs font-bold">No current Home Gym</Text>
+            )}
+          </View>
+          {userData.intentions && (
+            <Text className="text-md font-bold text-white">
+              {userData.intentions}
+            </Text>
+          )}
+          {userData.about && (
+            <Text className="text-md font-bold text-white">
+              {userData.about}
+            </Text>
+          )}
+
+          <Text className="my-1 text-xs font-bold text-black/50">
+            Activites
+          </Text>
+          {userData.activities?.length > 0 && (
             <View className="flex flex-row">
-              <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
-                {userData.intentions && (
-                  <Text className="text-xs font-bold">
-                    {" "}
-                    {userData.intentions}
+              {userData.activities.map((activity, index) => (
+                <View key={index} className="mx-1">
+                  <Text className="text-xs font-bold text-white">
+                    {activity}
                   </Text>
-                )}
-              </View>
+                </View>
+              ))}
             </View>
-          </View>
+          )}
+        </View>
 
-          <View className="flex flex-row border rounded-3xl bg-slate-200 px-4 py-3 m-2 w-96 ">
-            <View>
-              <View className="my-1">
-                <Text className="text-black/50 text-xs font-bold">
-                  Essentials
-                </Text>
-              </View>
-              <View className="flex flex-row flex-wrap">
-                {userData.diet && (
-                  <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
-                    <Text className="text-xs font-bold">{userData.diet}</Text>
-                  </View>
-                )}
-                {userData.zodiac && (
-                  <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
-                    <Text className="text-xs font-bold">
-                      {" "}
-                      {userData.zodiac}
-                    </Text>
-                  </View>
-                )}
-                {userData.education && (
-                  <View className="border border-black bg-slate-300 rounded-2xl p-2 mx-1">
-                    <Text className="text-xs font-bold">
-                      {userData.education}
-                    </Text>
-                  </View>
-                )}
-                {userData.jobTitle && (
-                  <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
-                    <Text className="text-xs font-bold">
-                      {userData.jobTitle}
-                    </Text>
-                  </View>
-                )}
-                {userData.school && (
-                  <View className="border border-black rounded-2xl bg-slate-300 p-2 mx-1">
-                    <Text className="text-xs font-bold">{userData.school}</Text>
-                  </View>
-                )}
-              </View>
-            </View>
+        <View className="flex flex-row justify-center">
+          <View className="mx-2">
+            <Pressable
+              className="border rounded-3xl bg-red-700 p-3"
+              onPress={async () => {
+                await passUser()
+              }}
+            >
+              <Text className="font-bold">Pass</Text>
+            </Pressable>
           </View>
-
-          <View className="flex flex-row">
-            <View className="mx-2">
-              <Pressable
-                className="border rounded-3xl bg-red-700 p-3"
-                onPress={async () => {
-                  await passUser()
-                }}
-              >
-                <Text className="font-bold">Pass</Text>
-              </Pressable>
-            </View>
-            <View className="mx-2">
-              <Pressable
-                className="border rounded-3xl p-3"
-                onPress={async () => {
-                  await swipeUser()
-                }}
-              >
-                <Text className="font-bold">Swipe</Text>
-              </Pressable>
-            </View>
+          <View className="mx-2">
+            <Pressable
+              className="border rounded-3xl p-3"
+              onPress={async () => {
+                await swipeUser()
+              }}
+            >
+              <Text className="font-bold">Message!</Text>
+            </Pressable>
           </View>
         </View>
       </View>
-    </ScrollView>
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={1}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+      >
+        <View className="flex flex-row justify-center my-2 pt-2 border-t">
+          <TextInput
+            placeholder={loading ? "sending..." : "Send a Message"}
+            className=" flex-1 border rounded-xl h-8 w-64 p-2 "
+            value={message}
+            onChangeText={(message: string) => {
+              setMessageToSend(message)
+            }}
+          />
+          <Pressable
+            className="mx-2"
+            onPress={async () => {
+              await sendMessage()
+            }}
+          >
+            <Text className="font-bold">Send</Text>
+          </Pressable>
+        </View>
+      </BottomSheetModal>
+    </>
   )
 }
 
 export default MeetCard
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: "relative", // Needed for absolute positioning of children
+  },
+  overlayContent: {
+    position: "absolute", // Keep the content positioned absolutely
+    left: 0,
+    right: 0,
+    bottom: 0, // Anchor the content to the bottom
+    flexDirection: "row",
+    justifyContent: "flex-end", // Align content to the bottom
+    alignItems: "center", // Center content horizontally
+    // Add padding or a specific height if needed to control the overlay size
+    padding: 10, // Example padding, adjust as needed
+    // height: 100, // Optional: If you want a specific height for your overlay
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Optional: Add a background color to enhance readability
+  },
+  text: {
+    // Styling for the text
+    color: "#fff", // White color for better visibility
+    fontSize: 20,
+    // Add more styling as needed
+  },
+})

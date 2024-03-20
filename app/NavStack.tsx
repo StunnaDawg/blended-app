@@ -1,6 +1,7 @@
 import { RootStackParamList, TabParamList } from "./@types/navigation"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs"
 import Dashboard from "./userSide/Dashboard"
 import GymDashboard from "./gymSide/GymDashboard"
 import { useUserAuth } from "./context/auth"
@@ -31,9 +32,20 @@ import QuestionFive from "./SignUpFlow/UserFlow/QuestionFive"
 import QuestionFour from "./SignUpFlow/UserFlow/QuestionFour"
 import GymsTab from "./userSide/gyms/GymsTab"
 import ViewGymProfile from "./userSide/gyms/components/ViewGymProfile"
+import GymRequests from "./gymSide/GymRequests/GymRequests"
+import EventsTab from "./gymSide/Events/EventsTab"
+import CreateEvent from "./gymSide/Events/CreateEvent"
+import EditEvent from "./gymSide/Events/EditEvent"
+import Events from "./userSide/Dashboard/Events/Events"
+import ViewEvent from "./userSide/Dashboard/Events/ViewEvent"
+import GymTopTabs from "./userSide/gyms/components/GymViewComponents/GymTopTabs"
+import About from "./userSide/gyms/components/GymViewComponents/About"
+import AttendingEvent from "./userSide/Dashboard/Events/AttendingEvent"
+import ViewUserProfileScreen from "./components/ViewUserProfileScreen"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
+const TopTab = createMaterialTopTabNavigator<TabParamList>()
 
 const GymFooter = () => {
   return (
@@ -43,7 +55,9 @@ const GymFooter = () => {
       }}
     >
       <Tab.Screen name="Dashboard" component={GymDashboard} />
+      <Tab.Screen name="GymEvents" component={EventsTab} />
       <Tab.Screen name="Profile" component={GymProfile} />
+      <Tab.Screen name="Requests" component={GymRequests} />
     </Tab.Navigator>
   )
 }
@@ -55,7 +69,7 @@ const UserFooter = () => {
         headerShown: false,
       }}
     >
-      <Tab.Screen name="Dashboard" component={Dashboard} />
+      <Tab.Screen name="Events" component={Events} />
       <Tab.Screen name="Gyms" component={GymsTab} />
       <Tab.Screen name="Profile" component={UserProfile} />
       <Tab.Screen name="Connections" component={Meet} />
@@ -64,6 +78,15 @@ const UserFooter = () => {
   )
 }
 
+// export const GymViewTabs = () => {
+//   return (
+//     <TopTab.Navigator>
+//       <TopTab.Screen name="AboutGym" component={About} />
+//       <TopTab.Screen name="GymMembers" component={GymsTab} />
+//       <TopTab.Screen name="GymPhotos" component={UserProfile} />
+//     </TopTab.Navigator>
+//   )
+// }
 const NavStack = () => {
   const { isSignedIn } = useUserAuth()
   // const { isUser } = useisUser()
@@ -120,7 +143,14 @@ const NavStack = () => {
           <>
             <Stack.Group>
               <Stack.Screen name="Footer" component={UserFooter} />
+              <Stack.Screen name="ViewGymTopTabs" component={GymTopTabs} />
               <Stack.Screen name="UserDashboard" component={Dashboard} />
+              <Stack.Screen name="AttendingEvent" component={AttendingEvent} />
+
+              <Stack.Screen
+                name="ViewUserProfile"
+                component={ViewUserProfileScreen}
+              />
               <Stack.Screen
                 name="ChooseUserActivity"
                 component={ChooseActivity}
@@ -132,6 +162,8 @@ const NavStack = () => {
                 name="UserEditProfile"
                 component={EditProfileHome}
               />
+              <Stack.Screen name="ViewGymScreen" component={ViewGymProfile} />
+              <Stack.Screen name="ViewEvent" component={ViewEvent} />
               <Stack.Screen name="UserQuestionOne" component={QuestionOne} />
               <Stack.Screen name="UserQuestionTwo" component={QuestionTwo} />
               <Stack.Screen
@@ -155,6 +187,8 @@ const NavStack = () => {
         ) : (
           <>
             <Stack.Screen name="GymFooter" component={GymFooter} />
+            <Stack.Screen name="CreateEvent" component={CreateEvent} />
+            <Stack.Screen name="EditEvent" component={EditEvent} />
             <Stack.Screen
               name="GymEditProfile"
               component={EditGymProfileHome}

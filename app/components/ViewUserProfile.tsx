@@ -15,6 +15,7 @@ type MeetCardProps = {
 }
 
 const ViewUserProfile = ({ id, size, radius }: MeetCardProps) => {
+  const [loading, setLoading] = useState<boolean>(false)
   const [userData, setUserData] = useState<UserProfile>({} as UserProfile)
   const [currentUserData, setCurrentUserData] = useState<UserProfile>(
     {} as UserProfile
@@ -34,11 +35,11 @@ const ViewUserProfile = ({ id, size, radius }: MeetCardProps) => {
     console.log("handleSheetChanges", index)
   }, [])
   useEffect(() => {
-    getUserProfile(id, setUserData)
+    getUserProfile(id, setUserData, setLoading)
   }, [])
 
   useEffect(() => {
-    getUserProfile(currentUser, setCurrentUserData)
+    getUserProfile(currentUser, setCurrentUserData, setLoading)
   }, [])
 
   return (

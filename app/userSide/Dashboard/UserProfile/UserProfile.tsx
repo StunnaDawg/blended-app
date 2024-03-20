@@ -13,13 +13,19 @@ import { doc, getDoc } from "firebase/firestore"
 import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../../@types/navigation"
 import * as Location from "expo-location"
+import { useLocation } from "../../../context/LocationContext"
+import getSingleGym from "../../../functions/getSingleGym"
+import { GymProfile } from "../../../@types/firestore"
+import { getCity } from "../../../functions/getCity"
 
 const UserProfile = () => {
+  const { location } = useLocation()
   const [refreshing, setRefreshing] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [name, setName] = useState<string>("")
   const [age, setAge] = useState<string>("")
-  const [location, setLocation] = useState<Location.LocationObject | null>(null)
+  const [gymId, setGymId] = useState<string>("")
+  const [homeGym, setHomeGym] = useState<GymProfile>({} as GymProfile)
   const [city, setCity] = useState<string | null>(null)
   const navigation = useNavigation<NavigationType>()
   const currentId = FIREBASE_AUTH.currentUser?.uid
@@ -35,12 +41,15 @@ const UserProfile = () => {
     const callFuncs = async () => {
       setLoading(true)
       await getUserNameAge()
-      await getLocation()
-      await getCity()
+      await getCity(setCity, location)
       setLoading(false)
     }
     callFuncs()
-  }, [])
+  }, [location])
+
+  useEffect(() => {
+    getSingleGym(gymId, setHomeGym, setLoading)
+  }, [gymId])
 
   const getUserNameAge = async () => {
     setLoading(true)
@@ -54,39 +63,15 @@ const UserProfile = () => {
 
         setName(userData.first_name)
         setAge(userData.age)
+        setGymId(userData.homeGym)
       }
       setLoading(false)
-    }
-  }
-  const getLocation = async () => {
-    try {
-      let currentLocation = await Location.getCurrentPositionAsync({})
-      setLocation(currentLocation)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const getCity = async () => {
-    try {
-      if (location) {
-        let currentCity = await Location.reverseGeocodeAsync({
-          latitude: location?.coords.latitude,
-          longitude: location?.coords.latitude,
-        })
-        if (currentCity.length > 0) {
-          // Extract the city from the address
-          setCity(currentCity[0].city)
-        }
-      }
-    } catch (err) {
-      console.error(err)
     }
   }
 
   return (
     <ScrollView
-      style={{ flex: 1 }} // Ensure the ScrollView takes up all available space
+      style={{ flex: 1 }}
       contentContainerStyle={{
         flex: 1,
         justifyContent: "center",
@@ -114,6 +99,7 @@ const UserProfile = () => {
               <Text className="font-bold text-xl">
                 {name}, {city ? city : "no location"}
               </Text>
+              <Text className="font-bold text-xl">{homeGym.gym_title}</Text>
             </View>
             <Button
               title="edit profile"
