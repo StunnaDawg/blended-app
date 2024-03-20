@@ -29,8 +29,8 @@ const getSinglePhoto = async (
       const docSnap = await getDoc(docRef)
 
       if (docSnap.exists()) {
-        const userData = { ...docSnap.data() } as Event
-        const photo = userData.eventPhoto
+        const userData = { ...docSnap.data() } as UserProfile
+        const photo = userData.userPhotos[0]
 
         setProfilePic(photo)
         setLoading(false)
@@ -44,7 +44,7 @@ const getSinglePhoto = async (
     console.error(err)
   }
 }
-export default function SinglePicBackGround({
+export default function SinglePicBackGroundUser({
   id,
   height,
   width,

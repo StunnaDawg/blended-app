@@ -75,6 +75,7 @@ const EventCardData = ({ event, id }: EventCardProp) => {
 
 const EventCard = ({ event, id }: EventCardProp) => {
   const eventRef = doc(db, "events", event.id)
+  const [loading, setLoading] = useState<boolean>(false)
   return (
     <SinglePicBackGround
       id={event.id}
@@ -84,6 +85,7 @@ const EventCard = ({ event, id }: EventCardProp) => {
       noAvatarRadius={10}
       docRef={eventRef}
       children={<EventCardData event={event} id={id} />}
+      setLoading={setLoading}
     />
   )
 }

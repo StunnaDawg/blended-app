@@ -88,6 +88,7 @@ export const EventCardDetails = ({ event, eventId }: EventProps) => {
         noAvatarRadius={10}
         docRef={eventRef}
         children={<ViewEventDetail event={event} eventId={eventId} />}
+        setLoading={setLoading}
       />
       <View>
         <Text className="font-bold text-lg">

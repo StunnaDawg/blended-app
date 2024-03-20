@@ -35,7 +35,9 @@ const AttendingEvent = () => {
   return (
     <ScrollView>
       <View className="flex flex-row items-center justify-start">
-        <BackButton />
+        <View className="flex-1">
+          <BackButton />
+        </View>
         <Text className=" font-bold text-3xl">Attendees</Text>
         <View className="flex-1"></View>
         {/* This empty View acts as a spacer */}
