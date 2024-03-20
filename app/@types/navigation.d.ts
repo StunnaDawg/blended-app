@@ -1,5 +1,6 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { TabNavigationProp } from "@react-navigation/native"
+import { UserProfile } from "./firestore"
 
 export type RootStackParamList = {
   Footer: undefined
@@ -16,6 +17,9 @@ export type RootStackParamList = {
     eventId: string
   }
   UserEditProfile: undefined
+  ViewUserProfile: {
+    userProfile: UserProfile
+  }
   UserQuestionOne: undefined
   UserQuestionTwo: undefined
   UserQuestionThree: undefined

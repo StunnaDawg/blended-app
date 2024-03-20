@@ -27,7 +27,7 @@ const DefaultButton = ({ text, buttonFunction }: DefaultButtonProps) => {
           : "w-28 border p-1 rounded bg-slate-200"
       }
     >
-      <Text className="text-center font-semibold">{text}</Text>
+      <Text className="text-center text-lg font-semibold">{text}</Text>
     </Pressable>
   )
 }

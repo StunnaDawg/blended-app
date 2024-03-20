@@ -1,11 +1,15 @@
-import { View, Text } from "react-native"
+import { View, Text, ScrollView, Pressable } from "react-native"
 import React, { useEffect, useState } from "react"
-import { RootStackParamList } from "../../../@types/navigation"
-import { RouteProp, useRoute } from "@react-navigation/native"
+import { NavigationType, RootStackParamList } from "../../../@types/navigation"
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import getSingleEvent from "../../../functions/getSingleEvent"
 import { Attendee, Event, UserProfile } from "../../../@types/firestore"
 import getUserProfile from "../../../functions/getUserProfile"
 import getEventAttendees from "../../../functions/getEventAttendees"
+import AttendeeCard from "./components/AttendeeCard"
+import DefaultButton from "../../../components/DefaultButton"
+import { Feather } from "@expo/vector-icons"
+import BackButton from "../../../components/BackButton"
 
 const AttendingEvent = () => {
   const [event, setEvent] = useState<Event | null>({} as Event)
@@ -15,6 +19,7 @@ const AttendingEvent = () => {
   const [eventIdState, setEventIdState] = useState<string>("")
   const route = useRoute<RouteProp<RootStackParamList, "AttendingEvent">>()
   const eventId = route.params.eventId
+  const navigation = useNavigation<NavigationType>()
 
   useEffect(() => {
     if (event) {
@@ -28,22 +33,24 @@ const AttendingEvent = () => {
   }, [eventIdState])
 
   return (
-    <View>
+    <ScrollView>
+      <View className="flex flex-row items-center justify-start">
+        <BackButton />
+        <Text className=" font-bold text-3xl">Attendees</Text>
+        <View className="flex-1"></View>
+        {/* This empty View acts as a spacer */}
+      </View>
+
       {usersGoing ? (
         usersGoing.map((attendee) => {
-          return (
-            <View key={attendee.memberId}>
-              <Text>{attendee.memberId}</Text>
-            </View>
-          )
+          return <AttendeeCard key={attendee.memberId} attendeeId={attendee} />
         })
       ) : (
         <View>
           <Text>Null</Text>
         </View>
       )}
-      <Text>AttendingEvent</Text>
-    </View>
+    </ScrollView>
   )
 }
 
