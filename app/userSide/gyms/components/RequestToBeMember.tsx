@@ -9,12 +9,10 @@ type RequestToBeMemberProps = {
 
 const RequestToBeMember = ({ gymId }: RequestToBeMemberProps) => {
   return (
-    <View>
-      <DefaultButton
-        text={"Request to Join"}
-        buttonFunction={() => requestToGym(gymId, "memberRequests")}
-      />
-    </View>
+    <DefaultButton
+      text={"Request to Join"}
+      buttonFunction={() => requestToGym(gymId, "memberRequests")}
+    />
   )
 }
 

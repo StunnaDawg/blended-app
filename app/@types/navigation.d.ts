@@ -54,6 +54,10 @@ export type RootStackParamList = {
     id?: string
     gymId: string
   }
+
+  ViewGymMembersScreen: {
+    gymId: string
+  }
   ViewGymTopTabs: undefined
 }
 

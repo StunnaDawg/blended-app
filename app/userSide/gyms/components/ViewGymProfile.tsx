@@ -6,9 +6,6 @@ import {
   Pressable,
 } from "react-native"
 import { GymProfile } from "../../../@types/firestore"
-import GymImageCarosel from "../../../components/GymImageCarosel"
-import TrainerProfile from "../../../components/TrainerProfile"
-import EventsCard from "../../../components/EventsCard"
 import RequestToBeCoach from "./RequestToBeCoach"
 import RequestToBeMember from "./RequestToBeMember"
 import GymMembersModal from "./GymMembersModal"
@@ -55,7 +52,18 @@ const ViewGymProfile = () => {
   return (
     <>
       {!loading && gymId ? (
-        <About gymProfile={gymProfile} gymId={gymIdState} />
+        <>
+          <ScrollView>
+            <View className="flex-1 flex-grow flex-row justify-between">
+              <View>
+                <About gymProfile={gymProfile} gymId={gymIdState} />
+              </View>
+            </View>
+            <View className="flex flex-row justify-center items-center mb-10 mt-3">
+              <RequestToBeMember gymId={gymProfile.gymId} />
+            </View>
+          </ScrollView>
+        </>
       ) : (
         <ActivityIndicator />
       )}

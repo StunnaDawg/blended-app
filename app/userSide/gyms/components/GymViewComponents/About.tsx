@@ -1,16 +1,20 @@
-import { View, Text, ScrollView } from "react-native"
+import { View, Text, ScrollView, Pressable } from "react-native"
 import React, { useEffect, useState } from "react"
 import { Event, GymProfile } from "../../../../@types/firestore"
 import RequestToBeMember from "../RequestToBeMember"
 import RequestToBeCoach from "../RequestToBeCoach"
 import TrainerProfile from "../../../../components/TrainerProfile"
-import { RootStackParamList } from "../../../../@types/navigation"
+import {
+  NavigationType,
+  RootStackParamList,
+} from "../../../../@types/navigation"
 import SinglePic from "../../../../components/Avatar"
 import { Image } from "expo-image"
 import EventCard from "../../../Dashboard/Events/components/EventCard"
 import getSingleEvent from "../../../../functions/getSingleEvent"
 import getEvents from "../../../../functions/getAllEvents"
 import getGymEvents from "../../../../functions/getGymEvents"
+import { useNavigation } from "@react-navigation/native"
 
 type About = {
   gymProfile: GymProfile
@@ -20,6 +24,8 @@ type About = {
 const About = ({ gymProfile, gymId }: About) => {
   const [eventsArray, setEventsArray] = useState<Event[]>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const navigation = useNavigation<NavigationType>()
+
   useEffect(() => {
     getGymEvents(gymId, setEventsArray, setLoading)
   }, [gymProfile])
@@ -41,12 +47,18 @@ const About = ({ gymProfile, gymId }: About) => {
       </View>
 
       <View className="flex flex-row items-center justify-between mx-6">
-        <Text className="font-bold">
-          {gymProfile.members == undefined ? 0 : gymProfile.members?.length}{" "}
-          Members
-        </Text>
-        {/* <GymMembersModal members={gymProfile.members} /> */}
-        <RequestToBeMember gymId={gymProfile.gymId} />
+        <Pressable
+          onPress={() => {
+            navigation.navigate("ViewGymMembersScreen", {
+              gymId: gymId,
+            })
+          }}
+        >
+          <Text className="font-bold">
+            {gymProfile.members == undefined ? 0 : gymProfile.members?.length}{" "}
+            Members
+          </Text>
+        </Pressable>
       </View>
 
       <View className="mx-6">
@@ -69,28 +81,6 @@ const About = ({ gymProfile, gymId }: About) => {
                 <EventCard key={event.id} event={event} id={event.id} />
               ))}
             </View>
-          </ScrollView>
-        </View>
-      ) : null}
-
-      {gymProfile?.coaches && gymProfile?.coaches.length > 0 ? (
-        <View className="mt-2">
-          <View className="flex flex-row justify-between items-center mx-6">
-            <Text className="text-xl font-bold">
-              {gymProfile.gym_title} Trainers
-            </Text>
-          </View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            horizontal
-            className="flex flex-row flex-wrap"
-          >
-            {gymProfile.coaches.map((coach) => (
-              <View key={coach.id}>
-                <TrainerProfile trainerId={coach.id} />
-              </View>
-            ))}
           </ScrollView>
         </View>
       ) : null}
@@ -126,7 +116,6 @@ const About = ({ gymProfile, gymId }: About) => {
           )}
         </ScrollView>
       </View>
-      <RequestToBeCoach gymId={gymProfile.gymId} />
     </ScrollView>
   )
 }

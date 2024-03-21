@@ -42,6 +42,7 @@ import GymTopTabs from "./userSide/gyms/components/GymViewComponents/GymTopTabs"
 import About from "./userSide/gyms/components/GymViewComponents/About"
 import AttendingEvent from "./userSide/Dashboard/Events/AttendingEvent"
 import ViewUserProfileScreen from "./components/ViewUserProfileScreen"
+import ViewGymMembers from "./userSide/gyms/components/ViewGymMembers"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -150,6 +151,10 @@ const NavStack = () => {
               <Stack.Screen
                 name="ViewUserProfile"
                 component={ViewUserProfileScreen}
+              />
+              <Stack.Screen
+                name="ViewGymMembersScreen"
+                component={ViewGymMembers}
               />
               <Stack.Screen
                 name="ChooseUserActivity"
