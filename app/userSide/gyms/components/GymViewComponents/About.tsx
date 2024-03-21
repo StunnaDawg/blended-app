@@ -1,6 +1,6 @@
 import { View, Text, ScrollView } from "react-native"
-import React from "react"
-import { GymProfile } from "../../../../@types/firestore"
+import React, { useEffect, useState } from "react"
+import { Event, GymProfile } from "../../../../@types/firestore"
 import RequestToBeMember from "../RequestToBeMember"
 import RequestToBeCoach from "../RequestToBeCoach"
 import TrainerProfile from "../../../../components/TrainerProfile"
@@ -8,6 +8,9 @@ import { RootStackParamList } from "../../../../@types/navigation"
 import SinglePic from "../../../../components/Avatar"
 import { Image } from "expo-image"
 import EventCard from "../../../Dashboard/Events/components/EventCard"
+import getSingleEvent from "../../../../functions/getSingleEvent"
+import getEvents from "../../../../functions/getAllEvents"
+import getGymEvents from "../../../../functions/getGymEvents"
 
 type About = {
   gymProfile: GymProfile
@@ -15,6 +18,15 @@ type About = {
 }
 
 const About = ({ gymProfile, gymId }: About) => {
+  const [eventsArray, setEventsArray] = useState<Event[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
+  useEffect(() => {
+    getGymEvents(gymId, setEventsArray, setLoading)
+  }, [gymProfile])
+
+  useEffect(() => {
+    console.log("events array", eventsArray)
+  }, [eventsArray])
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -47,13 +59,13 @@ const About = ({ gymProfile, gymId }: About) => {
         </Text>
       </View>
 
-      {Array.isArray(gymProfile.events) ? (
-        <View>
-          <Text className="text-3xl font-bold">Going to</Text>
+      {Array.isArray(eventsArray) && eventsArray ? (
+        <View className="m-4">
+          <Text className="text-3xl font-bold">Upcoming Events</Text>
 
           <ScrollView horizontal={true}>
             <View className="flex flex-row justify-center flex-wrap">
-              {gymProfile.events.map((event, index) => (
+              {eventsArray.map((event, index) => (
                 <EventCard key={event.id} event={event} id={event.id} />
               ))}
             </View>
