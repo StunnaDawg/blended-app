@@ -8,6 +8,7 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from "react-native"
 import React, { useEffect, useState } from "react"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
@@ -63,6 +64,7 @@ const MessageScreen = () => {
   }, [currentId])
 
   useEffect(() => {
+    setLoading(true)
     if (matchIdDocState) {
       const unsubscribe = onSnapshot(
         query(
@@ -78,6 +80,7 @@ const MessageScreen = () => {
       )
       return unsubscribe
     }
+    setLoading(false)
   }, [matchIdDocState, db])
 
   const sendMessage = async () => {
@@ -111,29 +114,35 @@ const MessageScreen = () => {
         className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <FlatList
-            className="m-2"
-            data={messages}
-            inverted={true}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item: message }) =>
-              message.userId === currentId ? (
-                <UserMessage
-                  key={message.id}
-                  id={currentUserProfile.id}
-                  message={message.message}
-                />
-              ) : (
-                <MatchesMessage
-                  key={message.id}
-                  id={matchIdState}
-                  message={message.message}
-                />
-              )
-            }
-          />
-        </TouchableWithoutFeedback>
+        {!loading ? (
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <FlatList
+              className="m-2"
+              data={messages}
+              inverted={true}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item: message }) =>
+                message.userId === currentId ? (
+                  <UserMessage
+                    key={message.id}
+                    id={currentUserProfile.id}
+                    message={message.message}
+                  />
+                ) : (
+                  <MatchesMessage
+                    key={message.id}
+                    id={matchIdState}
+                    message={message.message}
+                  />
+                )
+              }
+            />
+          </TouchableWithoutFeedback>
+        ) : (
+          <View className="mt-64">
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        )}
       </KeyboardAvoidingView>
 
       <View className="flex flex-row mx-1 mb-14 items-center">

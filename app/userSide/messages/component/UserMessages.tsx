@@ -10,7 +10,7 @@ const UserMessage = ({ id, message }: UserMessage) => {
   return (
     <View key={id} className="flex flex-row justify-end mt-2 mx-1 my-2">
       <View>
-        <View className="rounded-2xl border bg-blue-200 p-2">
+        <View className="rounded-2xl border bg-blue p-2">
           <Text className="text-xs">{message}</Text>
         </View>
         <View className="flex flex-row justify-end"></View>

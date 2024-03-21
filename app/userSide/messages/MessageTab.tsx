@@ -1,8 +1,16 @@
 import { View, Text, Pressable, Image, RefreshControl } from "react-native"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Match, UserProfile } from "../../@types/firestore"
+import { Match, Messages, UserProfile } from "../../@types/firestore"
 import { ScrollView } from "react-native-gesture-handler"
-import { collection, doc, onSnapshot, query, where } from "firebase/firestore"
+import {
+  collection,
+  doc,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore"
 import { FIREBASE_AUTH, db } from "../../../firebase"
 import SinglePic from "../../components/Avatar"
 import { BottomSheetModal } from "@gorhom/bottom-sheet"
@@ -12,6 +20,9 @@ import { NavigationType } from "../../@types/navigation"
 
 const MessageTab = () => {
   const [userMatches, setUserMatches] = useState<Match[]>([])
+  const [recentMessage, setRecentMessage] = useState<
+    string[] | null | undefined
+  >([])
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   const navigation = useNavigation<NavigationType>()
 
@@ -23,6 +34,28 @@ const MessageTab = () => {
       setRefreshing(false)
     }, 2000)
   }, [])
+
+  // const getRecentMessage = async (matchId: string) => {
+  //   if (matchId) {
+  //     const unsubscribe = onSnapshot(
+  //       query(
+  //         collection(db, "matches", matchId, "messages"),
+  //         orderBy("timestamp", "desc"),
+
+  //       ),
+  //       (snapshot) => {
+  //         const messagesData = snapshot.docs.map((doc) => ({
+  //           ...(doc.data() as Messages),
+  //           id: doc.id,
+  //         }));
+
+  //         const recentMessage = messagesData.length > 0 ? messagesData[0] : null;
+  //         setRecentMessage(recentMessage?.message);
+  //       }
+  //     );
+  //     return unsubscribe;
+  //   }
+  // };
 
   useEffect(() => {
     if (currentUser) {
@@ -111,7 +144,7 @@ const MessageTab = () => {
                           {userMatches.length > 0 &&
                             match.users.user2.firstName}
                         </Text>
-                        <Text className="px-2">Send a Message</Text>
+                        <Text className="px-2">{recentMessage}</Text>
                       </Pressable>
                     </View>
                   </View>
