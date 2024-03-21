@@ -7,6 +7,7 @@ import TrainerProfile from "../../../../components/TrainerProfile"
 import { RootStackParamList } from "../../../../@types/navigation"
 import SinglePic from "../../../../components/Avatar"
 import { Image } from "expo-image"
+import EventCard from "../../../Dashboard/Events/components/EventCard"
 
 type About = {
   gymProfile: GymProfile
@@ -45,6 +46,20 @@ const About = ({ gymProfile, gymId }: About) => {
           whether you're a beginner or a seasoned athlete. Our certified
         </Text>
       </View>
+
+      {Array.isArray(gymProfile.events) ? (
+        <View>
+          <Text className="text-3xl font-bold">Going to</Text>
+
+          <ScrollView horizontal={true}>
+            <View className="flex flex-row justify-center flex-wrap">
+              {gymProfile.events.map((event, index) => (
+                <EventCard key={event.id} event={event} id={event.id} />
+              ))}
+            </View>
+          </ScrollView>
+        </View>
+      ) : null}
 
       {gymProfile?.coaches && gymProfile?.coaches.length > 0 ? (
         <View className="mt-2">

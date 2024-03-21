@@ -11,6 +11,7 @@ export type GymProfile = {
   members?: UserProfile[]
   coaches?: UserProfile[]
   gymPhotos: string[]
+  events: Event[] | null | undefined
 }
 
 export type UserProfile = {

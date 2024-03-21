@@ -61,7 +61,7 @@ const ViewUserProfileScreen = () => {
   const userProfile = route.params.userProfile
 
   const getUserEventFunc = async () => {
-    getUserEvent(setEvents, userProfileState.id, setLoading)
+    await getUserEvent(setEvents, userProfileState.id, setLoading)
   }
 
   useEffect(() => {
@@ -112,14 +112,16 @@ const ViewUserProfileScreen = () => {
         </View>
       ) : null}
 
-      {!loading && userProfile.eventsGoing !== null ? (
+      {!loading && events !== null ? (
         <View>
-          <Text className="text-3xl font-bold">Going to</Text>
+          <Text className="text-3xl font-bold m-2">Going to</Text>
 
           <ScrollView horizontal={true}>
             <View className="flex flex-row justify-center flex-wrap">
-              {events.map((event, index) => (
-                <EventCard key={event.id} event={event} id={event.id} />
+              {events?.map((event, index) => (
+                <View key={event.id} className="m-2">
+                  <EventCard event={event} id={event.id} />
+                </View>
               ))}
             </View>
           </ScrollView>

@@ -31,9 +31,12 @@ const updateEventAttendees = async (
       )
       const eventRef = collection(db, "events", eventId, "attendees")
       const memberRef = doc(gymRef, memberId)
+      const userRef = collection(db, "user", memberId, "eventsGoing")
       const memberEventRef = doc(eventRef, memberId)
+      const userEventGoingRef = doc(userRef, eventId)
       await setDoc(memberRef, { memberId: memberId })
       await setDoc(memberEventRef, { memberId: memberId })
+      await setDoc(userEventGoingRef, { eventId: eventId })
 
       setLoading(false)
     } else {
@@ -48,8 +51,10 @@ const updateEventAttendees = async (
       )
 
       const eventRef = doc(db, "events", eventId, "attendees", memberId)
+      const userGoingRef = doc(db, "user", memberId, "eventsGoing", eventId)
       await deleteDoc(gymRef)
       await deleteDoc(eventRef)
+      await deleteDoc(userGoingRef)
 
       console.log("I canceled")
       setLoading(false)

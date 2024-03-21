@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs } from "firebase/firestore"
 import { db } from "../../firebase"
-import { GymProfile, UserProfile } from "../@types/firestore"
+import { Event, GymProfile, UserProfile } from "../@types/firestore"
 import { Dispatch, SetStateAction } from "react"
 
 const getSingleGym = async (
@@ -22,6 +22,10 @@ const getSingleGym = async (
       const coachesData = await getDocs(coachesRef)
       const coaches = coachesData.docs.map((doc) => doc.data() as UserProfile)
 
+      const eventsRef = collection(db, `gyms/${id}/events`)
+      const eventsData = await getDocs(eventsRef)
+      const events = eventsData.docs.map((doc) => doc.data() as Event)
+
       if (gymData.exists()) {
         const gymFetchedData = { ...gymData.data() }
         const gymId = gymFetchedData.id
@@ -37,15 +41,21 @@ const getSingleGym = async (
           about: gymFetchedData.about,
           coaches: coaches,
           members: members,
+          events: events,
         }
         setGymProfileData(gymProfile)
         setLoading(false)
       }
     } else {
-      console.log("nothign returned")
+      console.log("id undefined")
     }
   } catch (err) {
+    console.log("failed")
     console.error(err)
+    if (err instanceof Error) {
+      // Additional check to satisfy TypeScript
+      console.error(err.stack)
+    }
   }
 }
 
