@@ -11,6 +11,7 @@ import getGymProfiles from "../../functions/getAllGyms"
 import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../@types/navigation"
 import { FIREBASE_AUTH } from "../../../firebase"
+import { Text } from "react-native"
 
 const GymsTab = () => {
   const [gymProfiles, setGymProfiles] = useState<GymProfile[]>([])
@@ -37,6 +38,9 @@ const GymsTab = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
+      <View className="m-4">
+        <Text className="font-bold text-3xl">Gyms</Text>
+      </View>
       {!loading ? (
         gymProfiles.length > 0 &&
         gymProfiles.map((gym) => (

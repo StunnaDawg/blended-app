@@ -88,10 +88,14 @@ const ViewUserProfileScreen = () => {
         <UserImageCard profile={userProfile} setLoading={setLoading} />
       </View>
       <View className="mt-5 mx-3">
-        <Text className="text-3xl font-bold">About</Text>
-        <Text className=" text-lg font-bold">{userProfileState.about}</Text>
+        <Text className="text-xl font-bold">About</Text>
+        <Text className=" text-sm font-semibold">{userProfileState.about}</Text>
       </View>
-      <ScrollView horizontal={true} className="p-5">
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        className="p-5"
+      >
         {userProfileState.activities &&
           Array.isArray(userProfileState.activities) &&
           userProfileState.activities.map((activity) => (
@@ -100,9 +104,9 @@ const ViewUserProfileScreen = () => {
       </ScrollView>
 
       {!loading && userProfile.homeGym ? (
-        <View className="flex flex-row justify-center">
+        <View className="flex flex-row justify-start m-2">
           <View>
-            <Text className="text-3xl font-bold">Home Gym</Text>
+            <Text className="text-xl font-bold">Gyms</Text>
 
             <GymCard
               profile={userProfileState}
@@ -113,8 +117,8 @@ const ViewUserProfileScreen = () => {
       ) : null}
 
       {!loading && events !== null ? (
-        <View>
-          <Text className="text-3xl font-bold m-2">Going to</Text>
+        <View className="m-2 mb-6">
+          <Text className="text-xl font-bold m-2">Upcoming Events</Text>
 
           <ScrollView horizontal={true}>
             <View className="flex flex-row justify-center flex-wrap">

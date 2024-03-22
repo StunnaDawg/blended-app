@@ -1,20 +1,18 @@
 import { View, Text, ScrollView, Pressable } from "react-native"
 import React, { useEffect, useState } from "react"
 import { Event, GymProfile } from "../../../../@types/firestore"
-import RequestToBeMember from "../RequestToBeMember"
-import RequestToBeCoach from "../RequestToBeCoach"
-import TrainerProfile from "../../../../components/TrainerProfile"
+import { FontAwesome6 } from "@expo/vector-icons"
 import {
   NavigationType,
   RootStackParamList,
 } from "../../../../@types/navigation"
 import SinglePic from "../../../../components/Avatar"
-import { Image } from "expo-image"
 import EventCard from "../../../Dashboard/Events/components/EventCard"
-import getSingleEvent from "../../../../functions/getSingleEvent"
-import getEvents from "../../../../functions/getAllEvents"
+
 import getGymEvents from "../../../../functions/getGymEvents"
 import { useNavigation } from "@react-navigation/native"
+import ActivityTags from "../../../../components/ActivityTags"
+import RequestToBeMember from "../RequestToBeMember"
 
 type About = {
   gymProfile: GymProfile
@@ -35,30 +33,43 @@ const About = ({ gymProfile, gymId }: About) => {
   }, [eventsArray])
   return (
     <ScrollView
+      className="mb-20"
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
     >
-      <View className="flex flex-row justify-between mx-6">
+      <View className="flex flex-row justify-between mx-6 mt-1 mb-2">
         <Text className="font-bold text-3xl">{gymProfile.gym_title}</Text>
       </View>
 
-      <View className="mx-6">
-        <Text>{gymProfile.gym_style}</Text>
+      <View className="flex flex-row mx-6 mb-2">
+        <ActivityTags activity={gymProfile.gym_style} />
       </View>
 
-      <View className="flex flex-row items-center justify-between mx-6">
-        <Pressable
-          onPress={() => {
-            navigation.navigate("ViewGymMembersScreen", {
-              gymId: gymId,
-            })
-          }}
-        >
-          <Text className="font-bold">
-            {gymProfile.members == undefined ? 0 : gymProfile.members?.length}{" "}
-            Members
-          </Text>
-        </Pressable>
+      <View className=" mx-6 mb-2">
+        <View className="flex flex-row items-center justify-between">
+          <Pressable
+            onPress={() => {
+              navigation.navigate("ViewGymMembersScreen", {
+                gymId: gymId,
+              })
+            }}
+          >
+            <View className="flex flex-row items-center">
+              <Text className="font-bold">
+                {gymProfile.members == undefined
+                  ? 0
+                  : gymProfile.members?.length}{" "}
+                Members
+              </Text>
+              <View className="mx-2">
+                <FontAwesome6 name="people-group" size={24} color="black" />
+              </View>
+            </View>
+          </Pressable>
+          <View className="flex flex-row">
+            <RequestToBeMember gymId={gymId} />
+          </View>
+        </View>
       </View>
 
       <View className="mx-6">
@@ -73,7 +84,12 @@ const About = ({ gymProfile, gymId }: About) => {
 
       {Array.isArray(eventsArray) && eventsArray ? (
         <View className="m-4">
-          <Text className="text-3xl font-bold">Upcoming Events</Text>
+          <View className="flex flex-row  items-center mb-1">
+            <Text className="text-xl font-bold">Upcoming Events</Text>
+            <View className="mx-2">
+              <FontAwesome6 name="calendar" size={24} color="black" />
+            </View>
+          </View>
 
           <ScrollView horizontal={true}>
             <View className="flex flex-row justify-center flex-wrap">
@@ -86,14 +102,17 @@ const About = ({ gymProfile, gymId }: About) => {
       ) : null}
 
       <View className="mt-2">
-        <View className="flex flex-row justify-between items-center mx-6">
+        <View className="flex flex-row items-center mx-6 mb-1">
           <Text className="text-xl font-bold">Photos</Text>
+          <View className="mx-2">
+            <FontAwesome6 name="camera" size={24} color="black" />
+          </View>
         </View>
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           horizontal
-          className="flex flex-row flex-wrap"
+          className="flex flex-row flex-wrap mx-5"
         >
           {gymProfile?.gymPhotos && gymProfile?.gymPhotos.length > 0 ? (
             gymProfile?.gymPhotos.map((photo, index) => (

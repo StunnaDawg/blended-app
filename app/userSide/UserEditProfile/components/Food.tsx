@@ -7,7 +7,14 @@ import {
   StyleSheet,
 } from "react-native"
 import { Feather } from "@expo/vector-icons"
-import React, { useCallback, useMemo, useRef, useState } from "react"
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
@@ -17,9 +24,11 @@ import singleValueEdit from "../../../functions/singleValueEdit"
 
 type FoodProps = {
   preferance: string | null | undefined
+  setLoading: Dispatch<SetStateAction<boolean>>
+  loading: boolean
 }
 
-const Food = ({ preferance }: FoodProps) => {
+const Food = ({ preferance, setLoading, loading }: FoodProps) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
   const { dismiss } = useBottomSheetModal()
 
@@ -78,7 +87,9 @@ const Food = ({ preferance }: FoodProps) => {
                 key={diet}
                 className="border-2 rounded-full bg-slate-300 p-2 m-1"
                 onPress={async () => {
+                  setLoading(true)
                   await singleValueEdit("user", "diet", diet)
+                  setLoading(false)
                   dismiss()
                 }}
               >

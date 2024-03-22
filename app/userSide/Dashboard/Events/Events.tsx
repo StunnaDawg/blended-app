@@ -34,8 +34,8 @@ const Events = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <View>
-        <Text className="font-bold text-2xl">Events</Text>
+      <View className="m-4">
+        <Text className="font-bold text-3xl">Events</Text>
       </View>
       <View className="flex flex-row flex-wrap justify-center m-2">
         {!loading && currentId ? (

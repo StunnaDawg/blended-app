@@ -43,6 +43,8 @@ import About from "./userSide/gyms/components/GymViewComponents/About"
 import AttendingEvent from "./userSide/Dashboard/Events/AttendingEvent"
 import ViewUserProfileScreen from "./components/ViewUserProfileScreen"
 import ViewGymMembers from "./userSide/gyms/components/ViewGymMembers"
+import UserSettings from "./userSide/UserSettings"
+import { FontAwesome6 } from "@expo/vector-icons"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -66,9 +68,29 @@ const GymFooter = () => {
 const UserFooter = () => {
   return (
     <Tab.Navigator
-      screenOptions={{
+      screenOptions={({ route }) => ({
         headerShown: false,
-      }}
+        tabBarIcon: () => {
+          let iconName
+
+          if (route.name === "Events") {
+            iconName = "calendar"
+          } else if (route.name === "Gyms") {
+            iconName = "dumbbell"
+          } else if (route.name === "Profile") {
+            iconName = "user-pen"
+          } else if (route.name === "Connections") {
+            iconName = "people-group"
+          } else if (route.name === "Messages") {
+            iconName = "message"
+          }
+
+          // You can return any component that you like here!
+          return <FontAwesome6 name={iconName} size={20} color={"black"} />
+        },
+        tabBarActiveTintColor: "red",
+        tabBarInactiveTintColor: "gray",
+      })}
     >
       <Tab.Screen name="Events" component={Events} />
       <Tab.Screen name="Gyms" component={GymsTab} />
@@ -147,6 +169,7 @@ const NavStack = () => {
               <Stack.Screen name="ViewGymTopTabs" component={GymTopTabs} />
               <Stack.Screen name="UserDashboard" component={Dashboard} />
               <Stack.Screen name="AttendingEvent" component={AttendingEvent} />
+              <Stack.Screen name="UserSettings" component={UserSettings} />
 
               <Stack.Screen
                 name="ViewUserProfile"

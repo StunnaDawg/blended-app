@@ -59,9 +59,6 @@ const ViewGymProfile = () => {
                 <About gymProfile={gymProfile} gymId={gymIdState} />
               </View>
             </View>
-            <View className="flex flex-row justify-center items-center mb-10 mt-3">
-              <RequestToBeMember gymId={gymProfile.gymId} />
-            </View>
           </ScrollView>
         </>
       ) : (
