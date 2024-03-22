@@ -41,7 +41,7 @@ const UpdatePhotosUser = ({ id, imageArray }: UpdatePhotosUserProps) => {
       title="Next"
       onPress={async () => {
         await uploadImagesArray()
-        navigation.navigate("Dashboard")
+        navigation.navigate("Events")
       }}
     />
   )
