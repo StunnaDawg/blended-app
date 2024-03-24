@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs } from "firebase/firestore"
 import { db } from "../../firebase"
-import { EventsAttending, UserProfile } from "../@types/firestore"
+import { EventsAttending, Reward, UserProfile } from "../@types/firestore"
 import { Dispatch, SetStateAction } from "react"
 
 const getUserProfile = async (
@@ -17,7 +17,9 @@ const getUserProfile = async (
       const eventsData = await getDocs(eventsRef)
       const events = eventsData.docs.map((doc) => doc.data() as EventsAttending)
 
-      console.log("events", events)
+      const rewardsRef = collection(db, `user/${id}/earnedRewards`)
+      const rewardsData = await getDocs(rewardsRef)
+      const rewards = rewardsData.docs.map((doc) => doc.data() as Reward)
 
       if (userData.exists()) {
         const userFetchedData = { ...userData.data() }
@@ -42,6 +44,8 @@ const getUserProfile = async (
           birthday: userFetchedData.birthday || null,
           gyms: userFetchedData.gyms || null,
           eventsGoing: events,
+          points: userFetchedData.points,
+          earnedRewards: rewards,
         }
         console.log(userProfile)
         setUserProfileData(userProfile)

@@ -221,6 +221,7 @@ const NavStack = () => {
               name="GymEditProfile"
               component={EditGymProfileHome}
             />
+            <Stack.Screen name="UserSettings" component={UserSettings} />
             <Stack.Screen name="GymQuestionOne" component={GymQuestionOne} />
             <Stack.Screen name="GymQuestionTwo" component={GymQuestionTwo} />
             <Stack.Screen

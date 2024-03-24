@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs } from "firebase/firestore"
 import { db } from "../../firebase"
-import { Event, GymProfile, UserProfile } from "../@types/firestore"
+import { Event, GymProfile, Reward, UserProfile } from "../@types/firestore"
 import { Dispatch, SetStateAction } from "react"
 
 const getGymProfiles = async (
@@ -26,6 +26,10 @@ const getGymProfiles = async (
       const eventsData = await getDocs(eventsRef)
       const events = eventsData.docs.map((doc) => doc.data() as Event)
 
+      const rewardsRef = collection(db, `gyms/${gymId}/rewards`)
+      const rewardsData = await getDocs(rewardsRef)
+      const rewards = rewardsData.docs.map((doc) => doc.data() as Reward)
+
       const gymProfile: GymProfile = {
         gymId: gymId,
         gym_title: gymFetchedData.gym_title,
@@ -38,6 +42,7 @@ const getGymProfiles = async (
         members: members,
         coaches: coaches,
         events: events,
+        rewards: rewards,
       }
       return gymProfile
     })

@@ -12,6 +12,7 @@ export type GymProfile = {
   coaches?: UserProfile[]
   gymPhotos: string[]
   events: Event[] | null | undefined
+  rewards: Reward[] | null
 }
 
 export type UserProfile = {
@@ -33,6 +34,8 @@ export type UserProfile = {
   birthday: TimeStamp
   gyms: string[]
   eventsGoing: EventsAttending[] | null
+  points: number
+  earnedRewards: Reward[] | null
 }
 
 export type Activities = {
@@ -88,4 +91,12 @@ export type Attendee = {
 
 export type EventsAttending = {
   eventId: string
+}
+
+export type Reward = {
+  rewardTitle: string
+  description: string
+  pointCost: number
+  rewardPhoto: string
+  expiryDate: TimeStamp | null
 }

@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs } from "firebase/firestore"
 import { db } from "../../firebase"
-import { Event, GymProfile, UserProfile } from "../@types/firestore"
+import { Event, GymProfile, Reward, UserProfile } from "../@types/firestore"
 import { Dispatch, SetStateAction } from "react"
 
 const getSingleGym = async (
@@ -26,6 +26,10 @@ const getSingleGym = async (
       const eventsData = await getDocs(eventsRef)
       const events = eventsData.docs.map((doc) => doc.data() as Event)
 
+      const rewardsRef = collection(db, `gyms/${id}/rewards`)
+      const rewardsData = await getDocs(rewardsRef)
+      const rewards = rewardsData.docs.map((doc) => doc.data() as Reward)
+
       if (gymData.exists()) {
         const gymFetchedData = { ...gymData.data() }
         const gymId = gymFetchedData.id
@@ -42,6 +46,7 @@ const getSingleGym = async (
           coaches: coaches,
           members: members,
           events: events,
+          rewards: rewards,
         }
         setGymProfileData(gymProfile)
         setLoading(false)
@@ -53,7 +58,6 @@ const getSingleGym = async (
     console.log("failed")
     console.error(err)
     if (err instanceof Error) {
-      // Additional check to satisfy TypeScript
       console.error(err.stack)
     }
   }
