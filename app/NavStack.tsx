@@ -51,6 +51,7 @@ import UserSettings from "./userSide/UserSettings"
 import { FontAwesome6 } from "@expo/vector-icons"
 import { useSwitchAccount } from "./context/switchAccountContext"
 import { useNavigation } from "@react-navigation/native"
+import CreateGymPage from "./userSide/gyms/CreateGymPage"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -188,6 +189,8 @@ const NavStack = () => {
               <Stack.Screen name="UserDashboard" component={Dashboard} />
               <Stack.Screen name="AttendingEvent" component={AttendingEvent} />
               <Stack.Screen name="UserSettings" component={UserSettings} />
+
+              <Stack.Screen name="CreateGym" component={CreateGymPage} />
 
               <Stack.Screen
                 name="ViewUserProfile"

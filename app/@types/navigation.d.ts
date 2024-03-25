@@ -6,6 +6,7 @@ export type RootStackParamList = {
   Footer: undefined
   SignUp: undefined
   Login: undefined
+  CreateGym: undefined
   GymDashboard: undefined
   UserDashboard: undefined
   Meet: undefined
