@@ -46,6 +46,7 @@ const getUserProfile = async (
           eventsGoing: events,
           points: userFetchedData.points,
           earnedRewards: rewards,
+          createdGym: userFetchedData.createdGym,
         }
         console.log(userProfile)
         setUserProfileData(userProfile)

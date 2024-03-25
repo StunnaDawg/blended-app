@@ -44,7 +44,8 @@ const getGymMembers = async (
             gyms: userFetchedData.gyms || null,
             eventsGoing: null,
             points: userFetchedData.points,
-            earnedRewards: userFetchedData.rewards,
+            earnedRewards: rewards,
+            createdGym: userFetchedData.createdGym,
           }
           profiles.push(userProfile)
         }

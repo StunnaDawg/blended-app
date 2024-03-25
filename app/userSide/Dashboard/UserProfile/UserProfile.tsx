@@ -92,7 +92,9 @@ const UserProfileHome = () => {
                 {homeGym.gym_title ? homeGym.gym_title : <ActivityIndicator />}
               </Text>
               <Text className="font-bold text-xl text-center">
-                {("Points:", userProfile.points.toString())}
+                {userProfile.points
+                  ? userProfile.points.toString()
+                  : "Points Error"}
               </Text>
             </View>
             <Button

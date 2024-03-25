@@ -50,6 +50,7 @@ const getUserProfiles = async (
             eventsGoing: null,
             points: userFetchedData.points,
             earnedRewards: rewards,
+            createdGym: userFetchedData.createdGym,
           }
 
           profiles.push(userProfile)

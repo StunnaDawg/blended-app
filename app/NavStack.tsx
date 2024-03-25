@@ -1,4 +1,8 @@
-import { RootStackParamList, TabParamList } from "./@types/navigation"
+import {
+  RootStackParamList,
+  TabNavigationType,
+  TabParamList,
+} from "./@types/navigation"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs"
@@ -45,6 +49,8 @@ import ViewUserProfileScreen from "./components/ViewUserProfileScreen"
 import ViewGymMembers from "./userSide/gyms/components/ViewGymMembers"
 import UserSettings from "./userSide/UserSettings"
 import { FontAwesome6 } from "@expo/vector-icons"
+import { useSwitchAccount } from "./context/switchAccountContext"
+import { useNavigation } from "@react-navigation/native"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -111,25 +117,37 @@ const UserFooter = () => {
 //   )
 // }
 const NavStack = () => {
+  const { isSwitchAccount, switchAccount } = useSwitchAccount()
   const { isSignedIn } = useUserAuth()
   // const { isUser } = useisUser()
   const [isUser, setIsUser] = useState<boolean>()
+  const [switchToGymAccount, setToGymAccount] = useState<boolean>(false)
+  const navigation = useNavigation<TabNavigationType>()
 
   useEffect(() => {
     const id = FIREBASE_AUTH.currentUser?.uid
     if (id) {
-      const userRef = doc(db, "users", id)
-      const getFunction = async () => {
+      const userRef = doc(db, "user", id)
+      const switchAccountFunc = async () => {
         const docSnap = await getDoc(userRef)
         if (docSnap.exists()) {
-          setIsUser(true)
+          const userData = { ...docSnap.data() }
+          if (userData.createdGym) {
+            console.log("They have gym")
+            setToGymAccount(true)
+            navigation.navigate("GymEvents")
+          } else {
+            console.log("no Gym")
+            setToGymAccount(false)
+          }
         } else {
-          setIsUser(false)
+          console.log("They have no account")
+          setToGymAccount(false)
         }
       }
-      getFunction()
+      switchAccountFunc()
     }
-  }, [])
+  }, [isSwitchAccount])
 
   useEffect(() => {
     const id = FIREBASE_AUTH.currentUser?.uid
@@ -162,7 +180,7 @@ const NavStack = () => {
       }}
     >
       {isSignedIn ? (
-        isUser ? (
+        isUser && !switchToGymAccount ? (
           <>
             <Stack.Group>
               <Stack.Screen name="Footer" component={UserFooter} />
