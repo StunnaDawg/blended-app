@@ -1,14 +1,19 @@
 import { View, Text, Pressable } from "react-native"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { FIREBASE_AUTH } from "../../firebase"
 import BackButton from "../components/BackButton"
 import { Feather } from "@expo/vector-icons"
 import { useSwitchAccount } from "../context/switchAccountContext"
 import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../@types/navigation"
+import { UserProfile } from "../@types/firestore"
+import getUserProfile from "../functions/getUserProfile"
 
 const UserSettings = () => {
+  const [userProfile, setUserProfile] = useState<UserProfile>({} as UserProfile)
+  const [loading, setLoading] = useState<boolean>(false)
   const navigation = useNavigation<NavigationType>()
+  const currentId = FIREBASE_AUTH.currentUser?.uid
   const handleSignOut = () => {
     try {
       FIREBASE_AUTH.signOut()
@@ -16,19 +21,26 @@ const UserSettings = () => {
       alert(error.message)
     }
   }
+
+  useEffect(() => {
+    if (currentId) {
+      getUserProfile(currentId, setUserProfile, setLoading)
+    }
+  }, [currentId])
   return (
     <>
       <View className="flex flex-row justify-between m-2">
         <BackButton />
         <Pressable
           onPress={() => {
-            navigation.goBack()
-            navigation.navigate("GymScreens", {
-              screen: "GymFooter",
-              params: {
-                screen: "GymDashboard",
-              },
-            })
+            if (currentId && !loading && userProfile.createdGym === currentId) {
+              navigation.navigate("GymScreens", {
+                screen: "GymFooter",
+                params: {
+                  screen: "GymDashboard",
+                },
+              })
+            }
           }}
         >
           <View className="flex flex-row items-center">
