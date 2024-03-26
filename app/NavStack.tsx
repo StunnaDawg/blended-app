@@ -63,11 +63,36 @@ const GymFooter = () => {
         headerShown: false,
       }}
     >
-      <Tab.Screen name="Dashboard" component={GymDashboard} />
+      <Tab.Screen name="GymDashboard" component={GymDashboard} />
       <Tab.Screen name="GymEvents" component={EventsTab} />
       <Tab.Screen name="Profile" component={GymProfile} />
       <Tab.Screen name="Requests" component={GymRequests} />
     </Tab.Navigator>
+  )
+}
+
+const GymScreens = () => {
+  const { isSignedIn } = useUserAuth()
+  return (
+    <>
+      <Stack.Navigator
+        screenOptions={{
+          header: () => (isSignedIn ? <NavBar /> : null),
+        }}
+      >
+        <Stack.Screen name="GymFooter" component={GymFooter} />
+        <Stack.Screen name="CreateEvent" component={CreateEvent} />
+        <Stack.Screen name="EditEvent" component={EditEvent} />
+        <Stack.Screen name="GymEditProfile" component={EditGymProfileHome} />
+        <Stack.Screen name="UserSettings" component={UserSettings} />
+
+        <Stack.Screen name="GymQuestionTwo" component={GymQuestionTwo} />
+        <Stack.Screen
+          name="GymInitalAddPhoto"
+          component={GymInitialAddPhotos}
+        />
+      </Stack.Navigator>
+    </>
   )
 }
 
@@ -117,37 +142,11 @@ const UserFooter = () => {
 //   )
 // }
 const NavStack = () => {
-  const { isSwitchAccount, switchAccount } = useSwitchAccount()
   const { isSignedIn } = useUserAuth()
   // const { isUser } = useisUser()
   const [isUser, setIsUser] = useState<boolean>()
   const [switchToGymAccount, setToGymAccount] = useState<boolean>(false)
   const navigation = useNavigation<TabNavigationType>()
-
-  useEffect(() => {
-    const id = FIREBASE_AUTH.currentUser?.uid
-    if (id) {
-      const userRef = doc(db, "user", id)
-      const switchAccountFunc = async () => {
-        const docSnap = await getDoc(userRef)
-        if (docSnap.exists()) {
-          const userData = { ...docSnap.data() }
-          if (userData.createdGym) {
-            console.log("They have gym")
-            setToGymAccount(true)
-            navigation.navigate("GymEvents")
-          } else {
-            console.log("no Gym")
-            setToGymAccount(false)
-          }
-        } else {
-          console.log("They have no account")
-          setToGymAccount(false)
-        }
-      }
-      switchAccountFunc()
-    }
-  }, [isSwitchAccount])
 
   useEffect(() => {
     const id = FIREBASE_AUTH.currentUser?.uid
@@ -180,76 +179,52 @@ const NavStack = () => {
       }}
     >
       {isSignedIn ? (
-        isUser && !switchToGymAccount ? (
-          <>
-            <Stack.Group>
-              <Stack.Screen name="Footer" component={UserFooter} />
-              <Stack.Screen name="ViewGymTopTabs" component={GymTopTabs} />
-              <Stack.Screen name="UserDashboard" component={Dashboard} />
-              <Stack.Screen name="AttendingEvent" component={AttendingEvent} />
-              <Stack.Screen name="UserSettings" component={UserSettings} />
-
-              <Stack.Screen name="CreateGym" component={CreateGymPage} />
-
-              <Stack.Screen
-                name="ViewUserProfile"
-                component={ViewUserProfileScreen}
-              />
-              <Stack.Screen
-                name="ViewGymMembersScreen"
-                component={ViewGymMembers}
-              />
-              <Stack.Screen
-                name="ChooseUserActivity"
-                component={ChooseActivity}
-              />
-
-              <Stack.Screen name="Meet" component={Meet} />
-
-              <Stack.Screen
-                name="UserEditProfile"
-                component={EditProfileHome}
-              />
-              <Stack.Screen name="ViewGymScreen" component={ViewGymProfile} />
-              <Stack.Screen name="ViewEvent" component={ViewEvent} />
-              <Stack.Screen name="UserQuestionOne" component={QuestionOne} />
-              <Stack.Screen name="UserQuestionTwo" component={QuestionTwo} />
-              <Stack.Screen
-                name="UserQuestionThree"
-                component={QuestionThree}
-              />
-              <Stack.Screen name="UserQuestionFour" component={QuestionFour} />
-              <Stack.Screen name="UserQuestionFive" component={QuestionFive} />
-              <Stack.Screen
-                name="UserInitalAddPhoto"
-                component={IntialAddPhotos}
-              />
-              <Stack.Screen name="MessagingScreen" component={MessageScreen} />
-            </Stack.Group>
-
-            <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
-              <Stack.Screen name="MatchModal" component={MatchModal} />
-              <Stack.Screen name="LoadModal" component={LoadModal} />
-            </Stack.Group>
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="GymFooter" component={GymFooter} />
-            <Stack.Screen name="CreateEvent" component={CreateEvent} />
-            <Stack.Screen name="EditEvent" component={EditEvent} />
-            <Stack.Screen
-              name="GymEditProfile"
-              component={EditGymProfileHome}
-            />
+        <>
+          <Stack.Group>
+            <Stack.Screen name="Footer" component={UserFooter} />
+            <Stack.Screen name="ViewGymTopTabs" component={GymTopTabs} />
+            <Stack.Screen name="UserDashboard" component={Dashboard} />
+            <Stack.Screen name="AttendingEvent" component={AttendingEvent} />
             <Stack.Screen name="UserSettings" component={UserSettings} />
 
-            <Stack.Screen name="GymQuestionTwo" component={GymQuestionTwo} />
+            <Stack.Screen name="CreateGym" component={CreateGymPage} />
+
             <Stack.Screen
-              name="GymInitalAddPhoto"
-              component={GymInitialAddPhotos}
+              name="ViewUserProfile"
+              component={ViewUserProfileScreen}
             />
-          </>
-        )
+            <Stack.Screen
+              name="ViewGymMembersScreen"
+              component={ViewGymMembers}
+            />
+            <Stack.Screen
+              name="ChooseUserActivity"
+              component={ChooseActivity}
+            />
+
+            <Stack.Screen name="Meet" component={Meet} />
+
+            <Stack.Screen name="UserEditProfile" component={EditProfileHome} />
+            <Stack.Screen name="ViewGymScreen" component={ViewGymProfile} />
+            <Stack.Screen name="ViewEvent" component={ViewEvent} />
+            <Stack.Screen name="UserQuestionOne" component={QuestionOne} />
+            <Stack.Screen name="UserQuestionTwo" component={QuestionTwo} />
+            <Stack.Screen name="UserQuestionThree" component={QuestionThree} />
+            <Stack.Screen name="UserQuestionFour" component={QuestionFour} />
+            <Stack.Screen name="UserQuestionFive" component={QuestionFive} />
+            <Stack.Screen
+              name="UserInitalAddPhoto"
+              component={IntialAddPhotos}
+            />
+            <Stack.Screen name="MessagingScreen" component={MessageScreen} />
+            <Stack.Screen name="GymScreens" component={GymScreens} />
+          </Stack.Group>
+
+          <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
+            <Stack.Screen name="MatchModal" component={MatchModal} />
+            <Stack.Screen name="LoadModal" component={LoadModal} />
+          </Stack.Group>
+        </>
       ) : (
         <>
           <Stack.Screen

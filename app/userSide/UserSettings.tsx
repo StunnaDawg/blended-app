@@ -4,9 +4,11 @@ import { FIREBASE_AUTH } from "../../firebase"
 import BackButton from "../components/BackButton"
 import { Feather } from "@expo/vector-icons"
 import { useSwitchAccount } from "../context/switchAccountContext"
+import { useNavigation } from "@react-navigation/native"
+import { NavigationType } from "../@types/navigation"
 
 const UserSettings = () => {
-  const { isSwitchAccount, switchAccount } = useSwitchAccount()
+  const navigation = useNavigation<NavigationType>()
   const handleSignOut = () => {
     try {
       FIREBASE_AUTH.signOut()
@@ -14,18 +16,19 @@ const UserSettings = () => {
       alert(error.message)
     }
   }
-
-  const switchToGymDashboard = async () => {
-    switchAccount()
-    console.log(isSwitchAccount)
-  }
   return (
     <>
       <View className="flex flex-row justify-between m-2">
         <BackButton />
         <Pressable
           onPress={() => {
-            switchToGymDashboard()
+            navigation.goBack()
+            navigation.navigate("GymScreens", {
+              screen: "GymFooter",
+              params: {
+                screen: "GymDashboard",
+              },
+            })
           }}
         >
           <View className="flex flex-row items-center">
