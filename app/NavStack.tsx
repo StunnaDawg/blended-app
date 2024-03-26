@@ -22,7 +22,6 @@ import QuestionTwo from "./SignUpFlow/UserFlow/QuestionTwo"
 import IntialAddPhotos from "./SignUpFlow/UserFlow/IntialAddPhotos"
 import GymQuestionTwo from "./SignUpFlow/GymFlow/GymQuestionTwo"
 import GymInitialAddPhotos from "./SignUpFlow/GymFlow/InitialAddPhotos"
-import GymQuestionOne from "./SignUpFlow/GymFlow/GymQuestionOne"
 import EditProfileHome from "./userSide/UserEditProfile/EditProfileHome"
 import ChooseActivity from "./components/ChooseActivity"
 import EditGymProfileHome from "./gymSide/GymEditProfile/EditProfileHome"
@@ -243,7 +242,7 @@ const NavStack = () => {
               component={EditGymProfileHome}
             />
             <Stack.Screen name="UserSettings" component={UserSettings} />
-            <Stack.Screen name="GymQuestionOne" component={GymQuestionOne} />
+
             <Stack.Screen name="GymQuestionTwo" component={GymQuestionTwo} />
             <Stack.Screen
               name="GymInitalAddPhoto"

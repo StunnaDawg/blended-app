@@ -1,6 +1,13 @@
-import { collection, doc, setDoc } from "firebase/firestore"
+import {
+  arrayUnion,
+  collection,
+  doc,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore"
 import { db } from "../../firebase"
 import { GymProfile } from "../@types/firestore"
+import uploadImage from "./uploadImage"
 
 const createGym = async (
   id: string,
@@ -9,7 +16,7 @@ const createGym = async (
   country: string,
   province: string,
   city: string,
-  gymPhotos: string[]
+  imageArray: string[]
 ) => {
   const gymDocRef = doc(collection(db, "gyms"), id)
 
@@ -21,8 +28,26 @@ const createGym = async (
     country: country,
     province: province,
     city: city,
-    gymPhotos: gymPhotos,
   } as GymProfile)
+
+  const submitGymPhotos = async (downloadImage: string) => {
+    try {
+      if (id) {
+        const GymRef = doc(db, "gyms", id)
+
+        await updateDoc(GymRef, {
+          gymPhotos: arrayUnion(downloadImage),
+        })
+      } else {
+        console.log("User does not exist")
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+  imageArray.forEach((element) => {
+    uploadImage(element, "image", id + "element", submitGymPhotos)
+  })
 }
 
 export default createGym

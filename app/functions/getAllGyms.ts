@@ -32,6 +32,7 @@ const getGymProfiles = async (
 
       const gymProfile: GymProfile = {
         gymId: gymId,
+        gymOwner: gymFetchedData.gymOwner,
         gym_title: gymFetchedData.gym_title,
         gym_style: gymFetchedData.gym_style,
         country: gymFetchedData.country,
