@@ -19,6 +19,7 @@ const createGym = async (
   imageArray: string[]
 ) => {
   const gymDocRef = doc(collection(db, "gyms"), id)
+  const userRef = doc(db, "user", id)
 
   await setDoc(gymDocRef, {
     gymId: id,
@@ -47,6 +48,10 @@ const createGym = async (
   }
   imageArray.forEach((element) => {
     uploadImage(element, "image", id + "element", submitGymPhotos)
+  })
+
+  await updateDoc(userRef, {
+    createdGym: id,
   })
 }
 
