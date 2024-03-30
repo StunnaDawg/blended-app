@@ -1,6 +1,12 @@
 import { collection, doc, getDoc, getDocs } from "firebase/firestore"
 import { db } from "../../firebase"
-import { Event, GymProfile, Reward, UserProfile } from "../@types/firestore"
+import {
+  Event,
+  GymChatChannel,
+  GymProfile,
+  Reward,
+  UserProfile,
+} from "../@types/firestore"
 import { Dispatch, SetStateAction } from "react"
 
 const getGymProfiles = async (
@@ -30,6 +36,12 @@ const getGymProfiles = async (
       const rewardsData = await getDocs(rewardsRef)
       const rewards = rewardsData.docs.map((doc) => doc.data() as Reward)
 
+      const channelRef = collection(db, `gyms/${gymId}/channels`)
+      const channelData = await getDocs(channelRef)
+      const channel = channelData.docs.map(
+        (doc) => doc.data() as GymChatChannel
+      )
+
       const gymProfile: GymProfile = {
         gymId: gymId,
         gymOwner: gymFetchedData.gymOwner,
@@ -44,6 +56,7 @@ const getGymProfiles = async (
         coaches: coaches,
         events: events,
         rewards: rewards,
+        gymChatChannels: channel,
       }
       return gymProfile
     })

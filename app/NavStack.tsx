@@ -51,6 +51,7 @@ import { FontAwesome6 } from "@expo/vector-icons"
 import { useSwitchAccount } from "./context/switchAccountContext"
 import { useNavigation } from "@react-navigation/native"
 import CreateGymPage from "./userSide/gyms/CreateGymPage"
+import HomeGym from "./userSide/Dashboard/HomeGym/HomeGym"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -128,6 +129,7 @@ const UserFooter = () => {
       <Tab.Screen name="Profile" component={UserProfile} />
       <Tab.Screen name="Connections" component={Meet} />
       <Tab.Screen name="Messages" component={MessageTab} />
+      <Tab.Screen name="HomeGym" component={HomeGym} />
     </Tab.Navigator>
   )
 }

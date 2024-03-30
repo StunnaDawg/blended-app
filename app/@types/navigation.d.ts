@@ -78,6 +78,7 @@ export type TabParamList = {
   AboutGym: undefined
   GymMembers: undefined
   GymPhotos: undefined
+  HomeGym: undefined
 }
 
 export type TabNavigationType = TabNavigationProp<TabParamList>

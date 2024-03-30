@@ -14,6 +14,7 @@ export type GymProfile = {
   gymPhotos: string[]
   events: Event[] | null | undefined
   rewards: Reward[] | null
+  gymChatChannels: GymChatChannel[] | null
 }
 
 export type UserProfile = {
@@ -101,4 +102,12 @@ export type Reward = {
   pointCost: number
   rewardPhoto: string
   expiryDate: TimeStamp | null
+}
+
+export type GymChatChannel = {
+  channelId: string
+  channelTitle: string
+  channelDescription: string
+  channelMessages: Messages[] | null
+  channelMembers: UserProfile[] | null
 }
