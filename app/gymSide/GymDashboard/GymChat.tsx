@@ -6,7 +6,7 @@ import getUserProfile from "../../functions/getUserProfile"
 import { FIREBASE_AUTH } from "../../../firebase"
 import Channel from "./components/Channel"
 import ChannelMessageScreen from "./components/ChannelMessageScreen"
-import { useNavigation } from "@react-navigation/native"
+import { useIsFocused, useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../@types/navigation"
 
 const GymChat = () => {
@@ -20,6 +20,7 @@ const GymChat = () => {
   )
   const currentUserId = FIREBASE_AUTH.currentUser?.uid
   const navigation = useNavigation<NavigationType>()
+  const isFocused = useIsFocused()
 
   useEffect(() => {
     if (currentUserId) {
@@ -31,7 +32,7 @@ const GymChat = () => {
     if (currentUserProfile.homeGym) {
       getSingleGym(currentUserId, setHomeGym, setLoading)
     }
-  }, [currentUserProfile])
+  }, [currentUserProfile, isFocused])
 
   useEffect(() => {
     if (homeGym.gymChatChannels && homeGym.gymChatChannels.length > 0) {

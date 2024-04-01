@@ -77,11 +77,7 @@ const GymScreens = () => {
   const { isSignedIn } = useUserAuth()
   return (
     <>
-      <Stack.Navigator
-        screenOptions={{
-          header: () => (isSignedIn ? <NavBar /> : null),
-        }}
-      >
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="GymFooter" component={GymFooter} />
         <Stack.Screen name="CreateEvent" component={CreateEvent} />
         <Stack.Screen name="EditEvent" component={EditEvent} />
