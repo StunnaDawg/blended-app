@@ -7,14 +7,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs"
 import Dashboard from "./userSide/Dashboard"
-import GymDashboard from "./gymSide/GymDashboard"
+import GymChat from "./gymSide/GymDashboard/GymChat"
 import { useUserAuth } from "./context/auth"
 import { useState, useEffect } from "react"
 import { FIREBASE_AUTH, db } from "../firebase"
 import { doc, getDoc } from "@firebase/firestore"
 import UserAuth from "./SignUpFlow/UserAuth"
 import Login from "./components/Login"
-import GymProfile from "./gymSide/GymDashboard/GymProfile"
+import GymProfile from "./gymSide/GymEditProfile/GymProfile"
 import UserProfile from "./userSide/Dashboard/UserProfile/UserProfile"
 import NavBar from "./components/NavBar"
 import QuestionOne from "./SignUpFlow/UserFlow/QuestionOne"
@@ -52,6 +52,7 @@ import { useSwitchAccount } from "./context/switchAccountContext"
 import { useNavigation } from "@react-navigation/native"
 import CreateGymPage from "./userSide/gyms/CreateGymPage"
 import HomeGym from "./userSide/Dashboard/HomeGym/HomeGym"
+import CreateNewChannel from "./gymSide/GymDashboard/CreateNewChannel"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -64,7 +65,7 @@ const GymFooter = () => {
         headerShown: false,
       }}
     >
-      <Tab.Screen name="GymDashboard" component={GymDashboard} />
+      <Tab.Screen name="GymDashboard" component={GymChat} />
       <Tab.Screen name="GymEvents" component={EventsTab} />
       <Tab.Screen name="Profile" component={GymProfile} />
       <Tab.Screen name="Requests" component={GymRequests} />
@@ -86,7 +87,7 @@ const GymScreens = () => {
         <Stack.Screen name="EditEvent" component={EditEvent} />
         <Stack.Screen name="GymEditProfile" component={EditGymProfileHome} />
         <Stack.Screen name="UserSettings" component={UserSettings} />
-
+        <Stack.Screen name="CreateNewChannel" component={CreateNewChannel} />
         <Stack.Screen name="GymQuestionTwo" component={GymQuestionTwo} />
         <Stack.Screen
           name="GymInitalAddPhoto"
@@ -134,15 +135,6 @@ const UserFooter = () => {
   )
 }
 
-// export const GymViewTabs = () => {
-//   return (
-//     <TopTab.Navigator>
-//       <TopTab.Screen name="AboutGym" component={About} />
-//       <TopTab.Screen name="GymMembers" component={GymsTab} />
-//       <TopTab.Screen name="GymPhotos" component={UserProfile} />
-//     </TopTab.Navigator>
-//   )
-// }
 const NavStack = () => {
   const { isSignedIn } = useUserAuth()
   // const { isUser } = useisUser()

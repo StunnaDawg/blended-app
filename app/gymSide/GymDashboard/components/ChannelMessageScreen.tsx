@@ -20,10 +20,10 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore"
-import { FIREBASE_AUTH, db } from "../../../../../firebase"
-import { Messages, UserProfile } from "../../../../@types/firestore"
+import { FIREBASE_AUTH, db } from "../../../../firebase"
+import { Messages, UserProfile } from "../../../@types/firestore"
 import { useEffect, useState } from "react"
-import getUserProfile from "../../../../functions/getUserProfile"
+import getUserProfile from "../../../functions/getUserProfile"
 import UserMessage from "./UserMessage"
 
 type ChannelMessageScreenProps = {
@@ -99,7 +99,7 @@ const ChannelMessageScreen = ({
         className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        {!loading ? (
+        {!loading && messages ? (
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <FlatList
               className="m-2"

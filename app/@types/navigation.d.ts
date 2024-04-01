@@ -61,6 +61,7 @@ export type RootStackParamList = {
     gymId: string
   }
   ViewGymTopTabs: undefined
+  CreateNewChannel: undefined
 }
 
 export type NavigationType = NativeStackNavigationProp<RootStackParamList>
