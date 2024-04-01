@@ -10,7 +10,7 @@ const getAllGymChannels = async (
 ) => {
   try {
     setLoading(true)
-
+    console.log("getting gym channels", gymId)
     const channelsCollectionRef = collection(db, "gyms", gymId, "channels")
     const channelsQuery = query(channelsCollectionRef)
     const querySnapshot = await getDocs(channelsQuery)
@@ -19,6 +19,7 @@ const getAllGymChannels = async (
 
     querySnapshot.forEach((doc) => {
       const channelData = doc.data()
+      console.log("trying for", channelData)
       const channel: GymChatChannel = {
         channelId: doc.id,
         channelTitle: channelData.channelTitle,
@@ -33,6 +34,7 @@ const getAllGymChannels = async (
 
     setLoading(false)
   } catch (err) {
+    console.log("Error here")
     console.error(err)
     setLoading(false)
   }

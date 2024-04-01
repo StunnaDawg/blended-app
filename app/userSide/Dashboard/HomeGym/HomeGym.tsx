@@ -36,9 +36,6 @@ const HomeGym = () => {
     }
   }, [currentUserProfile])
 
-  useEffect(() => {
-    getAllGymChannels(homeGym.gymId, setAllChannels, setLoading)
-  }, [getSingleGym])
   return (
     <>
       {!loading && homeGym ? (
@@ -71,7 +68,7 @@ const HomeGym = () => {
           </View>
         </>
       ) : (
-        "Join a Gym?"
+        <Text>Join a Gym?</Text>
       )}
     </>
   )
