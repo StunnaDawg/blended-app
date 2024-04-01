@@ -20,6 +20,7 @@ import {
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore"
 import MatchesMessage from "./MatchesMessage"
 import UserMessage from "./UserMessages"
@@ -86,18 +87,25 @@ const MessageScreen = () => {
   const sendMessage = async () => {
     try {
       setLoading(true)
-      await addDoc(collection(db, "matches", matchIdDocState, "messages"), {
-        timestamp: serverTimestamp(),
-        userId: currentId,
-        username: currentUserProfile.firstName,
-        photoUrl: currentUserProfile.userPhotos[0],
-        message: messageToSend,
-      })
+      const docRef = await addDoc(
+        collection(db, "matches", matchIdDocState, "messages"),
+        {
+          timestamp: serverTimestamp(),
+          userId: currentId,
+          username: currentUserProfile.firstName,
+          photoUrl: currentUserProfile.userPhotos[0],
+          message: messageToSend,
+        }
+      )
 
+      await updateDoc(docRef, {
+        docId: docRef.id,
+      })
       setMessageToSend("")
-      setLoading(false)
     } catch (err) {
       console.error(err)
+    } finally {
+      setLoading(false)
     }
   }
   return (

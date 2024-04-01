@@ -18,6 +18,7 @@ import {
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore"
 import { FIREBASE_AUTH, db } from "../../../../../firebase"
 import { Messages, UserProfile } from "../../../../@types/firestore"
@@ -70,7 +71,7 @@ const ChannelMessageScreen = ({
   const sendMessage = async () => {
     try {
       setLoading(true)
-      await addDoc(
+      const docRef = await addDoc(
         collection(db, "gyms", gymId, "channels", channelId, "messages"),
         {
           timestamp: serverTimestamp(),
@@ -81,11 +82,15 @@ const ChannelMessageScreen = ({
         }
       )
 
+      await updateDoc(docRef, {
+        docId: docRef.id,
+      })
       setMessageToSend("")
-      setLoading(false)
     } catch (err) {
       setLoading(false)
       console.error(err)
+    } finally {
+      setLoading(false)
     }
   }
   return (
@@ -94,23 +99,26 @@ const ChannelMessageScreen = ({
         className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        {!loading ? (
+        {!loading && messages ? (
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <FlatList
               className="m-2"
               data={messages}
               inverted={true}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => {
+                console.log("Extracting key for item:", item.id)
+                return item.id
+              }}
               renderItem={({ item: message }) =>
                 message.userId === currentId ? (
-                  <View key={message.id}>
+                  <View>
                     <UserMessage
                       id={currentUserProfile.id}
                       message={message.message}
                     />
                   </View>
                 ) : (
-                  <View key={message.id}>
+                  <View>
                     <Message id={message.userId} message={message.message} />
                   </View>
                 )

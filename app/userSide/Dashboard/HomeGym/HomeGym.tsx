@@ -34,6 +34,12 @@ const HomeGym = () => {
     }
   }, [currentUserProfile])
 
+  useEffect(() => {
+    if (homeGym.gymChatChannels && homeGym.gymChatChannels.length > 0) {
+      setCurrentChannel(homeGym.gymChatChannels[0])
+    }
+  }, [homeGym])
+
   return (
     <>
       {!loading && homeGym ? (
