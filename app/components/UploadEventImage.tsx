@@ -28,14 +28,16 @@ const UploadEventImage = ({ setUri, uri }: UploadImageType) => {
   }
 
   return (
-    <ScrollView>
-      <View>
-        <Image source={{ uri: uri }} style={{ width: 200, height: 200 }} />
+    <ScrollView className="flex-1">
+      <View className="flex-1 justify-center items-center">
+        <View className="items-center mb-4">
+          <Image source={{ uri: uri }} style={{ width: 200, height: 200 }} />
+        </View>
+        <Pressable onPress={pickImage} className="flex flex-row items-center">
+          <Text className="text-lg font-bold underline">Pick an Image</Text>
+          <FontAwesome6 name="add" size={20} color="black" />
+        </Pressable>
       </View>
-      <Pressable onPress={pickImage} className="flex flex-row items-center">
-        <Text className=" mx-2 text-lg font-bold underline">Pick an Image</Text>
-        <FontAwesome6 name="add" size={20} color="black" />
-      </Pressable>
     </ScrollView>
   )
 }

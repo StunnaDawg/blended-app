@@ -47,16 +47,16 @@ const EventEditImage = ({ event }: EventPicProps) => {
   const id = FIREBASE_AUTH.currentUser?.uid
 
   useEffect(() => {
-    if (id) getSinglePhoto(id, event.id, setImage)
+    if (id) getSinglePhoto(event.gymHost, event.id, setImage)
   }, [id, event])
 
   const submitNewUserPhotos = async (downloadImage: string) => {
     try {
       if (id) {
-        const userRef = doc(db, "user", id)
+        const eventRef = doc(db, "gyms", event.gymHost, "events", event.id)
 
-        await updateDoc(userRef, {
-          userPhotos: arrayUnion(downloadImage),
+        await updateDoc(eventRef, {
+          eventPhoto: downloadImage,
         })
 
         setImage(downloadImage)
@@ -70,10 +70,10 @@ const EventEditImage = ({ event }: EventPicProps) => {
   const deletePhotoFromFireStore = async (fileLocation: string) => {
     try {
       if (id) {
-        const userRef = doc(db, "user", id)
+        const eventRef = doc(db, "gyms", event.gymHost, "events", event.id)
         console.log(fileLocation)
-        await updateDoc(userRef, {
-          userPhotos: arrayRemove(fileLocation),
+        await updateDoc(eventRef, {
+          eventPhoto: fileLocation,
         })
       } else {
         console.log("Photo does not exist")
@@ -90,6 +90,8 @@ const EventEditImage = ({ event }: EventPicProps) => {
     })
 
     if (!result.canceled) {
+      await deleteImage(image)
+      await deletePhotoFromFireStore(image)
       setImage(result.assets[0].uri)
       uploadImage(
         result.assets[0].uri,
@@ -110,15 +112,12 @@ const EventEditImage = ({ event }: EventPicProps) => {
             style={{ width: 150, height: 150 }}
           />
           <Pressable
-            className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded hover:bg-blue-800 m-2"
+            className="absolute bottom-0 right-0 bg-blue text-white p-2 rounded hover:bg-blue-800 m-2"
             onPress={async () => {
               await pickImage()
-              await deleteImage(image)
-              await deletePhotoFromFireStore(image)
-              await uploadImage(image, "image", image + id, submitNewUserPhotos)
             }}
           >
-            <Text>+</Text>
+            <Text>Replace new photo</Text>
           </Pressable>
         </View>
       ) : (

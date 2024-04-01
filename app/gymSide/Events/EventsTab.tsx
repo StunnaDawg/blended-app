@@ -8,7 +8,7 @@ import {
 import React, { useEffect, useState } from "react"
 import EventCard from "./components/EventCard"
 import DefaultButton from "../../components/DefaultButton"
-import { useNavigation } from "@react-navigation/native"
+import { useIsFocused, useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../@types/navigation"
 import { FIREBASE_AUTH } from "../../../firebase"
 import getGymEvents from "../../functions/getGymEvents"
@@ -20,10 +20,11 @@ const EventsTab = () => {
   const [eventsArray, setEventsArray] = useState<Event[]>([])
   const navigation = useNavigation<NavigationType>()
   const currentId = FIREBASE_AUTH.currentUser?.uid
+  const isFocused = useIsFocused()
 
   useEffect(() => {
     getGymEvents(currentId, setEventsArray, setLoading)
-  }, [])
+  }, [isFocused, currentId])
 
   return (
     <View>

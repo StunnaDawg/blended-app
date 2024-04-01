@@ -19,6 +19,8 @@ import DateTimePicker, {
 import uploadImage from "../../functions/uploadImage"
 import UploadEventImage from "../../components/UploadEventImage"
 import BackButton from "../../components/BackButton"
+import { useNavigation } from "@react-navigation/native"
+import { NavigationType } from "../../@types/navigation"
 
 const CreateEvent = () => {
   const { location, errorMsg } = useLocation()
@@ -30,6 +32,7 @@ const CreateEvent = () => {
   const [mode, setMode] = useState<any>("date")
   const [show, setShow] = useState(false)
   const [newEventID, setNewEventID] = useState<string>("")
+  const navigation = useNavigation<NavigationType>()
 
   const currentGymId = FIREBASE_AUTH.currentUser?.uid
 
@@ -173,6 +176,7 @@ const CreateEvent = () => {
       <Pressable
         onPress={async () => {
           await createEventInGymCollection()
+          navigation.goBack()
         }}
         className="bg-blue p-4 rounded-lg items-center mb-20"
       >

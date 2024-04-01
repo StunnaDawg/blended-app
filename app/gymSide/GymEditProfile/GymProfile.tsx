@@ -13,7 +13,7 @@ const GymProfile = () => {
 
   const navigation = useNavigation<NavigationType>()
   const currentId = FIREBASE_AUTH.currentUser?.uid
-  const getUserNameAge = async () => {
+  const getGymData = async () => {
     if (currentId) {
       const userRef = doc(db, "gyms", currentId)
 
@@ -32,10 +32,10 @@ const GymProfile = () => {
   }
 
   useEffect(() => {
-    getUserNameAge()
+    getGymData()
   }, [])
   return (
-    <View>
+    <View className="flex-1 items-center justify-center">
       <SinglePic
         size={200}
         id={FIREBASE_AUTH.currentUser?.uid}

@@ -130,22 +130,6 @@ const EditEvent = () => {
     }
   }, [debouncePrice])
 
-  // const submitUserPhotos = async (image: string, eventId: string) => {
-  //   try {
-  //     if (eventId && currentGymId) {
-  //       const userRef = doc(db, "gyms", currentGymId, "events", eventId)
-
-  //       await updateDoc(userRef, {
-  //         eventPhoto: image,
-  //       })
-  //     } else {
-  //       console.log("User does not exist")
-  //     }
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }
-
   return (
     <ScrollView className="p-4 bg-white">
       <View className="flex flex-row items-center mb-8">
