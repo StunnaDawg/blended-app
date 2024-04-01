@@ -4,12 +4,12 @@ import { FontAwesome6 } from "@expo/vector-icons"
 import { GymChatChannel } from "../../../../@types/firestore"
 
 type ChannelProps = {
-  gymId: string
   channelData: GymChatChannel
   setChannelData: Dispatch<SetStateAction<GymChatChannel>>
+  setLoading: Dispatch<SetStateAction<boolean>>
 }
 
-const Channel = ({ channelData, setChannelData }: ChannelProps) => {
+const Channel = ({ channelData, setChannelData, setLoading }: ChannelProps) => {
   const setChannelDataFunc = () => {
     setChannelData(channelData)
   }

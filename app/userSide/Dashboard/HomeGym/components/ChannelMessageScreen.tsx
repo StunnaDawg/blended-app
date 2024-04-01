@@ -61,10 +61,11 @@ const ChannelMessageScreen = ({
           setMessages(messagesData)
         }
       )
+      setLoading(false)
       return unsubscribe
     }
     setLoading(false)
-  }, [db])
+  }, [db, channelId])
 
   const sendMessage = async () => {
     try {
@@ -83,6 +84,7 @@ const ChannelMessageScreen = ({
       setMessageToSend("")
       setLoading(false)
     } catch (err) {
+      setLoading(false)
       console.error(err)
     }
   }
