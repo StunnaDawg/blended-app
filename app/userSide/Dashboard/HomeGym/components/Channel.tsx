@@ -4,6 +4,7 @@ import { FontAwesome6 } from "@expo/vector-icons"
 import { GymChatChannel } from "../../../../@types/firestore"
 
 type ChannelProps = {
+  gymId: string
   channelData: GymChatChannel
   setChannelData: Dispatch<SetStateAction<GymChatChannel>>
 }
@@ -14,15 +15,15 @@ const Channel = ({ channelData, setChannelData }: ChannelProps) => {
   }
   return (
     <Pressable
-      className="flex flex-row items-center"
+      className="flex flex-row items-center my-2"
       onPress={() => {
         setChannelDataFunc()
       }}
     >
-      <Text className="mx-2 font-semibold text-sm">
+      <Text className="mx-2 font-semibold text-xs">
         {channelData.channelTitle}
       </Text>
-      <FontAwesome6 name="hashtag" size={16} color="black" />
+      <FontAwesome6 name="hashtag" size={10} color="black" />
     </Pressable>
   )
 }

@@ -26,6 +26,7 @@ const getAllGymChannels = async (
         channelDescription: channelData.channelDescription,
         channelMessages: channelData.channelMessages,
         channelMembers: channelData.channelMembers,
+        gymId: channelData.gymId,
       }
       channels.push(channel)
     })

@@ -110,4 +110,5 @@ export type GymChatChannel = {
   channelDescription: string
   channelMessages: Messages[] | null
   channelMembers: UserProfile[] | null
+  gymId: string
 }

@@ -8,7 +8,7 @@ type MessageProps = {
 
 const Message = ({ id, message }: MessageProps) => {
   return (
-    <View key={id}>
+    <View>
       <View className="flex flex-row justify-start flex-wrap mt-2 items-center m-1 my-2">
         <SinglePic
           size={30}
