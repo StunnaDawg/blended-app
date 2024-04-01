@@ -6,29 +6,19 @@ import {
   Button,
   Platform,
 } from "react-native"
-import { Event } from "../../@types/firestore"
+
 import React, { useState } from "react"
-import UploadImage from "../../components/UploadImage"
+
 import { FIREBASE_AUTH, db } from "../../../firebase"
 import { ScrollView } from "react-native"
-import {
-  addDoc,
-  arrayUnion,
-  collection,
-  doc,
-  setDoc,
-  updateDoc,
-  writeBatch,
-} from "firebase/firestore"
-import { Calendar } from "react-native-calendars"
-import { format, parseISO } from "date-fns"
+import { addDoc, collection, doc, setDoc, writeBatch } from "firebase/firestore"
 import { useLocation } from "../../context/LocationContext"
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker"
 import uploadImage from "../../functions/uploadImage"
-import UploadSingleImage from "../../components/UploadSingleImage"
 import UploadEventImage from "../../components/UploadEventImage"
+import BackButton from "../../components/BackButton"
 
 const CreateEvent = () => {
   const { location, errorMsg } = useLocation()
@@ -108,60 +98,75 @@ const CreateEvent = () => {
   }
 
   return (
-    <ScrollView>
-      <View className="flex flex-row justify-center">
-        <Text className="text-3xl font-semibold">Create Event</Text>
+    <ScrollView className=" p-4 bg-white">
+      <View className="flex flex-row items-center mb-8">
+        <BackButton />
+        <Text className="mx-1 text-3xl font-semibold ">Create Event</Text>
       </View>
 
-      <View>
-        <Text>Title</Text>
+      <View className="mb-4">
+        <Text className="mb-2 text-lg font-semibold text-gray">Title</Text>
         <TextInput
           value={eventTitle}
-          onChangeText={(title) => setEventTitle(title)}
+          onChangeText={setEventTitle}
           placeholder="Add a Title"
+          className="border  p-2 rounded-lg"
         />
       </View>
-      <View>
-        <Text>Description</Text>
+
+      <View className="mb-4">
+        <Text className="mb-2 text-lg font-semibold text-gray">
+          Description
+        </Text>
         <TextInput
           value={description}
-          onChangeText={(description) => setDescription(description)}
-          placeholder="Add a Title"
+          onChangeText={setDescription}
+          placeholder="Event Description"
+          className="border p-2 rounded-lg"
+          multiline={true}
         />
       </View>
-      <View>
-        <View>
-          <Text>{date.toLocaleString()}</Text>
 
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode="date"
-            is24Hour={true}
-            display="default"
-            onChange={onChangeDate}
-          />
-        </View>
+      <View className="mb-4">
+        <Text className="mb-2 text-lg font-semibold text-gray">Date</Text>
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode="date"
+          is24Hour={true}
+          display="default"
+          onChange={onChangeDate}
+          className="mb-4"
+        />
       </View>
-      <DateTimePicker
-        testID="dateTimePicker"
-        value={date}
-        mode="time"
-        is24Hour={true}
-        display="default"
-        onChange={onChangeDate}
-      />
 
-      <View>
-        <Text>Price?</Text>
+      <View className="mb-4">
+        <Text className="mb-2 text-lg font-semibold text-gray">Time</Text>
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode="time"
+          is24Hour={true}
+          display="default"
+          onChange={onChangeDate}
+        />
+      </View>
+
+      <View className="mb-4">
+        <Text className="mb-2 text-lg font-semibold text-gray">Price</Text>
         <TextInput
           value={price}
-          onChangeText={(price) => setPrice(price)}
-          placeholder="Add a Title"
+          onChangeText={setPrice}
+          placeholder="Set a Price"
+          className="border  p-2 rounded-lg"
+          keyboardType="numeric"
         />
       </View>
 
-      <View>
+      <View className="mb-8">
+        <Text className="mb-2 text-lg font-semibold text-gray">
+          Event Image
+        </Text>
         <UploadEventImage setUri={setEventPicture} uri={eventPicture} />
       </View>
 
@@ -169,8 +174,9 @@ const CreateEvent = () => {
         onPress={async () => {
           await createEventInGymCollection()
         }}
+        className="bg-blue p-4 rounded-lg items-center mb-20"
       >
-        <Text className="font-bold text-xl">Create Event</Text>
+        <Text className="text-white text-xl font-bold">Create Event</Text>
       </Pressable>
     </ScrollView>
   )

@@ -2,6 +2,7 @@ import { View, Button, ScrollView, Pressable, Text } from "react-native"
 import { Image } from "expo-image"
 import * as ImagePicker from "expo-image-picker"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { FontAwesome6 } from "@expo/vector-icons"
 
 type UploadImageType = {
   setUri: Dispatch<SetStateAction<string>>
@@ -31,8 +32,9 @@ const UploadEventImage = ({ setUri, uri }: UploadImageType) => {
       <View>
         <Image source={{ uri: uri }} style={{ width: 200, height: 200 }} />
       </View>
-      <Pressable onPress={pickImage}>
-        <Text>Pick an Image</Text>
+      <Pressable onPress={pickImage} className="flex flex-row items-center">
+        <Text className=" mx-2 text-lg font-bold underline">Pick an Image</Text>
+        <FontAwesome6 name="add" size={20} color="black" />
       </Pressable>
     </ScrollView>
   )

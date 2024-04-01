@@ -13,6 +13,7 @@ import { NavigationType } from "../../@types/navigation"
 import { FIREBASE_AUTH } from "../../../firebase"
 import getGymEvents from "../../functions/getGymEvents"
 import { Event } from "../../@types/firestore"
+import { FontAwesome6 } from "@expo/vector-icons"
 
 const EventsTab = () => {
   const [loading, setLoading] = useState<boolean>(false)
@@ -24,21 +25,19 @@ const EventsTab = () => {
     getGymEvents(currentId, setEventsArray, setLoading)
   }, [])
 
-  useEffect(() => {
-    console.log([...eventsArray])
-  }, [eventsArray])
   return (
     <View>
-      <View className="flex flex-row justify-end">
-        <DefaultButton
-          text="+ Add New Event"
-          buttonFunction={() => navigation.navigate("CreateEvent")}
-        />
+      <View className=" p-3 flex flex-row justify-between my-2 items-center">
+        <Text className="font-bold text-xl">My Upcoming events</Text>
+        <Pressable
+          className="flex flex-row  items-center mx-2"
+          onPress={() => navigation.navigate("CreateEvent")}
+        >
+          <Text className="mx-1 font-semibold underline">New Event</Text>
+          <FontAwesome6 name="add" size={16} color="black" />
+        </Pressable>
       </View>
-      <View className="flex flex-row justify-center">
-        <Text>My Upcoming events</Text>
-      </View>
-      <ScrollView>
+      <ScrollView className="h-full p-1">
         {!loading && currentId ? (
           eventsArray.map((event) => (
             <View key={event.id}>
