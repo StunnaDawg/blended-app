@@ -70,9 +70,7 @@ const HomeGym = () => {
                 </Text>
               </View>
 
-              {currentChannel.channelId !== undefined &&
-              currentChannel.gymId !== undefined &&
-              !loading ? (
+              {currentChannel.channelId !== undefined && !loading ? (
                 <View className="flex-1">
                   <ChannelMessageScreen
                     channelId={currentChannel.channelId}

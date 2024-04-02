@@ -106,7 +106,6 @@ const ChannelMessageScreen = ({
               data={messages}
               inverted={true}
               keyExtractor={(item) => {
-                console.log("Extracting key for item:", item.id)
                 return item.id
               }}
               renderItem={({ item: message }) =>
