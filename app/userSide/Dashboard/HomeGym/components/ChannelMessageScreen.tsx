@@ -25,15 +25,20 @@ import { Messages, UserProfile } from "../../../../@types/firestore"
 import { useEffect, useState } from "react"
 import getUserProfile from "../../../../functions/getUserProfile"
 import UserMessage from "./UserMessage"
+import { FontAwesome6 } from "@expo/vector-icons"
 
 type ChannelMessageScreenProps = {
   gymId: string
   channelId: string
+  channelName: string
+  handleDismissModal: () => void
 }
 
 const ChannelMessageScreen = ({
   gymId,
   channelId,
+  channelName,
+  handleDismissModal,
 }: ChannelMessageScreenProps) => {
   const [currentUserProfile, setCurrentUserProfile] = useState<UserProfile>(
     {} as UserProfile
@@ -95,6 +100,20 @@ const ChannelMessageScreen = ({
   }
   return (
     <View className="flex-1">
+      <View className="flex flex-row items-center">
+        <Pressable
+          className="m-6"
+          onPress={() => {
+            handleDismissModal()
+          }}
+        >
+          <FontAwesome6 name="arrow-left" size={24} color="black" />
+        </Pressable>
+        <View className="flex flex-row items-center">
+          <FontAwesome6 name="hashtag" size={20} color="black" />
+          <Text className="text-xl font-bold mx-2">{channelName}</Text>
+        </View>
+      </View>
       <KeyboardAvoidingView
         className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : "height"}
