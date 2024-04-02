@@ -29,7 +29,7 @@ const CreateNewChannel = () => {
   }, [currentUserId])
 
   const handleCreateChannel = () => {
-    if (userProfile.createdGym) {
+    if (userProfile.createdGym && currentUserId) {
       setLoading(true)
 
       createNewChannelFunc(

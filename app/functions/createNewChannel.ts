@@ -13,6 +13,7 @@ const createNewChannelFunc = async (
     const addChannel = await addDoc(gymChannelsRef, {
       channelTitle: channelName,
       channelDescription: channelDescription,
+      gymId: gymId,
     })
 
     await updateDoc(addChannel, {
