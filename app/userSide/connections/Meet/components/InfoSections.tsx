@@ -22,7 +22,7 @@ const InfoSection = ({
   activities,
 }: InfoSectionProps) => {
   return (
-    <View className="w-full m-1 h-18 p-4 bg-blue items-start rounded-xl">
+    <View className="w-full m-1 h-18 p-4 bg-gray-light items-start rounded-xl border-2">
       <View className="flex flex-row justify-start pb-2">
         <Text className="text-xs font-semibold">{title}</Text>
       </View>

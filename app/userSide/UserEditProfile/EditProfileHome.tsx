@@ -1,13 +1,11 @@
 import {
   View,
-  Text,
   ScrollView,
   KeyboardAvoidingView,
-  SafeAreaView,
   ActivityIndicator,
 } from "react-native"
 import React, { useEffect, useState } from "react"
-import { FIREBASE_AUTH, db } from "../../../firebase"
+import { FIREBASE_AUTH } from "../../../firebase"
 import About from "./components/About"
 import Activities from "./components/Activities"
 import Food from "./components/Food"
@@ -16,12 +14,10 @@ import Career from "./components/Career"
 import Education from "./components/Education"
 import PRsection from "./components/PRsection"
 import RelationshipGoals from "./components/RelationshipGoals"
-import School from "./components/School"
 import SingleImage from "../../components/SingleImage"
-import { arrayUnion, doc, updateDoc } from "firebase/firestore"
-import HomeGym from "./components/HomeGym"
 import getUserProfile from "../../functions/getUserProfile"
 import { UserProfile } from "../../@types/firestore"
+import BackButton from "../../components/BackButton"
 
 const EditProfileHome = () => {
   const [loading, setLoading] = useState<boolean>(false)
@@ -42,6 +38,7 @@ const EditProfileHome = () => {
     >
       {!loading ? (
         <ScrollView className="mb-20">
+          <BackButton />
           <View className="flex flex-row justify-center flex-wrap">
             <SingleImage key={0} index={0} />
             <SingleImage key={1} index={1} />
@@ -52,10 +49,6 @@ const EditProfileHome = () => {
           </View>
 
           <About />
-
-          {/* <View className="mt-4">
-          <HomeGym currentGym={userProfileValues.homeGym?.gym_title} />
-        </View> */}
 
           <View className="mt-4">
             <Activities />

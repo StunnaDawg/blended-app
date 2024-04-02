@@ -19,16 +19,13 @@ import React, {
 import { GymProfile, UserProfile } from "../../../../@types/firestore"
 import getUserProfile from "../../../../functions/getUserProfile"
 import {
-  DocumentSnapshot,
   doc,
-  getDoc,
   setDoc,
-  Timestamp,
   serverTimestamp,
   addDoc,
   collection,
 } from "firebase/firestore"
-import { FIREBASE_AUTH, db, FIREBASE_APP } from "../../../../../firebase"
+import { FIREBASE_AUTH, db } from "../../../../../firebase"
 import mergeIds from "../../../../functions/mergeId"
 import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../../../@types/navigation"
@@ -74,7 +71,6 @@ const MeetCard = ({
   }, [])
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   const otherUser = userData.id
-  const navigation = useNavigation<NavigationType>()
 
   useEffect(() => {
     setLoading(true)
@@ -159,7 +155,9 @@ const MeetCard = ({
   return (
     <>
       <View className="flex-1">
-        <UserImageCarosel id={otherUser} profileType={userData} />
+        <View className="m-2 border-2">
+          <UserImageCarosel id={otherUser} profileType={userData} />
+        </View>
         <View className="flex flex-row justify-start items-center m-3">
           <Text className="font-bold text-3xl text-black">
             {userData.firstName}
@@ -215,12 +213,12 @@ const MeetCard = ({
       <View className="flex flex-row justify-center">
         <View className="mx-2">
           <Pressable
-            className="border border-blue rounded-3xl bg-red-700 p-3"
+            className="border bg-red rounded-3xl bg-red-700 p-3"
             onPress={async () => {
               await passUser()
             }}
           >
-            <Text className="font-bold">Pass</Text>
+            <Text className="font-bold text-black">Pass</Text>
           </Pressable>
         </View>
         <View className="mx-2">
