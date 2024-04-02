@@ -39,7 +39,9 @@ const DeleteEvent = ({ eventId, gymId }: DeleteEventProp) => {
   const navigation = useNavigation<NavigationType>()
   const deleteEvent = async () => {
     if (gymId) {
-      const eventRef = doc(db, "gyms", gymId, "events", eventId)
+      const eventGymRef = doc(db, "gyms", gymId, "events", eventId)
+      const eventRef = doc(db, "events")
+      await deleteDoc(eventGymRef)
       await deleteDoc(eventRef)
     }
   }
