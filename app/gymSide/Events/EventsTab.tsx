@@ -39,15 +39,17 @@ const EventsTab = () => {
         </Pressable>
       </View>
       <ScrollView className="h-full p-1">
-        {!loading && currentId ? (
-          eventsArray.map((event) => (
-            <View key={event.id}>
-              <EventCard event={event} id={currentId} />
-            </View>
-          ))
-        ) : (
-          <ActivityIndicator />
-        )}
+        <View className="flex flex-row flex-wrap items-center">
+          {!loading && currentId ? (
+            eventsArray.map((event) => (
+              <View className="mx-3" key={event.id}>
+                <EventCard event={event} id={currentId} />
+              </View>
+            ))
+          ) : (
+            <ActivityIndicator />
+          )}
+        </View>
       </ScrollView>
     </View>
   )

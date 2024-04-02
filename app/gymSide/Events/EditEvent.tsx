@@ -26,6 +26,7 @@ import { Event } from "../../@types/firestore"
 import SingleImage from "../../components/SingleImage"
 import EventEditImage from "./components/EventPhotoEdit"
 import BackButton from "../../components/BackButton"
+import DeleteEvent from "./components/DeleteEvent"
 
 const updateEvent = async (
   currentGymId: string,
@@ -137,6 +138,7 @@ const EditEvent = () => {
         <Text className="mx-1 text-3xl font-semibold text-gray">
           Edit Event
         </Text>
+        <DeleteEvent gymId={currentGymId} eventId={eventId} />
       </View>
 
       <View className="mb-4">
