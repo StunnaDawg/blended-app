@@ -53,6 +53,9 @@ import { useNavigation } from "@react-navigation/native"
 import CreateGymPage from "./userSide/gyms/CreateGymPage"
 import HomeGym from "./userSide/Dashboard/HomeGym/HomeGym"
 import CreateNewChannel from "./gymSide/GymDashboard/CreateNewChannel"
+import GymMembersModal from "./userSide/gyms/components/GymMembersModal"
+import ModerateUsers from "./gymSide/GymRequests/ModerateUsers"
+import CurrentGymSettings from "./userSide/Dashboard/HomeGym/CurrentGymSettings"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<TabParamList>()
@@ -85,6 +88,7 @@ const GymScreens = () => {
         <Stack.Screen name="UserSettings" component={UserSettings} />
         <Stack.Screen name="CreateNewChannel" component={CreateNewChannel} />
         <Stack.Screen name="GymQuestionTwo" component={GymQuestionTwo} />
+        <Stack.Screen name="GymModerateMembers" component={ModerateUsers} />
         <Stack.Screen
           name="GymInitalAddPhoto"
           component={GymInitialAddPhotos}
@@ -178,6 +182,11 @@ const NavStack = () => {
             <Stack.Screen name="UserSettings" component={UserSettings} />
 
             <Stack.Screen name="CreateGym" component={CreateGymPage} />
+
+            <Stack.Screen
+              name="CurrentGymSettings"
+              component={CurrentGymSettings}
+            />
 
             <Stack.Screen
               name="ViewUserProfile"

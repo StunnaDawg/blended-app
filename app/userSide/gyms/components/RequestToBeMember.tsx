@@ -1,15 +1,18 @@
-import { View, Text, Pressable } from "react-native"
-import React, { useState } from "react"
+import { View, Text, Pressable, ActivityIndicator } from "react-native"
+import React, { useEffect, useState } from "react"
 import DefaultButton from "../../../components/DefaultButton"
 import requestToGym from "../../../functions/requestToGym"
 import { FontAwesome6 } from "@expo/vector-icons"
 import { FIREBASE_AUTH } from "../../../../firebase"
+import { GymProfile } from "../../../@types/firestore"
 
 type RequestToBeMemberProps = {
   gymId: string
+  gym: GymProfile
 }
 
-const RequestToBeMember = ({ gymId }: RequestToBeMemberProps) => {
+const RequestToBeMember = ({ gymId, gym }: RequestToBeMemberProps) => {
+  const [loading, setLoading] = useState<boolean>(false)
   const [isPressed, setIsPressed] = useState(false)
   const currentId = FIREBASE_AUTH.currentUser?.uid
 
@@ -20,14 +23,17 @@ const RequestToBeMember = ({ gymId }: RequestToBeMemberProps) => {
   const handlePressOut = () => {
     setIsPressed(false)
   }
+
   return (
     <>
       {gymId !== currentId ? (
         <Pressable
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
-          onPress={() => {
-            requestToGym(gymId, "memberRequests")
+          onPress={async () => {
+            setLoading(true)
+            await requestToGym(gymId, "memberRequests")
+            setLoading(false)
           }}
         >
           <View
@@ -36,7 +42,9 @@ const RequestToBeMember = ({ gymId }: RequestToBeMemberProps) => {
             }`}
           >
             <FontAwesome6 name="add" size={16} color="black" />
-            <Text className="font-semibold mx-1">Join</Text>
+            <Text className="font-semibold mx-1">
+              {!loading ? "Join" : <ActivityIndicator />}
+            </Text>
           </View>
         </Pressable>
       ) : null}

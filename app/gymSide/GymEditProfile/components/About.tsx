@@ -9,7 +9,7 @@ const About = () => {
 
   const updateAboutMe = async () => {
     if (currentUser) {
-      const userRef = doc(db, "user", currentUser)
+      const userRef = doc(db, "gyms", currentUser)
       await updateDoc(userRef, {
         aboutMe: aboutMe,
       })
@@ -18,7 +18,7 @@ const About = () => {
 
   const getAboutMe = async () => {
     if (currentUser) {
-      const userRef = doc(db, "user", currentUser)
+      const userRef = doc(db, "gyms", currentUser)
       const data = await getDoc(userRef)
       if (data.exists()) {
         const aboutData = { ...data.data() }
@@ -37,16 +37,17 @@ const About = () => {
   useEffect(() => {
     updateAboutMe()
   }, [aboutMe])
+
   return (
     <>
-      <Text>About Me</Text>
+      <Text className="font-bold m-2 text-sm">About The Gym</Text>
       <TextInput
         value={aboutMe}
         onChangeText={setAboutMe}
         className="border-2 border-black m-2 h-40"
         placeholder="About me!"
         multiline={true}
-      ></TextInput>
+      />
     </>
   )
 }

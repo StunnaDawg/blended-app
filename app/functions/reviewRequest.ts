@@ -1,6 +1,5 @@
 import { doc, getDoc, setDoc, deleteDoc, updateDoc } from "firebase/firestore"
 import { FIREBASE_AUTH, db } from "../../firebase"
-import updateUsersGyms from "./updateUserHomeGym"
 
 const reviewRequest = async (
   requestId: string,

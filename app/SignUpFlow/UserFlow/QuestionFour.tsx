@@ -22,8 +22,13 @@ const QuestionFour = () => {
   }
 
   return (
-    <View>
-      <Text>Age: {age}</Text>
+    <View className="flex-1 justify-center items-center">
+      <View className="flex flex-row justify-center m-2">
+        <View>
+          <Text className="font-semibold text-xl">You must be 18 or Older</Text>
+          <Text className="text-center text-sm">Age: {age}</Text>
+        </View>
+      </View>
       <DateTimePicker
         value={date}
         mode="date"
@@ -32,7 +37,7 @@ const QuestionFour = () => {
           if (newDate) setDate(newDate)
         }}
       />
-      <UpdateQuestionFour id={currentId} birthday={date} />
+      <UpdateQuestionFour disable={age < 18} id={currentId} birthday={date} />
     </View>
   )
 }

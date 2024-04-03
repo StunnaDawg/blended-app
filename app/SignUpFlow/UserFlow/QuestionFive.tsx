@@ -14,6 +14,7 @@ import UpdateQuestionFive from "./components/UpdateQuestionFive"
 const QuestionFive = () => {
   const [selectedActivities, setSelectedActivities] = useState<string[]>([])
   const [activities, setActivities] = useState<string[]>([])
+  const [pressedActivity, setPressedActivity] = useState<string | null>(null)
   const currentId = FIREBASE_AUTH.currentUser?.uid
 
   const fetchActivities = async () => {
@@ -32,56 +33,67 @@ const QuestionFive = () => {
     }
   }
 
+  const handleSelectActivity = (activity: string) => {
+    if (selectedActivities.includes(activity)) {
+      setSelectedActivities((prev) => prev.filter((item) => item !== activity))
+    } else if (selectedActivities.length < 5) {
+      setSelectedActivities((prev) => [...prev, activity])
+    }
+  }
+
   useEffect(() => {
     fetchActivities()
   }, [])
 
   return (
     <View>
-      <Text>Choose Your Exercises of choice</Text>
+      <Text className="font-semibold">Choose Your favourite activities</Text>
       <View className="flex flex-row justify-between items-center">
-        <Text className="font-bold text-2xl">Activities</Text>
-        <UpdateQuestionFive id={currentId} activityArray={selectedActivities} />
-      </View>
-      <View>
-        <View>
-          <ScrollView
-            className="flex flex-row h-10 border-b-2"
-            horizontal={true}
-          >
-            {selectedActivities?.map((activity, index) => (
-              <Pressable
-                className="border-2 rounded-full bg-slate-300 p-2 text-center mx-1"
-                key={index}
-                onPress={() =>
-                  setSelectedActivities((prev) =>
-                    prev.filter((item) => item !== activity)
-                  )
-                }
-              >
-                <Text>{activity}</Text>
-              </Pressable>
-            ))}
-          </ScrollView>
+        <View className="flex flex-row items-center">
+          <Text className="font-bold text-2xl mx-1">Activities</Text>
+          <Text className="font-semibold text-xs">
+            {selectedActivities.length}/5
+          </Text>
         </View>
-
-        <ScrollView>
-          <View className="flex flex-row flex-wrap">
-            {activities?.map((activity, index) => (
-              <View key={index} className="flex flex-row">
-                <Pressable
-                  className="border-2 rounded-full bg-slate-300 p-2 m-1"
-                  onPress={() =>
-                    setSelectedActivities((prev) => [...prev, activity])
-                  }
-                >
-                  <Text className="text-center">{activity}</Text>
-                </Pressable>
-              </View>
-            ))}
-          </View>
-        </ScrollView>
+        <UpdateQuestionFive
+          disable={selectedActivities.length < 1}
+          id={currentId}
+          activityArray={selectedActivities}
+        />
       </View>
+      <ScrollView className="flex flex-row h-10 border-b-2" horizontal={true}>
+        {selectedActivities.map((activity, index) => (
+          <Pressable
+            className={`border-2 rounded-full p-2 text-center mx-1 ${
+              pressedActivity === activity ? "bg-blue" : "bg-gray-light"
+            }`}
+            key={index}
+            onPressIn={() => setPressedActivity(activity)}
+            onPressOut={() => setPressedActivity(null)}
+            onPress={() => handleSelectActivity(activity)}
+          >
+            <Text>{activity}</Text>
+          </Pressable>
+        ))}
+      </ScrollView>
+
+      <ScrollView className="mb-28">
+        <View className="flex flex-row flex-wrap">
+          {activities.map((activity, index) => (
+            <Pressable
+              className={`border-2 rounded-full p-2 m-1 ${
+                selectedActivities.includes(activity)
+                  ? "bg-blue"
+                  : "bg-gray-light"
+              }`}
+              key={index}
+              onPress={() => handleSelectActivity(activity)}
+            >
+              <Text className="text-center">{activity}</Text>
+            </Pressable>
+          ))}
+        </View>
+      </ScrollView>
     </View>
   )
 }

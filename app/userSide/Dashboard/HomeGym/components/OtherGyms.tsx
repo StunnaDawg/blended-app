@@ -7,9 +7,10 @@ import getSingleGym from "../../../../functions/getSingleGym"
 type OtherGymProps = {
   gym: GymProfile
   setCurrentGym: Dispatch<SetStateAction<GymProfile>>
+  setGymId: Dispatch<SetStateAction<string>>
 }
 
-const OtherGyms = ({ gym, setCurrentGym }: OtherGymProps) => {
+const OtherGyms = ({ gym, setCurrentGym, setGymId }: OtherGymProps) => {
   const [gymProfile, setGymProfile] = useState<GymProfile>({} as GymProfile)
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -18,8 +19,10 @@ const OtherGyms = ({ gym, setCurrentGym }: OtherGymProps) => {
   }, [])
 
   const setCurrentChannel = async () => {
+    console.log(gym.gymId)
     if (gymProfile.gymId !== "") {
       setCurrentGym(gymProfile)
+      setGymId(gym.gymId)
     }
   }
 
