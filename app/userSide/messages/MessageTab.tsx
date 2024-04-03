@@ -1,8 +1,16 @@
 import { View, Text, Pressable, Image, RefreshControl } from "react-native"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Match, UserProfile } from "../../@types/firestore"
+import { Match, Messages, UserProfile } from "../../@types/firestore"
 import { ScrollView } from "react-native-gesture-handler"
-import { collection, doc, onSnapshot, query, where } from "firebase/firestore"
+import {
+  collection,
+  doc,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore"
 import { FIREBASE_AUTH, db } from "../../../firebase"
 import SinglePic from "../../components/Avatar"
 import { BottomSheetModal } from "@gorhom/bottom-sheet"
@@ -12,6 +20,9 @@ import { NavigationType } from "../../@types/navigation"
 
 const MessageTab = () => {
   const [userMatches, setUserMatches] = useState<Match[]>([])
+  const [recentMessage, setRecentMessage] = useState<
+    string[] | null | undefined
+  >([])
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   const navigation = useNavigation<NavigationType>()
 
@@ -68,7 +79,7 @@ const MessageTab = () => {
           </Text>
         </View>
         <View className="m-2">
-          <Text>Messages</Text>
+          <Text className="font-semibold text-xl">Messages</Text>
 
           <View className="flex flex-row items-center m-2">
             <View>
@@ -82,7 +93,10 @@ const MessageTab = () => {
                       className="rounded-3xl mx-2 border-black border w-12 h-12"
                       onPress={() => {
                         navigation.navigate("MessagingScreen", {
-                          id: match.users.user2.id,
+                          id:
+                            match.users.user2.id !== currentUser
+                              ? match.users.user2.id
+                              : match.users.user1.id,
                           matchDocId: match.id,
                         })
                         console.log("match idddd", match.id)
@@ -90,7 +104,11 @@ const MessageTab = () => {
                     >
                       <SinglePic
                         size={45}
-                        id={match.users.user2.id}
+                        id={
+                          match.users.user2.id !== currentUser
+                            ? match.users.user2.id
+                            : match.users.user1.id
+                        }
                         picNumber={0}
                         avatarRadius={150}
                         noAvatarRadius={10}
@@ -102,16 +120,21 @@ const MessageTab = () => {
                       <Pressable
                         onPress={() =>
                           navigation.navigate("MessagingScreen", {
-                            id: match.users.user2.id,
+                            id:
+                              match.users.user2.id !== currentUser
+                                ? match.users.user2.id
+                                : match.users.user1.id,
                             matchDocId: match.id,
                           })
                         }
                       >
                         <Text className="font-bold text-xl">
                           {userMatches.length > 0 &&
-                            match.users.user2.firstName}
+                          match.users.user2.id !== currentUser
+                            ? match.users.user2.firstName
+                            : match.users.user1.firstName}
                         </Text>
-                        <Text className="px-2">Send a Message</Text>
+                        <Text className="px-2">{recentMessage}</Text>
                       </Pressable>
                     </View>
                   </View>

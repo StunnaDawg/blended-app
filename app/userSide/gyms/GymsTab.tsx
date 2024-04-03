@@ -3,6 +3,7 @@ import {
   View,
   RefreshControl,
   ScrollView,
+  Pressable,
 } from "react-native"
 import { useState, useEffect, useCallback } from "react"
 import GymCard from "./components/GymCard"
@@ -11,6 +12,8 @@ import getGymProfiles from "../../functions/getAllGyms"
 import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../@types/navigation"
 import { FIREBASE_AUTH } from "../../../firebase"
+import { Text } from "react-native"
+import { FontAwesome6 } from "@expo/vector-icons"
 
 const GymsTab = () => {
   const [gymProfiles, setGymProfiles] = useState<GymProfile[]>([])
@@ -37,6 +40,19 @@ const GymsTab = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
+      <View className="flex flex-row justify-between m-4 items-center">
+        <Text className="font-bold text-3xl">Gyms</Text>
+        <View className="flex flex-row items-center">
+          <Pressable
+            onPress={() => {
+              navigation.navigate("CreateGym")
+            }}
+          >
+            <Text className="mx-1 font-semibold">Create Gym</Text>
+          </Pressable>
+          <FontAwesome6 name="add" size={20} color="black" />
+        </View>
+      </View>
       {!loading ? (
         gymProfiles.length > 0 &&
         gymProfiles.map((gym) => (

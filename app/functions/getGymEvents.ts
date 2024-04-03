@@ -10,18 +10,27 @@ const getGymEvents = async (
 ) => {
   try {
     if (gymId) {
+      console.log("trying to get gym events")
       const eventCollection = collection(db, "gyms", gymId, "events")
       const querySnapshot = await getDocs(eventCollection)
-      const attendeesRef = collection(db, `gyms/${gymId}/events/attendees`)
-      const attendeesData = await getDocs(attendeesRef)
-      const attendees = attendeesData.docs.map((doc) => doc.data() as Attendee)
 
       const events: Event[] = []
 
-      querySnapshot.forEach((doc: DocumentSnapshot) => {
+      for (const doc of querySnapshot.docs) {
         if (doc.exists()) {
           const eventFetchedData = doc.data()
           const eventId = doc.id
+
+          // Fetch attendees for this specific event
+          const attendeesRef = collection(
+            db,
+            `gyms/${gymId}/events/${eventId}/attendees`
+          )
+          const attendeesData = await getDocs(attendeesRef)
+          const attendees = attendeesData.docs.map(
+            (doc) => doc.data() as Attendee
+          )
+
           const gymEvent: Event = {
             ...eventFetchedData,
             id: eventId,
@@ -31,12 +40,12 @@ const getGymEvents = async (
             date: eventFetchedData.date,
             location: eventFetchedData.location,
             price: eventFetchedData.price,
-            attendees: attendees || [],
+            attendees: attendees,
             eventPhoto: eventFetchedData.eventPhoto,
           }
           events.push(gymEvent)
         }
-      })
+      }
 
       setEventDataArray(events)
       console.log("achieved")

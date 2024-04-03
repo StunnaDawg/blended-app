@@ -23,6 +23,7 @@ const getUserEvent = async (
     const events: Event[] = []
 
     for (const eventDoc of querySnapshot.docs) {
+      console.log("event doc", eventDoc)
       if (eventDoc.exists()) {
         const eventId = eventDoc.id
         const eventRef = doc(db, "events", eventId)

@@ -19,25 +19,20 @@ import React, {
 import { GymProfile, UserProfile } from "../../../../@types/firestore"
 import getUserProfile from "../../../../functions/getUserProfile"
 import {
-  DocumentSnapshot,
   doc,
-  getDoc,
   setDoc,
-  Timestamp,
   serverTimestamp,
   addDoc,
   collection,
 } from "firebase/firestore"
-import { FIREBASE_AUTH, db, FIREBASE_APP } from "../../../../../firebase"
+import { FIREBASE_AUTH, db } from "../../../../../firebase"
 import mergeIds from "../../../../functions/mergeId"
-import SingleImage from "../../../../components/SingleImage"
-import SinglePic from "../../../../components/Avatar"
 import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../../../@types/navigation"
-import ImageCarosel from "../../../../components/GymImageCarosel"
 import UserImageCarosel from "../../../../components/UserProfileCarousel"
 import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
 import getSingleGym from "../../../../functions/getSingleGym"
+import InfoSection from "./InfoSections"
 
 type RemoveFirstItem = () => void
 
@@ -76,7 +71,6 @@ const MeetCard = ({
   }, [])
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   const otherUser = userData.id
-  const navigation = useNavigation<NavigationType>()
 
   useEffect(() => {
     setLoading(true)
@@ -160,80 +154,85 @@ const MeetCard = ({
 
   return (
     <>
-      <View className="flex-1 bg-black/50">
-        <View className="flex flex-row justify-center items-center">
-          <Text className="font-bold text-xl text-white">
+      <View className="flex-1">
+        <View className="m-2 border-2">
+          <UserImageCarosel id={otherUser} profileType={userData} />
+        </View>
+        <View className="flex flex-row justify-start items-center m-3">
+          <Text className="font-bold text-3xl text-black">
             {userData.firstName}
           </Text>
-          {userData.intentions && (
-            <View className="flex flex-row items-center">
-              <View className="border border-black rounded-2xl bg-black/50 p-1 mx-1">
-                <Text className="text-xs font-bold">{userData.intentions}</Text>
-              </View>
-            </View>
-          )}
         </View>
-        <UserImageCarosel id={otherUser} profileType={userData} />
-        <View className="bg-black/50">
-          <View className="flex flex-col items-center">
-            {homeGym.gym_title ? (
-              <Text className="text-xs font-bold">
-                Trains at {homeGym.gym_title}
-              </Text>
-            ) : (
-              <Text className="text-xs font-bold">No current Home Gym</Text>
-            )}
-          </View>
-          {userData.intentions && (
-            <Text className="text-md font-bold text-white">
-              {userData.intentions}
-            </Text>
-          )}
-          {userData.about && (
-            <Text className="text-md font-bold text-white">
-              {userData.about}
-            </Text>
-          )}
+        <InfoSection
+          title="Essentials"
+          boldness={"font-semibold"}
+          content="Dalhousie"
+          content2="Foodie"
+          content3={null}
+          tags={false}
+          activities={null}
+        />
 
-          <Text className="my-1 text-xs font-bold text-black/50">
-            Activites
-          </Text>
-          {userData.activities?.length > 0 && (
-            <View className="flex flex-row">
-              {userData.activities.map((activity, index) => (
-                <View key={index} className="mx-1">
-                  <Text className="text-xs font-bold text-white">
-                    {activity}
-                  </Text>
-                </View>
-              ))}
-            </View>
-          )}
+        {homeGym.gym_title ? (
+          <InfoSection
+            title="Trains At.."
+            boldness={"font-semibold"}
+            content={homeGym.gym_title}
+            content2={null}
+            content3={null}
+            tags={false}
+            activities={null}
+          />
+        ) : null}
+
+        {userData.intentions ? (
+          <InfoSection
+            title="Looking"
+            boldness={"font-semibold"}
+            content={userData.intentions}
+            content2={null}
+            content3={null}
+            tags={false}
+            activities={null}
+          />
+        ) : null}
+
+        {userData.activities?.length > 0 && userData.activities ? (
+          <InfoSection
+            title="Activity Interests"
+            boldness={"font-semibold"}
+            content={null}
+            content2={null}
+            content3={null}
+            tags={true}
+            activities={userData.activities}
+          />
+        ) : null}
+      </View>
+
+      <View className="flex flex-row justify-center">
+        <View className="mx-2">
+          <Pressable
+            className="border bg-red rounded-3xl bg-red-700 p-3"
+            onPress={async () => {
+              await passUser()
+            }}
+          >
+            <Text className="font-bold text-black">Pass</Text>
+          </Pressable>
         </View>
-
-        <View className="flex flex-row justify-center">
-          <View className="mx-2">
-            <Pressable
-              className="border rounded-3xl bg-red-700 p-3"
-              onPress={async () => {
-                await passUser()
-              }}
-            >
-              <Text className="font-bold">Pass</Text>
-            </Pressable>
-          </View>
-          <View className="mx-2">
-            <Pressable
-              className="border rounded-3xl p-3"
-              onPress={async () => {
-                await swipeUser()
-              }}
-            >
-              <Text className="font-bold">Message!</Text>
-            </Pressable>
-          </View>
+        <View className="mx-2">
+          <Pressable
+            className="border border-orange rounded-3xl p-3"
+            onPress={async () => {
+              await swipeUser()
+            }}
+          >
+            <Text className="font-bold">Message!</Text>
+          </Pressable>
         </View>
       </View>
+
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={1}

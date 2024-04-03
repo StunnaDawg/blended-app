@@ -76,6 +76,10 @@ const EventCardData = ({ event, id }: EventCardProp) => {
 const EventCard = ({ event, id }: EventCardProp) => {
   const eventRef = doc(db, "events", event.id)
   const [loading, setLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    console.log("event card", event)
+  }, [])
   return (
     <SinglePicBackGround
       id={event.id}

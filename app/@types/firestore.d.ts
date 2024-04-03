@@ -2,6 +2,7 @@ import { TimeStamp } from "firebase/firestore"
 
 export type GymProfile = {
   gymId: string
+  gymOwner: string
   gym_title: string
   gym_style: string
   country: string
@@ -11,6 +12,9 @@ export type GymProfile = {
   members?: UserProfile[]
   coaches?: UserProfile[]
   gymPhotos: string[]
+  events: Event[] | null | undefined
+  rewards: Reward[] | null
+  gymChatChannels: GymChatChannel[] | null
 }
 
 export type UserProfile = {
@@ -28,10 +32,14 @@ export type UserProfile = {
   jobTitle: string | null
   school: string | null
   homeGym: string | null
+  gyms: JoinedGymId[] | null
   userPhotos: string[]
   birthday: TimeStamp
   gyms: string[]
   eventsGoing: EventsAttending[] | null
+  points: number
+  earnedRewards: Reward[] | null
+  createdGym: string | null
 }
 
 export type Activities = {
@@ -87,4 +95,25 @@ export type Attendee = {
 
 export type EventsAttending = {
   eventId: string
+}
+
+export type Reward = {
+  rewardTitle: string
+  description: string
+  pointCost: number
+  rewardPhoto: string
+  expiryDate: TimeStamp | null
+}
+
+export type GymChatChannel = {
+  channelId: string
+  channelTitle: string
+  channelDescription: string
+  channelMessages: Messages[] | null
+  channelMembers: UserProfile[] | null
+  gymId: string
+}
+
+export type JoinedGymId = {
+  gymId: string
 }

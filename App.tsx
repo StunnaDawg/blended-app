@@ -5,20 +5,22 @@ import { UserAuthContextProvider } from "./app/context/auth"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { LocationProvider } from "./app/context/LocationContext"
-import { StyleSheet, View } from "react-native"
+import { SwitchAccountProvider } from "./app/context/switchAccountContext"
 
 export default function App() {
   return (
     <UserAuthContextProvider>
-      <LocationProvider>
-        <NavigationContainer>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <BottomSheetModalProvider>
-              <NavStack />
-            </BottomSheetModalProvider>
-          </GestureHandlerRootView>
-        </NavigationContainer>
-      </LocationProvider>
+      <SwitchAccountProvider>
+        <LocationProvider>
+          <NavigationContainer>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <BottomSheetModalProvider>
+                <NavStack />
+              </BottomSheetModalProvider>
+            </GestureHandlerRootView>
+          </NavigationContainer>
+        </LocationProvider>
+      </SwitchAccountProvider>
     </UserAuthContextProvider>
   )
 }

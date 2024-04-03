@@ -1,14 +1,23 @@
 import { View, Text, Pressable } from "react-native"
-import React, { useCallback, useMemo, useRef, useState } from "react"
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { Feather } from "@expo/vector-icons"
 import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
 import singleValueEdit from "../../../functions/singleValueEdit"
 
 type ZodiacProp = {
   zodiac: string | undefined | null
+  setLoading: Dispatch<SetStateAction<boolean>>
+  loading: boolean
 }
 
-const Zodiac = ({ zodiac }: ZodiacProp) => {
+const Zodiac = ({ zodiac, setLoading, loading }: ZodiacProp) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
   const { dismiss } = useBottomSheetModal()
 
@@ -69,7 +78,9 @@ const Zodiac = ({ zodiac }: ZodiacProp) => {
                 key={sign.name}
                 className="border-2 rounded-full bg-slate-300 p-2 m-1"
                 onPress={async () => {
+                  setLoading(true)
                   await singleValueEdit("user", "zodiac", sign.name)
+                  setLoading(false)
                   dismiss()
                 }}
               >

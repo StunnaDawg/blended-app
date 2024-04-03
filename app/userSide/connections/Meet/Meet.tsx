@@ -1,4 +1,10 @@
-import { View, Text, ScrollView, RefreshControl } from "react-native"
+import {
+  View,
+  Text,
+  ScrollView,
+  RefreshControl,
+  ActivityIndicator,
+} from "react-native"
 import React, { useCallback, useEffect, useState } from "react"
 import MeetCard from "./components/MeetCard"
 import { FIREBASE_AUTH, db } from "../../../../firebase"
@@ -10,20 +16,22 @@ import {
   query,
   where,
 } from "firebase/firestore"
-import UserAuth from "../../../SignUpFlow/UserAuth"
 import NoUsers from "./components/NoUsers"
 
 const Meet = () => {
   const currentUserId = FIREBASE_AUTH.currentUser?.uid
+  const [loading, setLoading] = useState<boolean>(false)
   const [profiles, setProfiles] = useState<string[]>([])
   const [index, setIndex] = useState<number>(0)
 
   const [refreshing, setRefreshing] = useState<boolean>(false)
 
   const onRefresh = useCallback(() => {
+    setLoading(true)
     setRefreshing(true)
     setTimeout(() => {
       setRefreshing(false)
+      setLoading(false)
     }, 2000)
   }, [])
 
@@ -39,6 +47,7 @@ const Meet = () => {
     let unsub
     const fetchCards = async () => {
       try {
+        setLoading(true)
         if (currentUserId) {
           const passes = await getDocs(
             collection(db, "user", currentUserId, "passes")
@@ -70,7 +79,9 @@ const Meet = () => {
           )
           console.log("unsub", unsub)
         }
+        setLoading(false)
       } catch (err) {
+        setLoading(false)
         console.error(err)
       }
     }
@@ -82,6 +93,7 @@ const Meet = () => {
     let unsub
     const fetchCards = async () => {
       try {
+        setLoading(true)
         if (currentUserId) {
           const passes = await getDocs(
             collection(db, "user", currentUserId, "passes")
@@ -113,7 +125,9 @@ const Meet = () => {
           )
           console.log("unsub", unsub)
         }
+        setLoading(false)
       } catch (err) {
+        setLoading(false)
         console.error(err)
       }
     }
@@ -128,7 +142,9 @@ const Meet = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      {profiles.length > 0 ? (
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" /> // Customize the ActivityIndicator as needed
+      ) : profiles.length > 0 ? (
         <MeetCard
           id={profiles[index]}
           nextProfile={setIndex}

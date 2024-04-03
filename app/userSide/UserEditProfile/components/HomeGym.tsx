@@ -99,7 +99,7 @@ const HomeGym = ({ currentGym }: UserHomeGymProps) => {
           </View>
           <View>
             {gymSelection.map((gym) => (
-              <View key={gym.gym_id}>
+              <View key={gym.gymId}>
                 <Pressable
                   onPress={() => {
                     setHomeGym(gym)

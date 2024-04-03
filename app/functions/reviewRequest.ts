@@ -22,6 +22,9 @@ const reviewRequest = async (
         await updateDoc(doc(db, "user", requestId), {
           homeGym: currentUser,
         })
+        await setDoc(doc(db, "user", requestId, "gyms", currentUser), {
+          gymId: currentUser,
+        })
         await deleteDoc(doc(db, "gyms", currentUser, deleteFrom, requestId))
       }
     } else {

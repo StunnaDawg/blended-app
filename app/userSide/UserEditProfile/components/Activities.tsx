@@ -30,25 +30,25 @@ const Activities = () => {
   })
   return (
     <View>
-      <View className="mx-2">
-        <Text className="font-bold text-xl">Activities</Text>
+      <View className="flex flex-row mx-2">
+        <Pressable
+          className="flex flex-row mx-2 items-center"
+          onPress={() => navigation.navigate("ChooseUserActivity")}
+        >
+          <Text className="font-bold text-xl">Activities</Text>
+          <Feather name="plus" size={24} color="black" />
+        </Pressable>
       </View>
-      <View className="flex flex-row justify-between bg-slate-200 h-10 items-center px-2">
-        <View className="flex flex-row">
+      <View className="flex flex-row bg-slate-200 h-10 items-center px-4 mt-1">
+        <View className="flex flex-row flex-wrap">
           {activities?.map((activity, index) => (
             <>
               <View key={index}>
-                <Text className="text-lg">{activity},</Text>
+                <Text className="text-sm">{activity}, </Text>
               </View>
             </>
           ))}
         </View>
-        <Pressable
-          className=""
-          onPress={() => navigation.navigate("ChooseUserActivity")}
-        >
-          <Feather name="arrow-right" size={32} color="black" />
-        </Pressable>
       </View>
     </View>
   )

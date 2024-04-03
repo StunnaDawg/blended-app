@@ -15,16 +15,15 @@ import { NavigationType } from "../../../@types/navigation"
 import * as Location from "expo-location"
 import { useLocation } from "../../../context/LocationContext"
 import getSingleGym from "../../../functions/getSingleGym"
-import { GymProfile } from "../../../@types/firestore"
+import { GymProfile, UserProfile } from "../../../@types/firestore"
 import { getCity } from "../../../functions/getCity"
+import getUserProfile from "../../../functions/getUserProfile"
 
-const UserProfile = () => {
+const UserProfileHome = () => {
   const { location } = useLocation()
   const [refreshing, setRefreshing] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
-  const [name, setName] = useState<string>("")
-  const [age, setAge] = useState<string>("")
-  const [gymId, setGymId] = useState<string>("")
+  const [userProfile, setUserProfile] = useState<UserProfile>({} as UserProfile)
   const [homeGym, setHomeGym] = useState<GymProfile>({} as GymProfile)
   const [city, setCity] = useState<string | null>(null)
   const navigation = useNavigation<NavigationType>()
@@ -48,24 +47,14 @@ const UserProfile = () => {
   }, [location])
 
   useEffect(() => {
-    getSingleGym(gymId, setHomeGym, setLoading)
-  }, [gymId])
+    if (userProfile.homeGym) {
+      getSingleGym(userProfile.homeGym, setHomeGym, setLoading)
+    }
+  }, [userProfile])
 
   const getUserNameAge = async () => {
-    setLoading(true)
     if (currentId) {
-      const userRef = doc(db, "user", currentId)
-
-      const docSnap = await getDoc(userRef)
-
-      if (docSnap.exists()) {
-        const userData = { ...docSnap.data() }
-
-        setName(userData.first_name)
-        setAge(userData.age)
-        setGymId(userData.homeGym)
-      }
-      setLoading(false)
+      getUserProfile(currentId, setUserProfile, setLoading)
     }
   }
 
@@ -97,9 +86,16 @@ const UserProfile = () => {
             />
             <View className="m-2">
               <Text className="font-bold text-xl">
-                {name}, {city ? city : "no location"}
+                {userProfile.firstName}, {city ? city : "no location"}
               </Text>
-              <Text className="font-bold text-xl">{homeGym.gym_title}</Text>
+              <Text className="font-bold text-xl text-center">
+                {homeGym.gym_title ? homeGym.gym_title : <ActivityIndicator />}
+              </Text>
+              <Text className="font-bold text-xl text-center">
+                {userProfile.points
+                  ? userProfile.points.toString()
+                  : "Points Error"}
+              </Text>
             </View>
             <Button
               title="edit profile"
@@ -112,4 +108,4 @@ const UserProfile = () => {
   )
 }
 
-export default UserProfile
+export default UserProfileHome

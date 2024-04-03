@@ -4,9 +4,10 @@ import { UserProfile } from "./firestore"
 
 export type RootStackParamList = {
   Footer: undefined
+  GymScreens: { screen: string; params?: { screen: string } }
   SignUp: undefined
   Login: undefined
-  GymDashboard: undefined
+  CreateGym: undefined
   UserDashboard: undefined
   Meet: undefined
   Community: undefined
@@ -17,6 +18,7 @@ export type RootStackParamList = {
     eventId: string
   }
   UserEditProfile: undefined
+  UserSettings: undefined
   ViewUserProfile: {
     userProfile: UserProfile
   }
@@ -54,12 +56,18 @@ export type RootStackParamList = {
     id?: string
     gymId: string
   }
+
+  ViewGymMembersScreen: {
+    gymId: string
+  }
   ViewGymTopTabs: undefined
+  CreateNewChannel: undefined
 }
 
 export type NavigationType = NativeStackNavigationProp<RootStackParamList>
 
 export type TabParamList = {
+  GymDashboard: undefined
   Dashboard: undefined
   Profile: undefined
   Connections: undefined
@@ -71,6 +79,7 @@ export type TabParamList = {
   AboutGym: undefined
   GymMembers: undefined
   GymPhotos: undefined
+  HomeGym: undefined
 }
 
 export type TabNavigationType = TabNavigationProp<TabParamList>

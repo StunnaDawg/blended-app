@@ -9,7 +9,9 @@ import { NavigationType } from "../../../../@types/navigation"
 import { Event, GymProfile } from "../../../../@types/firestore"
 import getSingleGym from "../../../../functions/getSingleGym"
 import { format } from "date-fns"
+import { FontAwesome6 } from "@expo/vector-icons"
 import updateEventAttendees from "../../../../functions/addUserToAttended"
+import BackButton from "../../../../components/BackButton"
 
 type EventProps = {
   event: Event
@@ -19,41 +21,56 @@ type EventProps = {
 const ViewEventDetail = ({ event, eventId }: EventProps) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [gymProfile, setGymProfile] = useState<GymProfile>({} as GymProfile)
+  const [gymIdState, setGymIdState] = useState<string>("")
   const currentUser = FIREBASE_AUTH.currentUser?.uid
   const navigation = useNavigation<NavigationType>()
 
   useEffect(() => {
     if (event && currentUser) {
       getSingleGym(event.gymHost, setGymProfile, setLoading)
+      setGymIdState(event.gymHost)
     }
   }, [event])
 
   return (
-    <View className="flex-1 flex-col items-start justify-end">
-      {event !== null ? (
-        !loading ? (
-          <>
-            <Text className="text-3xl font-bold text-white">
-              {event.eventTitle}
-            </Text>
+    <>
+      <View>
+        <BackButton />
+      </View>
+      <View className="flex-1 flex-col items-start justify-end mx-2">
+        {event !== null ? (
+          !loading ? (
+            <>
+              <Text className="text-3xl font-bold text-white">
+                {event.eventTitle}
+              </Text>
 
-            <Text className="text-3xl font-bold text-white">
-              Hosted by {gymProfile.gym_title}
-            </Text>
-          </>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate("ViewGymScreen", {
+                    gymId: gymIdState,
+                  })
+                }
+              >
+                <Text className="text-3xl font-bold text-white">
+                  Hosted by {gymProfile.gym_title}
+                </Text>
+              </Pressable>
+            </>
+          ) : (
+            <ActivityIndicator />
+          )
         ) : (
-          <ActivityIndicator />
-        )
-      ) : (
-        <>
-          <DefaultButton
-            text="go back"
-            buttonFunction={() => navigation.goBack()}
-          />
-          <Text>Event Does Not exsist</Text>
-        </>
-      )}
-    </View>
+          <>
+            <DefaultButton
+              text="go back"
+              buttonFunction={() => navigation.goBack()}
+            />
+            <Text>Event Does Not exsist</Text>
+          </>
+        )}
+      </View>
+    </>
   )
 }
 
@@ -90,34 +107,46 @@ export const EventCardDetails = ({ event, eventId }: EventProps) => {
         children={<ViewEventDetail event={event} eventId={eventId} />}
         setLoading={setLoading}
       />
-      <View>
-        <Text className="font-bold text-lg">
-          {" "}
-          {eventDate !== "" && eventDate && eventTime
-            ? `${eventDate}, ${eventTime}`
-            : "No Specified Date"}
-        </Text>
-        <Text className="font-bold text-lg">
-          {Number(event.price) > 0 ? `$${event.price}` : "Free"}
-        </Text>
-        <Pressable
-          onPress={() =>
-            navigation.navigate("AttendingEvent", {
-              eventId: eventId,
-            })
-          }
-        >
-          <Text className="font-bold text-lg">
-            {event.attendees && event.attendees.length > 0
-              ? event.attendees.length
-              : "No Attendees Yet!"}
+      <View className="m-1">
+        <View className="flex flex-row justify-between items-center m-2">
+          <FontAwesome6 name="calendar" size={20} color="black" />
+          <Text className="font-bold text-sm m-2">
+            {" "}
+            {eventDate !== "" && eventDate && eventTime
+              ? `${eventDate}, ${eventTime}`
+              : "No Specified Date"}
           </Text>
-        </Pressable>
+        </View>
+
+        <View>
+          <Pressable
+            onPress={() =>
+              navigation.navigate("AttendingEvent", {
+                eventId: eventId,
+              })
+            }
+          >
+            <View className="flex flex-row justify-between items-center m-2">
+              <FontAwesome6 name="person-running" size={20} color="black" />
+              <Text className="font-bold text-sm">
+                {event.attendees && event.attendees.length > 0
+                  ? `${event.attendees.length} Person Going!`
+                  : "No Attendees Yet!"}
+              </Text>
+            </View>
+          </Pressable>
+        </View>
+        <View className="flex flex-row justify-between items-center m-2">
+          <FontAwesome6 name="money-bill" size={20} color="black" />
+          <Text className="font-bold text-sm">
+            {Number(event.price) > 0 ? `$${event.price}` : "It's Free!"}
+          </Text>
+        </View>
       </View>
 
       <View className="mx-2">
         <Text className="font-bold text-2xl">About</Text>
-        <Text>
+        <Text className="text-xs">
           {event.description} Join For a fun night out, with Blended Athletics!
           Join For a fun night out, with Blended Athletics! Join For a fun night
           out, with Blended Athletics! Join For a fun night out, with Blended

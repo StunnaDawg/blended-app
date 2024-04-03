@@ -25,6 +25,8 @@ import getGymEvent from "../../functions/getGymEvent"
 import { Event } from "../../@types/firestore"
 import SingleImage from "../../components/SingleImage"
 import EventEditImage from "./components/EventPhotoEdit"
+import BackButton from "../../components/BackButton"
+import DeleteEvent from "./components/DeleteEvent"
 
 const updateEvent = async (
   currentGymId: string,
@@ -129,65 +131,53 @@ const EditEvent = () => {
     }
   }, [debouncePrice])
 
-  const submitUserPhotos = async (image: string, eventId: string) => {
-    try {
-      if (eventId && currentGymId) {
-        const userRef = doc(db, "gyms", currentGymId, "events", eventId)
-
-        await updateDoc(userRef, {
-          eventPhoto: image,
-        })
-      } else {
-        console.log("User does not exist")
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  //   const uploadImagesArray = async (imageArray: string[]) => {
-  //     imageArray.forEach((element) => {
-  //       uploadImage(element, "image", currentGymId + "element", submitUserPhotos)
-  //       console.log(element)
-  //     })
-  //   }
-
   return (
-    <ScrollView>
-      <View className="flex flex-row justify-center">
-        <Text className="text-3xl font-semibold">Edit Event</Text>
+    <ScrollView className="p-4 bg-white">
+      <View className="flex flex-row items-center mb-8">
+        <BackButton />
+        <Text className="mx-1 text-3xl font-semibold text-gray">
+          Edit Event
+        </Text>
+        <DeleteEvent gymId={currentGymId} eventId={eventId} />
       </View>
 
-      <View>
-        <Text>Title</Text>
+      <View className="mb-4">
+        <Text className="mb-2 text-lg font-semibold text-gray">Title</Text>
         <TextInput
           value={eventTitle}
-          onChangeText={(title) => setEventTitle(title)}
+          onChangeText={setEventTitle}
           placeholder="Add a Title"
+          className="border border-gray-300 p-2 rounded-lg"
         />
       </View>
-      <View>
-        <Text>Description</Text>
+
+      <View className="mb-4">
+        <Text className="mb-2 text-lg font-semibold text-gray">
+          Description
+        </Text>
         <TextInput
           value={description}
-          onChangeText={(description) => setDescription(description)}
-          placeholder="Add a Title"
+          onChangeText={setDescription}
+          placeholder="Event Description"
+          className="border border-gray-300 p-2 rounded-lg"
+          multiline={true}
         />
       </View>
-      <View>
-        <View>
-          <Text>{date ? date.toLocaleString() : "No date set"}</Text>
 
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date || new Date()}
-            mode="date"
-            is24Hour={true}
-            display="default"
-            onChange={onChangeDate}
-          />
-        </View>
+      <View className="mb-4">
+        <Text className="mb-2 text-lg font-semibold text-gray">Date</Text>
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date || new Date()}
+          mode="date"
+          is24Hour={true}
+          display="default"
+          onChange={onChangeDate}
+        />
+      </View>
 
+      <View className="mb-4">
+        <Text className="mb-2 text-lg font-semibold text-gray">Time</Text>
         <DateTimePicker
           testID="dateTimePicker"
           value={date || new Date()}
@@ -197,16 +187,21 @@ const EditEvent = () => {
           onChange={onChangeDate}
         />
       </View>
-      <View>
-        <Text>Price?</Text>
+
+      <View className="mb-4">
+        <Text className="mb-2 text-lg font-semibold text-gray">Price</Text>
         <TextInput
           value={price}
-          onChangeText={(price) => setPrice(price)}
-          placeholder="Add a Title"
+          onChangeText={setPrice}
+          placeholder="Set a Price"
+          className="border border-gray-300 p-2 rounded-lg"
+          keyboardType="numeric"
         />
       </View>
 
-      <EventEditImage event={eventToEdit} />
+      <View className="mb-8">
+        <EventEditImage event={eventToEdit} />
+      </View>
     </ScrollView>
   )
 }
