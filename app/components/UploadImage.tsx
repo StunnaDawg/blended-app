@@ -17,6 +17,7 @@ const UploadImage = ({ setUris, uris }: UploadImageType) => {
       quality: 1,
       allowsMultipleSelection: true,
       selectionLimit: 6,
+      allowsEditing: true,
     })
 
     if (!result.canceled) {
@@ -41,8 +42,18 @@ const UploadImage = ({ setUris, uris }: UploadImageType) => {
           })}
       </View>
       <View className="flex flex-row justify-center">
-        <Pressable className="border  p-1 bg-gray" onPress={pickImage}>
-          <Text className="font-bold text-lg">Pick 1-6 images</Text>
+        <Pressable
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "#D1D5DB" : "#F3F4F6",
+              padding: 4,
+              borderWidth: 1,
+              borderColor: "#D1D5DB",
+            },
+          ]}
+          onPress={pickImage}
+        >
+          <Text className="font-bold text-lg">Upload 1-6 images</Text>
         </Pressable>
       </View>
     </ScrollView>

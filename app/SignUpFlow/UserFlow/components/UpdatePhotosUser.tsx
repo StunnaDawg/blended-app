@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { NavigationType, TabNavigationType } from "../../../@types/navigation"
 import { useNavigation } from "@react-navigation/native"
-import { Button } from "react-native"
+import { Button, Pressable, Text } from "react-native"
 import { arrayUnion, doc, updateDoc } from "firebase/firestore"
 import { db } from "../../../../firebase"
 import uploadImage from "../../../functions/uploadImage"
@@ -9,10 +9,16 @@ import uploadImage from "../../../functions/uploadImage"
 type UpdatePhotosUserProps = {
   id?: string
   imageArray: string[]
+  disable: boolean
 }
 
-const UpdatePhotosUser = ({ id, imageArray }: UpdatePhotosUserProps) => {
-  const [downloadedImageArray, setDownloadedImageArray] = useState<string[]>([])
+const UpdatePhotosUser = ({
+  id,
+  imageArray,
+  disable,
+}: UpdatePhotosUserProps) => {
+  const [pressed, setPressed] = useState<boolean>(false)
+
   const navigation = useNavigation<TabNavigationType>()
   const submitUserPhotos = async (image: string) => {
     try {
@@ -37,13 +43,20 @@ const UpdatePhotosUser = ({ id, imageArray }: UpdatePhotosUserProps) => {
     })
   }
   return (
-    <Button
-      title="Next"
+    <Pressable
+      disabled={disable}
+      className={`border-2 w-96 items-center ${
+        disable === true ? "bg-gray-200" : pressed ? "bg-gray-light" : "bg-gray"
+      }`}
+      onPressIn={() => setPressed(true)}
+      onPressOut={() => setPressed(false)}
       onPress={async () => {
         await uploadImagesArray()
         navigation.navigate("Events")
       }}
-    />
+    >
+      <Text className="font-bold text-2xl">Finish</Text>
+    </Pressable>
   )
 }
 
