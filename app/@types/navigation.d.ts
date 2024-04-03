@@ -35,6 +35,7 @@ export type RootStackParamList = {
   GymInitalAddPhoto: undefined
   GymMessages: undefined
   GymEditProfile: undefined
+  GymModerateMembers: undefined
   MatchModal: undefined
   LoadModal: undefined
   CreateEvent: undefined

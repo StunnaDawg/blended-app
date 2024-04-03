@@ -89,12 +89,7 @@ const UserProfileHome = () => {
                 {userProfile.firstName}, {city ? city : "no location"}
               </Text>
               <Text className="font-bold text-xl text-center">
-                {homeGym.gym_title ? homeGym.gym_title : <ActivityIndicator />}
-              </Text>
-              <Text className="font-bold text-xl text-center">
-                {userProfile.points
-                  ? userProfile.points.toString()
-                  : "Points Error"}
+                {homeGym.gym_title ? homeGym.gym_title : "No Gym Joined!"}
               </Text>
             </View>
             <Button
