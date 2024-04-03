@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Pressable } from "react-native"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { GymChatChannel, GymProfile, UserProfile } from "../../@types/firestore"
 import getSingleGym from "../../functions/getSingleGym"
 import getUserProfile from "../../functions/getUserProfile"
@@ -8,6 +8,9 @@ import Channel from "./components/Channel"
 import ChannelMessageScreen from "./components/ChannelMessageScreen"
 import { useIsFocused, useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../@types/navigation"
+import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
+import OffersSection from "../../userSide/Dashboard/HomeGym/components/OffersSection"
+import { FontAwesome6 } from "@expo/vector-icons"
 
 const GymChat = () => {
   const [loading, setLoading] = useState<boolean>(false)
@@ -21,6 +24,17 @@ const GymChat = () => {
   const currentUserId = FIREBASE_AUTH.currentUser?.uid
   const navigation = useNavigation<NavigationType>()
   const isFocused = useIsFocused()
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
+  const { dismiss } = useBottomSheetModal()
+
+  const snapPoints = useMemo(() => ["1%", "100%"], [])
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present()
+  }, [])
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index)
+  }, [])
 
   useEffect(() => {
     if (currentUserId) {
@@ -45,18 +59,26 @@ const GymChat = () => {
       {!loading && homeGym ? (
         <>
           <View className="flex-1 flex flex-row">
-            <View>
-              <ScrollView className="flex flex-row bg-blue w-20">
-                <Pressable
-                  className="text-center"
-                  onPress={() => {
-                    navigation.navigate("CreateNewChannel")
-                  }}
-                >
-                  <Text className="text-wrap text-xs">Create New</Text>
-                  <Text className="text-wrap text-xs">Channel +</Text>
-                </Pressable>
-                <Text className="p-3 font-bold underline">Channels</Text>
+            <View className="flex-1 p-1 underline">
+              <View className="mb-4 border-b-2">
+                <View className="flex flex-row justify-between items-center">
+                  <Text className="font-bold text-xl my-2">
+                    {homeGym.gym_title}
+                  </Text>
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("CreateNewChannel")
+                    }}
+                  >
+                    <View className="flex flex-row items-center">
+                      <Text className="font-semibold mx-1">
+                        Create New Channel
+                      </Text>
+                      <FontAwesome6 name="add" size={24} color="black" />
+                    </View>
+                  </Pressable>
+                </View>
+                <Text className="font-bold">Chat Channels</Text>
                 {homeGym.gymChatChannels?.map((channel) => {
                   return (
                     <Channel
@@ -64,26 +86,29 @@ const GymChat = () => {
                       channelData={channel}
                       setLoading={setLoading}
                       setChannelData={setCurrentChannel}
+                      handlePresentModalPress={handlePresentModalPress}
                     />
                   )
                 })}
-              </ScrollView>
-            </View>
-            <View className="flex-1 p-1">
-              <View className="mb-4">
-                <Text className="font-bold text-xl">{homeGym.gym_title}</Text>
-                <Text>
-                  {currentChannel.channelTitle !== null
-                    ? currentChannel.channelTitle
-                    : "Nada"}
-                </Text>
               </View>
 
+              <View>
+                <OffersSection />
+              </View>
+            </View>
+            <BottomSheetModal
+              ref={bottomSheetModalRef}
+              index={1}
+              snapPoints={snapPoints}
+              onChange={handleSheetChanges}
+            >
               {currentChannel.channelId !== undefined && !loading ? (
                 <View className="flex-1">
                   <ChannelMessageScreen
                     channelId={currentChannel.channelId}
                     gymId={currentChannel.gymId}
+                    handleDismissModal={dismiss}
+                    channelName={currentChannel.channelTitle}
                   />
                 </View>
               ) : (
@@ -91,7 +116,7 @@ const GymChat = () => {
                   <Text>No Channel Selected</Text>
                 </View>
               )}
-            </View>
+            </BottomSheetModal>
           </View>
         </>
       ) : (

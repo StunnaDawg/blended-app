@@ -32,6 +32,7 @@ export type UserProfile = {
   jobTitle: string | null
   school: string | null
   homeGym: string | null
+  gyms: JoinedGymId[] | null
   userPhotos: string[]
   birthday: TimeStamp
   gyms: string[]
@@ -110,5 +111,9 @@ export type GymChatChannel = {
   channelDescription: string
   channelMessages: Messages[] | null
   channelMembers: UserProfile[] | null
+  gymId: string
+}
+
+export type JoinedGymId = {
   gymId: string
 }

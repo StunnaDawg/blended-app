@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native"
+import { View, Text, ScrollView, Pressable } from "react-native"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   GymChatChannel,
@@ -12,10 +12,14 @@ import Channel from "./components/Channel"
 import ChannelMessageScreen from "./components/ChannelMessageScreen"
 import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
 import OffersSection from "./components/OffersSection"
+import getUserJoinedGym from "../../../functions/getAllUserGyms"
+import SinglePic from "../../../components/Avatar"
+import OtherGyms from "./components/OtherGyms"
 
 const HomeGym = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [homeGym, setHomeGym] = useState<GymProfile>({} as GymProfile)
+  const [joinedGyms, setJoinedGyms] = useState<GymProfile[] | null>([])
   const [currentUserProfile, setCurretUserProfile] = useState<UserProfile>(
     {} as UserProfile
   )
@@ -44,7 +48,13 @@ const HomeGym = () => {
 
   useEffect(() => {
     if (currentUserProfile.homeGym) {
-      getSingleGym(currentUserId, setHomeGym, setLoading)
+      getSingleGym(currentUserProfile.homeGym, setHomeGym, setLoading)
+    }
+  }, [currentUserProfile])
+
+  useEffect(() => {
+    if (currentUserProfile.gyms?.length) {
+      getUserJoinedGym(setJoinedGyms, setLoading, currentUserProfile.gyms)
     }
   }, [currentUserProfile])
 
@@ -60,7 +70,13 @@ const HomeGym = () => {
         <>
           <View className="flex-1 flex flex-row">
             <View>
-              <ScrollView className="flex flex-row bg-blue w-16"></ScrollView>
+              <ScrollView className="flex flex-row bg-blue w-16">
+                {joinedGyms?.map((gym, index) => (
+                  <View key={gym.gymId}>
+                    <OtherGyms gym={gym} setCurrentGym={setHomeGym} />
+                  </View>
+                ))}
+              </ScrollView>
             </View>
             <View className="flex-1 p-1 underline">
               <View className="mb-4 border-b-2">

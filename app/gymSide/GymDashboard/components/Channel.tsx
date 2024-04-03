@@ -7,23 +7,30 @@ type ChannelProps = {
   channelData: GymChatChannel
   setChannelData: Dispatch<SetStateAction<GymChatChannel>>
   setLoading: Dispatch<SetStateAction<boolean>>
+  handlePresentModalPress: () => void
 }
 
-const Channel = ({ channelData, setChannelData, setLoading }: ChannelProps) => {
-  const setChannelDataFunc = () => {
+const Channel = ({
+  channelData,
+  setChannelData,
+  setLoading,
+  handlePresentModalPress,
+}: ChannelProps) => {
+  const setChannelDataFunc = async () => {
     setChannelData(channelData)
   }
   return (
     <Pressable
       className="flex flex-row items-center my-2"
-      onPress={() => {
-        setChannelDataFunc()
+      onPress={async () => {
+        await setChannelDataFunc()
+        handlePresentModalPress()
       }}
     >
-      <Text className="mx-2 font-semibold text-xs">
+      <FontAwesome6 name="hashtag" size={16} color="black" />
+      <Text className="mx-2 font-semibold text-lg">
         {channelData.channelTitle}
       </Text>
-      <FontAwesome6 name="hashtag" size={10} color="black" />
     </Pressable>
   )
 }
