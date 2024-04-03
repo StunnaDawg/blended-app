@@ -53,8 +53,13 @@ const UpdateQuestionOne = ({ id, firstName, lastName }: QuestionOneProps) => {
 
   return (
     <Pressable
+      disabled={firstName === "" || lastName === ""}
       className={`border-2 w-96 items-center ${
-        pressed ? "bg-gray-light" : "bg-gray"
+        firstName === "" || lastName === ""
+          ? "bg-gray-200"
+          : pressed
+          ? "bg-gray-light"
+          : "bg-gray"
       }`}
       onPressIn={() => setPressed(true)}
       onPressOut={() => setPressed(false)}

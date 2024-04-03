@@ -11,6 +11,7 @@ type QuestionThreeProps = {
 }
 
 const UpdateQuestionThree = ({ id, intentions }: QuestionThreeProps) => {
+  const [pressed, setPressed] = useState<boolean>(false)
   const navigation = useNavigation<NavigationType>()
   const submitUserQuestions = async () => {
     try {
@@ -30,7 +31,16 @@ const UpdateQuestionThree = ({ id, intentions }: QuestionThreeProps) => {
 
   return (
     <Pressable
-      className="border-2 w-96 items-center bg-red-500"
+      disabled={intentions === ""}
+      className={`border-2 w-96 items-center ${
+        intentions === ""
+          ? "bg-gray-200"
+          : pressed
+          ? "bg-gray-light"
+          : "bg-gray"
+      }`}
+      onPressIn={() => setPressed(true)}
+      onPressOut={() => setPressed(false)}
       onPress={async () => {
         await submitUserQuestions()
         navigation.navigate("UserQuestionFour")
