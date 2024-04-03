@@ -55,6 +55,17 @@ const HomeGym = () => {
   const currentUserId = FIREBASE_AUTH.currentUser?.uid
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      // Your update logic here, e.g., refetching user profile
+      if (currentUserId) {
+        getUserProfile(currentUserId, setCurretUserProfile, setLoading)
+      }
+    })
+
+    return unsubscribe
+  }, [navigation, currentUserId])
+
+  useEffect(() => {
     if (currentUserId) {
       getUserProfile(currentUserId, setCurretUserProfile, setLoading)
     }
