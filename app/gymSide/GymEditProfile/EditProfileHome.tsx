@@ -2,9 +2,10 @@ import { View, Text, ScrollView } from "react-native"
 import React from "react"
 import ImageGrid from "../../components/ImageGrid"
 import { FIREBASE_AUTH } from "../../../firebase"
-import About from "../../userSide/UserEditProfile/components/About"
+
 import FitnessStyle from "./components/FitnessStyle"
 import SingleImage from "../../components/SingleImage"
+import About from "./components/About"
 
 const EditGymProfileHome = () => {
   return (

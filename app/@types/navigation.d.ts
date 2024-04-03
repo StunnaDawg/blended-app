@@ -1,6 +1,6 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { TabNavigationProp } from "@react-navigation/native"
-import { UserProfile } from "./firestore"
+import { GymProfile, UserProfile } from "./firestore"
 
 export type RootStackParamList = {
   Footer: undefined
@@ -38,6 +38,10 @@ export type RootStackParamList = {
   GymModerateMembers: undefined
   MatchModal: undefined
   LoadModal: undefined
+  CurrentGymSettings: {
+    gymProfile: GymProfile
+    id: string
+  }
   CreateEvent: undefined
   AttendingEvent: {
     eventId: string
