@@ -98,6 +98,7 @@ const GymRequests = () => {
           profile={userToReview}
           deleteFrom={deleteFrom}
           requestType={requestType}
+          handleDismissModal={dismiss}
         />
       </BottomSheetModal>
     </>

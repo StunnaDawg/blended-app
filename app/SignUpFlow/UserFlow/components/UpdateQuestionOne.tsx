@@ -13,6 +13,7 @@ type QuestionOneProps = {
 }
 
 const UpdateQuestionOne = ({ id, firstName, lastName }: QuestionOneProps) => {
+  const [pressed, setPressed] = useState<boolean>(false)
   const [location, setLocation] = useState<Location.LocationObject | null>(null)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const navigation = useNavigation<NavigationType>()
@@ -52,7 +53,11 @@ const UpdateQuestionOne = ({ id, firstName, lastName }: QuestionOneProps) => {
 
   return (
     <Pressable
-      className="border-2 w-96 items-center bg-red-500"
+      className={`border-2 w-96 items-center ${
+        pressed ? "bg-gray-light" : "bg-gray"
+      }`}
+      onPressIn={() => setPressed(true)}
+      onPressOut={() => setPressed(false)}
       onPress={async () => {
         await submitUserQuestions()
         await enableLocation()

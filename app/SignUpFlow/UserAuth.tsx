@@ -91,17 +91,7 @@ export default function UserAuth() {
             autoCapitalize={"none"}
           />
         </View>
-        <View>
-          <View className="flex flex-row justify-center items-center mb-2">
-            <Text className="mx-2 font-bold">Gym Account?</Text>
-            <BouncyCheckbox
-              isChecked={isGym}
-              onPress={() => {
-                setIsGym(!isGym)
-              }}
-            />
-          </View>
-        </View>
+        <View></View>
         <View style={styles.verticallySpaced}>
           <Button
             title="Sign up"
