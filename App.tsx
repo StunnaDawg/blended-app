@@ -1,6 +1,6 @@
 import "react-native-url-polyfill/auto"
 import { NavStack } from "./app/NavStack"
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native"
+import { NavigationContainer } from "@react-navigation/native"
 import { UserAuthContextProvider } from "./app/context/auth"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"

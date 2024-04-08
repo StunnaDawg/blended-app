@@ -23,7 +23,7 @@ export type UserProfile = {
   lastName: string
   gender: string
   about: string | null
-  activities: string[]
+  activities: string[] | []
   personalRecords?: string[]
   intentions: string
   diet: string | null
@@ -37,7 +37,7 @@ export type UserProfile = {
   birthday: TimeStamp
   gyms: string[]
   eventsGoing: EventsAttending[] | null
-  points: number
+  points: number | null
   earnedRewards: Reward[] | null
   createdGym: string | null
 }

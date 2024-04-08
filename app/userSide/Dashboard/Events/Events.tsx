@@ -42,7 +42,7 @@ const Events = () => {
           events.length > 0 &&
           events.map((element, index) => {
             return (
-              <View className="m-3" key={element.id}>
+              <View className="m-2" key={element.id}>
                 <EventCard event={element} id={currentId} />
               </View>
             )

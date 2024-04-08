@@ -34,6 +34,12 @@ const getUserProfiles = async (
           const rewardsData = await getDocs(rewardsRef)
           const rewards = rewardsData.docs.map((doc) => doc.data() as Reward)
 
+          const eventsRef = collection(db, `user/${userId}/eventsGoing`)
+          const eventsData = await getDocs(eventsRef)
+          const events = eventsData.docs.map(
+            (doc) => doc.data() as EventsAttending
+          )
+
           const gymRef = collection(db, `user/${currentUser}/gyms`)
           const gymData = await getDocs(gymRef)
           const gyms = gymData.docs.map((doc) => doc.data() as JoinedGymId)
@@ -56,10 +62,10 @@ const getUserProfiles = async (
             userPhotos: userFetchedData.userPhotos,
             birthday: userFetchedData.birthday || null,
             gyms: gyms,
-            eventsGoing: null,
-            points: userFetchedData.points,
-            earnedRewards: rewards,
-            createdGym: userFetchedData.createdGym,
+            eventsGoing: events,
+            points: userFetchedData.points || null,
+            earnedRewards: rewards || null,
+            createdGym: userFetchedData.createdGym || null,
           }
 
           profiles.push(userProfile)
