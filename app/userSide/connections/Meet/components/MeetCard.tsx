@@ -111,6 +111,7 @@ const MeetCard = ({
   const swipeUser = async () => {
     try {
       if (currentUser) {
+        console.log(userData)
         setDoc(doc(db, "user", currentUser, "messaged", userData.id), userData)
         setDoc(
           doc(db, "user", userData.id, "messaged", currentUser),
