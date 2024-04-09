@@ -40,7 +40,7 @@ const DeleteEvent = ({ eventId, gymId }: DeleteEventProp) => {
   const deleteEvent = async () => {
     if (gymId) {
       const eventGymRef = doc(db, "gyms", gymId, "events", eventId)
-      const eventRef = doc(db, "events")
+      const eventRef = doc(db, "events", eventId)
       await deleteDoc(eventGymRef)
       await deleteDoc(eventRef)
     }
@@ -53,6 +53,7 @@ const DeleteEvent = ({ eventId, gymId }: DeleteEventProp) => {
     <Pressable
       onPress={async () => {
         if (image !== "") {
+          console.log(image)
           await deleteImage(image)
         }
         await deleteEvent()
