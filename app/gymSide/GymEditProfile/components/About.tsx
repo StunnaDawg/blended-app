@@ -11,7 +11,7 @@ const About = () => {
     if (currentUser) {
       const userRef = doc(db, "gyms", currentUser)
       await updateDoc(userRef, {
-        aboutMe: aboutMe,
+        about: aboutMe,
       })
     }
   }

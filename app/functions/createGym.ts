@@ -31,6 +31,14 @@ const createGym = async (
     city: city,
   } as GymProfile)
 
+  await updateDoc(doc(db, "user", id), {
+    homeGym: id,
+  })
+
+  await setDoc(doc(db, "user", id, "gyms", id), {
+    gymId: id,
+  })
+
   const submitGymPhotos = async (downloadImage: string) => {
     try {
       if (id) {
