@@ -98,7 +98,7 @@ export const EventCardDetails = ({ event, eventId }: EventProps) => {
   return (
     <View>
       <SinglePicBackGround
-        id={event.id}
+        photo={event.eventPhoto}
         height={400}
         width={400}
         avatarRadius={10}
@@ -146,51 +146,10 @@ export const EventCardDetails = ({ event, eventId }: EventProps) => {
 
       <View className="mx-2">
         <Text className="font-bold text-2xl">About</Text>
-        <Text className="text-xs">
-          {event.description} Join For a fun night out, with Blended Athletics!
-          Join For a fun night out, with Blended Athletics! Join For a fun night
-          out, with Blended Athletics! Join For a fun night out, with Blended
-          Athletics! Join For a fun night out, with Blended Athletics!
-        </Text>
+        <Text className="text-xs">{event.description}</Text>
       </View>
 
       <View className="flex flex-row justify-center"></View>
     </View>
   )
-}
-
-{
-  /* <Pressable
-          onPressIn={handlePressIn}
-          onPressOut={handlePressOut}
-          className={
-            isPressed
-              ? "w-28 border p-1 rounded bg-white"
-              : "w-28 border p-1 rounded bg-slate-200"
-          }
-          onPress={() => {
-            if (currentUser) {
-              updateEventAttendees(
-                currentUser,
-                event.gymHost,
-                eventId,
-                currentAttendee,
-                setLoading
-              )
-              setCurrentAttendee(!currentAttendee)
-            }
-          }}
-        >
-          <Text>
-            {!loading ? (
-              currentAttendee ? (
-                "Cancel"
-              ) : (
-                "RVSP"
-              )
-            ) : (
-              <ActivityIndicator />
-            )}
-          </Text>
-        </Pressable> */
 }

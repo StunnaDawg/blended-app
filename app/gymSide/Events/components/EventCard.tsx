@@ -80,7 +80,7 @@ const EventCard = ({ event, id }: EventCardProp) => {
   }, [])
   return (
     <SinglePicBackGround
-      id={event.id}
+      photo={event.eventPhoto}
       height={200}
       width={160}
       avatarRadius={10}

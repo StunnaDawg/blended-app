@@ -23,8 +23,9 @@ const EventsTab = () => {
   const isFocused = useIsFocused()
 
   useEffect(() => {
+    setLoading(true)
     getGymEvents(currentId, setEventsArray, setLoading)
-  }, [isFocused, currentId])
+  }, [isFocused])
 
   return (
     <View>
@@ -38,19 +39,21 @@ const EventsTab = () => {
           <FontAwesome6 name="add" size={16} color="black" />
         </Pressable>
       </View>
-      <ScrollView className="h-full p-1">
-        <View className="flex flex-row flex-wrap items-center">
-          {!loading && currentId ? (
-            eventsArray.map((event) => (
-              <View className="mx-3" key={event.id}>
-                <EventCard event={event} id={currentId} />
-              </View>
-            ))
-          ) : (
-            <ActivityIndicator />
-          )}
-        </View>
-      </ScrollView>
+      {!loading ? (
+        <ScrollView className="h-full p-1">
+          <View className="flex flex-row flex-wrap items-center">
+            {currentId
+              ? eventsArray.map((event) => (
+                  <View className="mx-3" key={event.id}>
+                    <EventCard event={event} id={currentId} />
+                  </View>
+                ))
+              : null}
+          </View>
+        </ScrollView>
+      ) : (
+        <ActivityIndicator />
+      )}
     </View>
   )
 }

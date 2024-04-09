@@ -45,12 +45,13 @@ const EventEditImage = ({ event }: EventPicProps) => {
 
   const submitNewUserPhotos = async (downloadImage: string) => {
     try {
-      if (id && event.gymHost) {
+      if (id && event.gymHost && event.id) {
         const eventRef = doc(db, "gyms", event.gymHost, "events", event.id)
 
         await updateDoc(eventRef, {
           eventPhoto: downloadImage,
         })
+
         console.log("uploaded")
         setImage(downloadImage)
       } else {
@@ -105,8 +106,6 @@ const EventEditImage = ({ event }: EventPicProps) => {
           <Pressable
             onPress={async () => {
               await pickImage()
-
-              //   await uploadImage(image, "image", image + id, submitNewUserPhotos)
             }}
             className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded hover:bg-blue-800 m-2"
           >

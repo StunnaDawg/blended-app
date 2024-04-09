@@ -25,6 +25,7 @@ const updateEvent = async (
 ) => {
   try {
     if (currentGymId) {
+      console.log("Saving..")
       const batch = writeBatch(db)
       const gymRef = doc(db, "gyms", currentGymId, "events", eventId)
       batch.update(gymRef, {
@@ -35,7 +36,10 @@ const updateEvent = async (
       batch.update(eventCollectionRef, {
         [valueToUpdate]: updateValue,
       })
+
+      batch.commit()
       setSaving(false)
+      console.log("saved")
     } else {
       console.log("Gym does not exist")
     }
