@@ -83,7 +83,7 @@ const About = ({ gymProfile, gymId }: About) => {
                 </View>
               </Pressable>
               <View className="flex flex-row">
-                <RequestToBeMember gymId={gymId} />
+                <RequestToBeMember gym={gymProfile} gymId={gymId} />
               </View>
             </View>
           </View>

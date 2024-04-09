@@ -176,7 +176,9 @@ const CreateEvent = () => {
       <Pressable
         onPress={async () => {
           await createEventInGymCollection()
-          navigation.goBack()
+          setTimeout(() => {
+            navigation.goBack()
+          }, 2000)
         }}
         className="bg-blue p-4 rounded-lg items-center mb-20"
       >

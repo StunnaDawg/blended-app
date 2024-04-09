@@ -17,7 +17,6 @@ const UploadImage = ({ setUris, uris }: UploadImageType) => {
       quality: 1,
       allowsMultipleSelection: true,
       selectionLimit: 6,
-      allowsEditing: true,
     })
 
     if (!result.canceled) {

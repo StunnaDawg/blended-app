@@ -10,12 +10,14 @@ import { Event } from "../../../@types/firestore"
 import getEvents from "../../../functions/getAllEvents"
 import EventCard from "./components/EventCard"
 import { FIREBASE_AUTH } from "../../../../firebase"
+import { useIsFocused } from "@react-navigation/native"
 
 const Events = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [events, setEvents] = useState<Event[]>([])
   const [refreshing, setRefreshing] = useState<boolean>(false)
   const currentId = FIREBASE_AUTH.currentUser?.uid
+  const isFocused = useIsFocused()
 
   const onRefresh = useCallback(() => {
     setRefreshing(true)
@@ -26,7 +28,7 @@ const Events = () => {
 
   useEffect(() => {
     getEvents(setEvents, setLoading)
-  }, [])
+  }, [isFocused])
 
   return (
     <ScrollView
