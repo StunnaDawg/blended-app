@@ -52,6 +52,12 @@ const UserProfileHome = () => {
     }
   }, [userProfile])
 
+  useEffect(() => {
+    if (currentId) {
+      getUserProfile(currentId, setUserProfile, setLoading)
+    }
+  }, [refreshing])
+
   const getUserNameAge = async () => {
     if (currentId) {
       getUserProfile(currentId, setUserProfile, setLoading)
