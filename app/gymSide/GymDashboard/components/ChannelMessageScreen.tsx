@@ -114,6 +114,7 @@ const ChannelMessageScreen = ({
           <Text className="text-xl font-bold mx-2">{channelName}</Text>
         </View>
       </View>
+
       <KeyboardAvoidingView
         className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -150,10 +151,10 @@ const ChannelMessageScreen = ({
         )}
       </KeyboardAvoidingView>
 
-      <View className="flex flex-row items-center">
+      <View className="flex flex-row justify-center items-center mb-10">
         <TextInput
           placeholder={loading ? "sending..." : "Send a Message"}
-          className=" border rounded-xl h-8 w-64 p-2 "
+          className=" border rounded-xl h-9 w-80 p-2 "
           value={messageToSend}
           onChangeText={(message) => {
             setMessageToSend(message)
@@ -165,7 +166,7 @@ const ChannelMessageScreen = ({
             await sendMessage()
           }}
         >
-          <Text className="font-bold">Send</Text>
+          <Text className="text-xl font-bold">Send</Text>
         </Pressable>
       </View>
     </View>

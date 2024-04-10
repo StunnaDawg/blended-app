@@ -1,6 +1,8 @@
-import { Text, View } from "react-native"
-import { memo } from "react"
+import { ActivityIndicator, Text, View } from "react-native"
+import { memo, useEffect, useState } from "react"
 import SinglePic from "../../../components/Avatar"
+import getUserProfile from "../../../functions/getUserProfile"
+import { UserProfile } from "../../../@types/firestore"
 
 type MessageProps = {
   id: string
@@ -8,8 +10,18 @@ type MessageProps = {
 }
 
 const Message = ({ id, message }: MessageProps) => {
+  const [loading, setLoading] = useState<boolean>(false)
+  const [userProfile, setUserProfile] = useState<UserProfile>({} as UserProfile)
+  useEffect(() => {
+    getUserProfile(id, setUserProfile, setLoading)
+  }, [])
   return (
     <View>
+      <View className="mx-3">
+        <Text className="font-bold">
+          {!loading ? userProfile.firstName : <ActivityIndicator />}
+        </Text>
+      </View>
       <View className="flex flex-row justify-start flex-wrap mt-2 items-center m-1 my-2">
         <SinglePic
           size={30}

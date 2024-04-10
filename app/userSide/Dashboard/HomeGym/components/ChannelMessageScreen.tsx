@@ -154,7 +154,7 @@ const ChannelMessageScreen = ({
       <View className="flex flex-row justify-center items-center mb-10">
         <TextInput
           placeholder={loading ? "sending..." : "Send a Message"}
-          className=" border rounded-xl h-8 w-64 p-2 "
+          className=" border rounded-xl h-9 w-80 p-2 "
           value={messageToSend}
           onChangeText={(message) => {
             setMessageToSend(message)
