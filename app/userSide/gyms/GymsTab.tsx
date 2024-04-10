@@ -38,6 +38,11 @@ const GymsTab = () => {
   }, [isFocused])
 
   useEffect(() => {
+    setLoading(true)
+    getGymProfiles(setGymProfiles, setLoading)
+  }, [refreshing])
+
+  useEffect(() => {
     if (currentUser) {
       getUserProfile(currentUser, setUserProfile, setLoading)
     }

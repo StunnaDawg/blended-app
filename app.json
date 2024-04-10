@@ -12,12 +12,11 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.stunnacat.blendedapp"
+      "bundleIdentifier": "com.stunnacat.blendedapp",
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {

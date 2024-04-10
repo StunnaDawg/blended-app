@@ -5,9 +5,10 @@ import { ImageBackground, StyleSheet, View } from "react-native"
 import { db } from "../../firebase"
 import getProfilePic from "../functions/getProfilePic"
 import { Event, UserProfile } from "../@types/firestore"
+import getSinglePhoto from "../functions/getSinglePhoto"
 
 type SinglePicProps = {
-  id?: string
+  photo: string
   height: number
   width: number
   avatarRadius: number
@@ -17,35 +18,8 @@ type SinglePicProps = {
   setLoading: Dispatch<SetStateAction<boolean>>
 }
 
-const getSinglePhoto = async (
-  id: string,
-  setProfilePic: Dispatch<SetStateAction<string>>,
-  docRef: DocumentReference,
-  setLoading: Dispatch<SetStateAction<boolean>>
-) => {
-  try {
-    if (id) {
-      setLoading(true)
-      const docSnap = await getDoc(docRef)
-
-      if (docSnap.exists()) {
-        const userData = { ...docSnap.data() } as Event
-        const photo = userData.eventPhoto
-
-        setProfilePic(photo)
-        setLoading(false)
-      }
-      setLoading(false)
-    }
-
-    setLoading(false)
-  } catch (err) {
-    setLoading(false)
-    console.error(err)
-  }
-}
 export default function SinglePicBackGround({
-  id,
+  photo,
   height,
   width,
   avatarRadius,
@@ -54,7 +28,6 @@ export default function SinglePicBackGround({
   children,
   setLoading,
 }: SinglePicProps) {
-  const [avatarUrl, setAvatarUrl] = useState<string>("")
   const avatarSize = { height: height, width: width }
 
   const styles = StyleSheet.create({
@@ -76,27 +49,23 @@ export default function SinglePicBackGround({
     },
   })
 
-  useEffect(() => {
-    const fetchAvatar = async () => {
-      if (id) {
-        await getSinglePhoto(id, setAvatarUrl, docRef, setLoading)
-      }
-    }
+  // useEffect(() => {
+  //   const fetchAvatar = async () => {
+  //     if (id) {
+  //       await getSinglePhoto(id, setAvatarUrl, docRef, setLoading)
+  //     }
+  //   }
 
-    fetchAvatar()
-  }, [id])
-
-  useEffect(() => {
-    console.log("fetched photo", avatarUrl)
-  }, [avatarUrl])
+  //   fetchAvatar()
+  // }, [id])
 
   return (
     <ImageBackground
-      source={{ uri: avatarUrl || "your_default_image_uri_here" }}
+      source={{ uri: photo || "your_default_image_uri_here" }}
       style={[avatarSize, styles.avatar]}
       imageStyle={styles.image}
     >
-      {!avatarUrl && <View style={[avatarSize, styles.noImage]} />}
+      {!photo && <View style={[avatarSize, styles.noImage]} />}
       {children}
     </ImageBackground>
   )

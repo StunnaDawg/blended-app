@@ -1,16 +1,9 @@
-import { View, Text, Button, Pressable } from "react-native"
+import { View, Text, Pressable } from "react-native"
 import { Image } from "expo-image"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import * as ImagePicker from "expo-image-picker"
-import getProfilePic from "../../../functions/getProfilePic"
 import { FIREBASE_AUTH, db } from "../../../../firebase"
-import {
-  arrayRemove,
-  arrayUnion,
-  doc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore"
+import { doc, getDoc, updateDoc } from "firebase/firestore"
 import deleteImage from "../../../functions/deleteImage"
 import uploadImage from "../../../functions/uploadImage"
 import { Event } from "../../../@types/firestore"
@@ -52,31 +45,17 @@ const EventEditImage = ({ event }: EventPicProps) => {
 
   const submitNewUserPhotos = async (downloadImage: string) => {
     try {
-      if (id) {
+      if (id && event.gymHost && event.id) {
         const eventRef = doc(db, "gyms", event.gymHost, "events", event.id)
 
         await updateDoc(eventRef, {
           eventPhoto: downloadImage,
         })
 
+        console.log("uploaded")
         setImage(downloadImage)
       } else {
         console.log("User does not exist")
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  }
-  const deletePhotoFromFireStore = async (fileLocation: string) => {
-    try {
-      if (id) {
-        const eventRef = doc(db, "gyms", event.gymHost, "events", event.id)
-        console.log(fileLocation)
-        await updateDoc(eventRef, {
-          eventPhoto: fileLocation,
-        })
-      } else {
-        console.log("Photo does not exist")
       }
     } catch (err) {
       console.error(err)
@@ -91,7 +70,6 @@ const EventEditImage = ({ event }: EventPicProps) => {
 
     if (!result.canceled) {
       await deleteImage(image)
-      await deletePhotoFromFireStore(image)
       setImage(result.assets[0].uri)
       uploadImage(
         result.assets[0].uri,
@@ -128,8 +106,6 @@ const EventEditImage = ({ event }: EventPicProps) => {
           <Pressable
             onPress={async () => {
               await pickImage()
-
-              //   await uploadImage(image, "image", image + id, submitNewUserPhotos)
             }}
             className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded hover:bg-blue-800 m-2"
           >

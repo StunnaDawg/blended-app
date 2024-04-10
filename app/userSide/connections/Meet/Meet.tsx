@@ -136,6 +136,53 @@ const Meet = () => {
     return unsub
   }, [index])
 
+  useEffect(() => {
+    let unsub
+    const fetchCards = async () => {
+      try {
+        setLoading(true)
+        if (currentUserId) {
+          const passes = await getDocs(
+            collection(db, "user", currentUserId, "passes")
+          ).then((snapshot) => snapshot.docs.map((doc) => doc.id))
+          const messaged = await getDocs(
+            collection(db, "user", currentUserId, "messaged")
+          ).then((snapshot) => snapshot.docs.map((doc) => doc.id))
+
+          const passedUserIds = passes.length > 0 ? passes : ["test"]
+          const messagedUserIds = messaged.length > 0 ? messaged : ["test"]
+
+          console.log("seen users", [...passedUserIds, ...messagedUserIds])
+          //   // query(
+          unsub = onSnapshot(
+            query(
+              collection(db, "user"),
+              where("__name__", "not-in", [
+                ...passedUserIds,
+                ...messagedUserIds,
+              ])
+            ),
+            (snapshot) => {
+              setProfiles(
+                snapshot.docs
+                  .filter((doc) => doc.id !== currentUserId)
+                  .map((doc) => doc.id)
+              )
+            }
+          )
+          console.log("unsub", unsub)
+        }
+        setLoading(false)
+      } catch (err) {
+        setLoading(false)
+        console.error(err)
+      }
+    }
+    fetchCards()
+    console.log("fetch", profiles)
+    return unsub
+  }, [refreshing])
+
   return (
     <ScrollView
       refreshControl={

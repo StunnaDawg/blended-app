@@ -30,6 +30,10 @@ const Events = () => {
     getEvents(setEvents, setLoading)
   }, [isFocused])
 
+  useEffect(() => {
+    getEvents(setEvents, setLoading)
+  }, [refreshing])
+
   return (
     <ScrollView
       refreshControl={

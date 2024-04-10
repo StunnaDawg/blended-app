@@ -1,29 +1,17 @@
-import { View, Text, TextInput, Pressable, Platform } from "react-native"
+import { View, Text, TextInput } from "react-native"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
-import UploadImage from "../../components/UploadImage"
 import { FIREBASE_AUTH, db } from "../../../firebase"
 import { ScrollView } from "react-native"
-import {
-  Timestamp,
-  addDoc,
-  arrayUnion,
-  collection,
-  doc,
-  updateDoc,
-  writeBatch,
-} from "firebase/firestore"
-import { useLocation } from "../../context/LocationContext"
+import { doc, writeBatch } from "firebase/firestore"
+
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker"
-import uploadImage from "../../functions/uploadImage"
 import useDebouncedValue from "../../functions/debounce"
-import UploadEventImage from "../../components/UploadEventImage"
-import { RootStackParamList, RouteParamsType } from "../../@types/navigation"
+import { RouteParamsType } from "../../@types/navigation"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import getGymEvent from "../../functions/getGymEvent"
 import { Event } from "../../@types/firestore"
-import SingleImage from "../../components/SingleImage"
 import EventEditImage from "./components/EventPhotoEdit"
 import BackButton from "../../components/BackButton"
 import DeleteEvent from "./components/DeleteEvent"
@@ -37,6 +25,7 @@ const updateEvent = async (
 ) => {
   try {
     if (currentGymId) {
+      console.log("Saving..")
       const batch = writeBatch(db)
       const gymRef = doc(db, "gyms", currentGymId, "events", eventId)
       batch.update(gymRef, {
@@ -47,7 +36,10 @@ const updateEvent = async (
       batch.update(eventCollectionRef, {
         [valueToUpdate]: updateValue,
       })
+
+      batch.commit()
       setSaving(false)
+      console.log("saved")
     } else {
       console.log("Gym does not exist")
     }

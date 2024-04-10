@@ -118,6 +118,7 @@ const ChannelMessageScreen = ({
       <KeyboardAvoidingView
         className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
       >
         {!loading ? (
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -149,26 +150,26 @@ const ChannelMessageScreen = ({
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
         )}
-      </KeyboardAvoidingView>
 
-      <View className="flex flex-row justify-center items-center mb-10">
-        <TextInput
-          placeholder={loading ? "sending..." : "Send a Message"}
-          className=" border rounded-xl h-8 w-64 p-2 "
-          value={messageToSend}
-          onChangeText={(message) => {
-            setMessageToSend(message)
-          }}
-        />
-        <Pressable
-          className="mx-2"
-          onPress={async () => {
-            await sendMessage()
-          }}
-        >
-          <Text className=" text-xl font-bold">Send</Text>
-        </Pressable>
-      </View>
+        <View className="flex flex-row justify-center items-center mb-14">
+          <TextInput
+            placeholder={loading ? "sending..." : "Send a Message"}
+            className=" border rounded-xl h-9 w-80 p-2 "
+            value={messageToSend}
+            onChangeText={(message) => {
+              setMessageToSend(message)
+            }}
+          />
+          <Pressable
+            className="mx-2"
+            onPress={async () => {
+              await sendMessage()
+            }}
+          >
+            <Text className=" text-xl font-bold">Send</Text>
+          </Pressable>
+        </View>
+      </KeyboardAvoidingView>
     </View>
   )
 }

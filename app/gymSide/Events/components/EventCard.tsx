@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react"
 import { Event, GymProfile } from "../../../@types/firestore"
 import { useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../../@types/navigation"
-import SinglePicNoArray from "../../../components/SingleImageNoArray"
-import { FIREBASE_AUTH, db } from "../../../../firebase"
+import { db } from "../../../../firebase"
 import { doc } from "firebase/firestore"
 import SinglePicBackGround from "../../../components/ImageBackground"
 import { format } from "date-fns"
@@ -81,7 +80,7 @@ const EventCard = ({ event, id }: EventCardProp) => {
   }, [])
   return (
     <SinglePicBackGround
-      id={event.id}
+      photo={event.eventPhoto}
       height={200}
       width={160}
       avatarRadius={10}
