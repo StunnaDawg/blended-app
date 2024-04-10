@@ -164,7 +164,7 @@ const MeetCard = ({
             {userData.firstName}
           </Text>
         </View>
-        <InfoSection
+        {/* <InfoSection
           title="Essentials"
           boldness={"font-semibold"}
           content="Dalhousie"
@@ -172,7 +172,7 @@ const MeetCard = ({
           content3={null}
           tags={false}
           activities={null}
-        />
+        /> */}
 
         {homeGym.gym_title ? (
           <InfoSection
@@ -188,7 +188,7 @@ const MeetCard = ({
 
         {userData.intentions ? (
           <InfoSection
-            title="Looking"
+            title="Looking For"
             boldness={"font-semibold"}
             content={userData.intentions}
             content2={null}

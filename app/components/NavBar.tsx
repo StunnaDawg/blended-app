@@ -20,7 +20,7 @@ const NavBar = () => {
           className="text-2xl font-bold"
           onPress={() => navigation.navigate("Events")}
         >
-          Blended
+          Train With Us
         </Text>
         <Pressable onPress={() => navigation.navigate("UserSettings")}>
           <FontAwesome6 name="user-gear" size={20} color="black" />
