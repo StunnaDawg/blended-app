@@ -6,7 +6,7 @@ import {
   TabNavigationType,
 } from "../../../@types/navigation"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { deleteDoc, doc } from "firebase/firestore"
+import { deleteDoc, doc, updateDoc } from "firebase/firestore"
 import { FIREBASE_AUTH, db } from "../../../../firebase"
 import { FontAwesome6 } from "@expo/vector-icons"
 import BackButton from "../../../components/BackButton"
@@ -25,18 +25,27 @@ const CurrentGymSettings = () => {
       console.log(gymIdParam)
       const gymRef = doc(db, "gyms", gymIdParam, userType, currentId)
       const userRef = doc(db, "user", currentId, "gyms", gymIdParam)
+      const deleteHomeGym = doc(db, "user", currentId)
       try {
         setLoading(true)
         await deleteDoc(gymRef)
         await deleteDoc(userRef)
+
+        await updateDoc(deleteHomeGym, {
+          homeGym: "",
+        })
       } catch (err) {
         console.error(err)
       } finally {
         setLoading(false)
-        navigation.navigate("HomeGym")
+        navigation.navigate("Dashboard")
       }
     }
   }
+
+  useEffect(() => {
+    console.log(gymIdParam)
+  }, [])
 
   return (
     <>

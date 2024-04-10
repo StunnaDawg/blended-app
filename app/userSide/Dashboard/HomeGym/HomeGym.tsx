@@ -120,7 +120,7 @@ const HomeGym = () => {
                         if (currentUserId && currentGymId !== undefined) {
                           navigation.navigate("CurrentGymSettings", {
                             gymProfile: homeGym,
-                            id: currentGymId,
+                            id: currentChannel.gymId,
                           })
                         }
                       }}

@@ -6,6 +6,8 @@ import SinglePic from "../../../components/Avatar"
 import { FontAwesome6 } from "@expo/vector-icons"
 
 type ReviewUserProps = {
+  reviewed: boolean
+  setReviewed: Dispatch<SetStateAction<boolean>>
   profile: UserProfile
   requestType: string
   deleteFrom: string
@@ -14,6 +16,8 @@ type ReviewUserProps = {
 }
 
 const ReviewUser = ({
+  reviewed,
+  setReviewed,
   profile,
   requestType,
   deleteFrom,
@@ -45,6 +49,7 @@ const ReviewUser = ({
           await reviewRequest(profile.id, requestType, deleteFrom, true)
           handleDismissModal()
           setLoading(false)
+          setReviewed(!reviewed)
         }}
         className={`border-2 rounded-full p-2 m-1 ${
           isAcceptPressed ? "bg-white" : "bg-green"
@@ -64,6 +69,7 @@ const ReviewUser = ({
           await reviewRequest(profile.id, requestType, deleteFrom, false)
           handleDismissModal()
           setLoading(false)
+          setReviewed(!reviewed)
         }}
         className={`border-2 rounded-full p-2 m-1 ${
           isDeclinePressed ? "bg-white" : "bg-red"

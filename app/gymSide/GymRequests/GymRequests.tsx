@@ -13,11 +13,12 @@ import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { FontAwesome6 } from "@expo/vector-icons"
 import ReviewUser from "./components/ReviewUser"
 import SinglePic from "../../components/Avatar"
-import { useNavigation } from "@react-navigation/native"
+import { useIsFocused, useNavigation } from "@react-navigation/native"
 import { NavigationType } from "../../@types/navigation"
 
 const GymRequests = () => {
   const [loading, setLoading] = useState<boolean>(false)
+  const [reviewedUser, setReviewedUser] = useState<boolean>(false)
   const [memberRequests, setMemberRequests] = useState<UserProfile[]>([])
   const [refreshing, setRefreshing] = useState<boolean>(false)
   const [userToReview, setUserToReview] = useState<UserProfile>(
@@ -28,6 +29,7 @@ const GymRequests = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
   const navigation = useNavigation<NavigationType>()
   const { dismiss } = useBottomSheetModal()
+  const isFocused = useIsFocused()
 
   const snapPoints = useMemo(() => ["1%", "100%"], [])
 
@@ -53,7 +55,15 @@ const GymRequests = () => {
 
   useEffect(() => {
     fetchUsers()
-  }, [])
+  }, [isFocused])
+
+  useEffect(() => {
+    fetchUsers()
+  }, [refreshing])
+
+  useEffect(() => {
+    fetchUsers()
+  }, [reviewedUser])
 
   return (
     <>
@@ -144,6 +154,8 @@ const GymRequests = () => {
         onChange={handleSheetChanges}
       >
         <ReviewUser
+          reviewed={reviewedUser}
+          setReviewed={setReviewedUser}
           profile={userToReview}
           deleteFrom={deleteFrom}
           requestType={requestType}
